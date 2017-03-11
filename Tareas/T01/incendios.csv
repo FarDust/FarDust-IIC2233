@@ -1,0 +1,6 @@
+Nombre	Tipo de dato	Comentarios
+id	string	Identificador unico de cada incendio.
+lat	signed float	Latitud geografica del foco del incendio.
+lon	signed float	Longitud geografica del foco del incendio.
+potencia	unsigned int	Potencia del incendio.
+fecha_inicio	string	Fecha y hora de incio del incendio.

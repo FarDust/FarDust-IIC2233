@@ -1,0 +1,29 @@
+#Comprobar entrada V1.0.0
+
+from abc impor ABCMeta, abstractmethod
+
+class Comprobar(metadata=ABCMeta):
+	def __init__(self,valor):
+		self.valor = valor
+		
+	@abstractmethod
+	def comprobar(self):
+		Try:
+			pass
+		Except:
+			return False
+
+#Las siguientes clases comprueban las entradas del codigo
+#La nomenclatura es "T(valor)" donde T = tipo y el valor es lo que se comprobara		
+		
+class TInt(Comprobar):
+	def __init__(self,valor):
+		super().__init__(valor)
+		self.comprobar()
+	
+	def comprobar(self):
+		temp=str(self.valor)
+		if(temp = "" or temp.isalpha()):
+			return(True)
+		if(t):
+
