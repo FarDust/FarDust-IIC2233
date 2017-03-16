@@ -47,6 +47,12 @@ class CentrosDistribucion:
                 atributos = camion.split(",")
                 self.recibir_camion(Camion(atributos[0],atributos[1]))
             camiones.close()
+        with open("productos.txt","r") as productos:
+            for producto in productos:
+                producto = producto.strip()
+                atributos = producto.split(",")
+                self.recibir_donacion(Producto(atributos[0],atributos[1],atributos[2]))
+            camiones.close()
 
 
 
@@ -57,7 +63,7 @@ class CentrosDistribucion:
         else:
             for i in range(len(self.fila)):
                 if self.fila[i].urgencia > camion.urgencia:
-                    self.fila.insert(i)
+                    self.fila.insert(i,camion)
                     break
 
     def rellenar_camion(self):
@@ -87,12 +93,15 @@ class CentrosDistribucion:
     def recibir_donacion(self,*args):
         for producto in args:
             if producto.tipo in self.bodega:
-                self.bodega[producto.tipo][producto.nombre].append(producto)
+                if not(producto.nombre in self.bodega[producto.tipo]):
+                    self.bodega[producto.tipo] = {producto.nombre : [producto]}
+                else:
+                    self.bodega[producto.tipo][producto.nombre].append(producto)
             else:
                 self.bodega[producto.tipo] = {producto.nombre : [producto]}
 
 class Producto:
-    def __init__(self,nombre , tipo, peso):
+    def __init__(self,tipo, nombre, peso):
         self.nombre = nombre
         self.tipo = tipo
         self.peso = int(peso)
@@ -102,3 +111,5 @@ class Producto:
             return True
         else:
             return False
+
+Bodegin = CentrosDistribucion()
