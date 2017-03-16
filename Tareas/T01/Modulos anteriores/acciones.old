@@ -1,4 +1,6 @@
 #Acciones v1.0.0
+#El usuario entrega sus permisos para que la accion los obtenga
+#usuario debe ser derivado de la clase Usuario del archivo usuarios.py
 
 class Accion:
 	def __init__(self,usuario):
@@ -6,7 +8,9 @@ class Accion:
 		self.permiso = usuario.permiso[-1]
 
 	def crear_usuario(self,name,password)
-		pass
+		import usuarios
+		
+		
 		
 class AgregarUsuario(Accion):
 	def __init__(self):

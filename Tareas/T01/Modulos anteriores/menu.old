@@ -1,0 +1,50 @@
+# Menu v1.0.0
+from comprobar import comprobar_int
+from abc import ABCMeta,abstractmethod
+
+
+class Menu(metaclass=ABCMeta):
+    def __init__(self, nombre, opciones=None):
+        if opciones is None:
+            opciones = []
+        self.opciones = opciones
+        self.nombre = nombre
+        self.commands = None
+        self.comand_line()
+        self.entrada()
+
+    def comand_line(self):
+        try:
+            archivo = open("menus/" + self.nombre + ".txt", "r")
+        except:
+            archivo = open("menus/" + self.nombre + ".txt", "w")
+            for opcion in self.opciones:
+                archivo.write("{0} {1}/n".format(str(self.nombre), opcion))
+        self.comands = archivo.read()
+        archivo.close()
+
+    def mostrar(self):
+        n = 1
+        for opcion in self.opciones:
+            print(str(n) + ".-", opcion)
+            n += 1
+
+    def entrada(self):
+        comando = input("ingrese opcion o comando: ")
+        if comando in self.comands:
+            pass
+        else:
+            if comprobar_int(comando, 1, len(self.opciones)):
+                pass
+
+
+class LogIn(Menu):
+    def __init__(self):
+        super().__init__("login")
+
+    def entrada(self):
+        inicioSesion = False
+        while not inicioSesion:
+            usuario = input("Ingresar usuario: ")
+            password = input("Ingrese contrasena: ")
+

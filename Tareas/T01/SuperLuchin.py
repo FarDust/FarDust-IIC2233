@@ -1,6 +1,19 @@
-#SuperLuchín Alpha v1.0.0
+# SuperLuchín Alpha v1.0.0
 
-from comprobar import *
-from usuarios import Root
+from menu import LogIn
+from leer import Users
+from usuarios import Terreno, Sudo
 
-root = Root("password")
+rutaDeUsuarios = Users("usuarios.csv")
+
+usuarioActual = LogIn().entrada()
+if usuarioActual != ".":
+    if rutaDeUsuarios.completar(usuarioActual)["recurso_id"] == "":
+        usuarioActivo = Sudo(rutaDeUsuarios.completar(usuarioActual))
+    else:
+        usuarioActivo = Terreno(rutaDeUsuarios.completar(usuarioActual))
+else:
+    # instanciar nuevamente LogIn()
+    pass
+
+print(usuarioActivo.nombre)

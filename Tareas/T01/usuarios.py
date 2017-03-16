@@ -1,30 +1,53 @@
-#Usuarios v1.0.0
+# Usuarios v1.0.0
 
-from abc import ABCMeta,abstractmethod
+from abc import ABCMeta, abstractmethod
 
-class Usuario:
-	def __init__(self,nombre,password):
-		self.nombre = nombre
-		self.password = password
-		self.permisos = []
-	
-class Root(Usuario):
-	def __init__(self,password):
-		super().__init__("root",password)
-		self.permisos.append("root")
-		self.permisos.sort()
-		pass
-		
-class ANAF(Usuario):
-	def __init__(self):
-		super().__init__(nombre,password)
-		self.permisos.append("ANAF")
-		self.permisos.sort()
-		pass
-		
+
+class Usuario(metaclass=ABCMeta):
+    def __init__(self, dic):
+        self.id = dic["id"]
+        self.nombre = dic["nombre"]
+        self.password = dic["contraseña"]
+        self.recurso_id = dic["recurso_id"]
+
+    @abstractmethod
+    def crear_usuario(self, name, password):
+        pass
+
+    @abstractmethod
+    def consulta_basica(self):
+        pass
+
+    @abstractmethod
+    def consulta_avanzada(self):
+        pass
+
+
+class Sudo(Usuario):
+    def __init__(self, dic):
+        super().__init__(dic)
+        pass
+
+    def crear_usuario(self, name, password):
+        pass
+
+    def consulta_avanzada(self):
+        pass
+
+    def consulta_basica(self):
+        pass
+
+
 class Terreno(Usuario):
-	def __init__(self):
-		super().__init__(nombre,password)
-		self.permisos.append("terreno")
-		self.permisos.sort()
-		pass
+    def __init__(self, dic):
+        super().__init__(dic)
+        pass
+
+    def crear_usuario(self, name, password):
+        pass
+
+    def consulta_avanzada(self):
+        pass
+
+    def consulta_basica(self):
+        pass
