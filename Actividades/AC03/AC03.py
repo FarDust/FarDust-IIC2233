@@ -4,7 +4,7 @@ from random import choice
 
 class Camion:
     def __init__(self, capacidad_maxima, urgencia):
-        self.capacidad_maxima = capacidad_maxima
+        self.capacidad_maxima = int(capacidad_maxima)
         self.urgencia = urgencia
         self.productos = []
         self.llenado = False
@@ -53,7 +53,9 @@ class CentrosDistribucion:
                 atributos = producto.split(",")
                 self.recibir_donacion(Producto(atributos[0],atributos[1],atributos[2]))
             camiones.close()
-
+        for i in range(len(self.fila)):
+            self.rellenar_camion()
+            self.enviar_camion()
 
 
     # Prioridad 10 mayor que todas
