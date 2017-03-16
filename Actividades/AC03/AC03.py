@@ -27,11 +27,11 @@ class Camion:
         string = ""
         dic = {}
         for producto in self.productos:
-            if producto.tipo in dic:
+            if not(producto.tipo in dic):
                 dic[producto.tipo] = 1
             else:
                 dic[producto.tipo] += 1
-        for tipo, cantidad in self.dic.items():
+        for tipo, cantidad in dic.items():
             string += "{} : {}\n".format(tipo, cantidad)
         return string
 
@@ -53,6 +53,7 @@ class CentrosDistribucion:
                 atributos = producto.split(",")
                 self.recibir_donacion(Producto(atributos[0],atributos[1],atributos[2]))
             camiones.close()
+        print(self.bodega)
         for i in range(len(self.fila)):
             self.rellenar_camion()
             self.enviar_camion()
@@ -65,14 +66,18 @@ class CentrosDistribucion:
         else:
             for i in range(len(self.fila)):
                 if self.fila[i].urgencia > camion.urgencia:
-                    self.fila.insert(i,camion)
+                    self.fila.insert(i, camion)
+                else:
+                    self.fila.append(camion)
                     break
 
     def rellenar_camion(self):
         for almacen in self.bodega.values():
             for pila in almacen.values():
-                if pila[-1].peso + self.fila[0].peso_acumulado < self.fila[0].capacidad_maxima:
-                    self.fila[0].agregar_producto(pila.pop())
+                if pila != []:
+                    if pila[-1].peso + self.fila[0].peso_acumulado < self.fila[0].capacidad_maxima:
+                        self.fila[0].agregar_producto(pila.pop())
+
         self.fila[0].llenado = True
 
 
@@ -92,15 +97,15 @@ class CentrosDistribucion:
                 string += "{}\n".format(j.nombre)
         pass
 
-    def recibir_donacion(self,*args):
+    def recibir_donacion(self, *args):
         for producto in args:
             if producto.tipo in self.bodega:
-                if not(producto.nombre in self.bodega[producto.tipo]):
-                    self.bodega[producto.tipo] = {producto.nombre : [producto]}
-                else:
+                if producto.nombre in self.bodega[producto.tipo]:
                     self.bodega[producto.tipo][producto.nombre].append(producto)
+                else:
+                    self.bodega[producto.tipo][producto.nombre] = [producto]
             else:
-                self.bodega[producto.tipo] = {producto.nombre : [producto]}
+                self.bodega[producto.tipo] = {producto.nombre: [producto]}
 
 class Producto:
     def __init__(self,tipo, nombre, peso):
@@ -113,5 +118,8 @@ class Producto:
             return True
         else:
             return False
+
+    def __repr__(self):
+        return self.nombre
 
 Bodegin = CentrosDistribucion()
