@@ -4,7 +4,7 @@ from menu import LogIn
 from leer import Users
 from usuarios import Terreno, Sudo
 
-rutaDeUsuarios = Users("usuarios.csv")
+rutaDeUsuarios = Users()
 
 usuarioActual = LogIn().entrada()
 if usuarioActual != ".":

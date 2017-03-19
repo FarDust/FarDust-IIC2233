@@ -1,6 +1,6 @@
 # Entidades v1.0.0
 
-from abc import ABCMeta, abstracmethod
+from abc import ABCMeta, abstractmethod
 
 
 class Entidades(metadata=ABCMeta):
@@ -27,6 +27,7 @@ class Empleado(Persona):
 
 class Piloto(Persona):
     def __init__(self):
+        self.aeronave = None
         pass
 
 

@@ -32,21 +32,23 @@ class LogIn(Menu):
             self.mostrar(usuario)
             password = input("Ingrese contrasena: ")
             self.mostrar(usuario, password)
-            with open("usuarios.csv", "r", encoding="utf8") as usuarios:
-                for user in usuarios:
-                    user = user.strip()
-                    if (usuario in user.split(",")) and (password in user.split(",")):
-                        return user.split(",")[0]
-        return "."
+            if(usuario == "") or (password == ""):
+                with open("usuarios.csv", "r", encoding="utf8") as usuarios:
+                    for user in usuarios:
+                        user = user.strip()
+                        print(user.split(","))
+                        if (usuario in user.split(",")[1]) and (password in user.split(",")[2]):
+                            return user.split(",")[0]
+                    usuarios.close()
+                return "."
+            else:
+                return "."
 
     def mostrar(self, usuario="", contraseña=""):
         centro = 60
-        mensaje = ""
-        for i in range(2):
-            mensaje += " " * centro + "\n"
-        mensaje += "Usuario: {0}".format(usuario).center(centro) + "\n"
-        mensaje += "Contraseña: {0}".format("*" * len(contraseña)).format(centro) + "\n"
-        for i in range(2):
-            mensaje += " " * centro + "\n"
+        mensaje = "\n" +" inicio de sesion ".title().center(centro,"=") + "\n"
+        mensaje += "Usuario: {0}".format(usuario).ljust(centro) + "\n"
+        mensaje += "Contraseña: {0}".format("*" * len(contraseña)).ljust(centro) + "\n"
+        mensaje += "".center(centro,"=") + "\n"
         frame(mensaje)
         pass

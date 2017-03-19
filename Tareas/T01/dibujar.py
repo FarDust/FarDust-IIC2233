@@ -15,4 +15,3 @@ def borrar():
 def frame(mensaje):
     borrar()
     print(mensaje)
-
