@@ -1,5 +1,7 @@
 # leer v1.0.0
 
+from menu import Basico
+
 
 class Leer:
     def __init__(self, archivo):
@@ -65,10 +67,14 @@ class Leer:
                 key_order.append(lexicon[key.split(":")[0]])
                 escritura = ",".join(key_order)
             if "\n" + lexicon["id"] + "," in base:
-                # mostrar menu correspondiente
-                # opciones = [sobreescribir, anular]
-                print("no implementado")
-                pass
+                print("Accion requerida del usuario".title())
+                print("id ingresada ya esta en uso!!!")
+                opciones = {"1": self.remplazar}
+                opcion = Basico("escribir", opciones)
+                if opcion is not None:
+                    opciones[opcion]()
+                    pass
+
             else:
                 lectura.read()
                 lectura.write(escritura + "\n")
@@ -113,11 +119,14 @@ class Leer:
                     remplazo.write("\n".join(temp))
                 temp.clear()
             else:
-                print("Error: Elemento no existe")
+                print("Error: Elemento no existe".title())
                 lectura.close()
                 # Opciones crear o no nuevo elemnto
             pass
         pass
+
+    def __str__(self):
+        return "remplazar"
 
     def completar(self, id):
         id = str(id)
@@ -146,7 +155,7 @@ class Resources(Leer):
 
 class Meteorology(Leer):
     def __init__(self):
-        super().__init__("meteorogia.csv")
+        super().__init__("meteorologia.csv")
 
 
 class Fire(Leer):

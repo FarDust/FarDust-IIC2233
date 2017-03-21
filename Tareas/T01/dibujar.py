@@ -12,6 +12,6 @@ def borrar():
             print("------------------------------")
 
 
-def frame(mensaje):
+def frame(mensaje=""):
     borrar()
     print(mensaje)

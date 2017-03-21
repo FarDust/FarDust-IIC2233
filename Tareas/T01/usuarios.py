@@ -2,7 +2,8 @@
 
 from abc import ABCMeta, abstractmethod
 from leer import Users, Meteorology, Fire, Resources
-
+from menu import Diccionario
+from dibujar import frame
 
 class Usuario(metaclass=ABCMeta):
     def __init__(self, dic):
@@ -19,16 +20,53 @@ class Usuario(metaclass=ABCMeta):
     def consulta_avanzada(self):
         pass
 
+    @abstractmethod
+    def agregar_incendio(self):
+        pass
+
+    @abstractmethod
+    def consulta_avanzada(self):
+        pass
+
+    @abstractmethod
+    def consulta_basica(self):
+        pass
+
+    @abstractmethod
+    def agregar_pronostico(self):
+        pass
+
+    @abstractmethod
+    def crear_usuario(self):
+        pass
+
+    def cerrar_sesion(self):
+        opciones = {"": True}
+        print("Si desea cerrar sesion click ENTER")
+        print("cualquier otra tecla para anular...")
+        eleccion = input("Respuesta: ")
+        if eleccion in opciones:
+            print("Sesion cerrada".center(60,"="))
+            return True
+        else:
+            return False
+
 
 # Corresponde al ususario ANAF
 class Anaf(Usuario):
     def __init__(self, dic):
         super().__init__(dic)
-        pass
 
-    def crear_usuario(self, name, password, recurso = ""):
+    def crear_usuario(self):
         lexicon = Users().diccionario
         id = 0
+        name = input("Ingrese el nombre del nuevo usuario: ")
+        password = input("Ingrese la contraseña del nuevo usuario: ")
+        salir = False
+        while not salir:
+            recurso = input("Ingrese el id de recurso si es necesario: ")
+            if (recurso is "") or (recurso.isdigit()):
+                salir = True
         while (True):
             if not (str(id) in Users().leer.keys()):
                 id = str(id)
@@ -37,14 +75,26 @@ class Anaf(Usuario):
                 id += 1
         (lexicon["id"], lexicon["nombre"], lexicon["contraseña"], lexicon["recurso_id"]) = (id, name, password, recurso)
         Users().escribir(lexicon)
-        pass
 
-    def agregar_pronostico(self, lexicon):
-        # id, fecha_inicio, fecha_termino, tipo, valor, lat, lon, radio
-        Meteorology().escribir(lexicon)
+    def agregar_pronostico(self):
+        necesarios = ["id", "fecha_inicio", "fecha_termino", "tipo", "valor", "lat", "lon", "radio"]
+        opciones = {}
+        for valores in necesarios:
+            opciones[str(necesarios.index(valores))] = valores
+        lexicon = Diccionario("pronostico", opciones).mostrar()
+        print(lexicon)
+        if lexicon != {}:
+            Meteorology().escribir(lexicon)
 
     def agregar_incendio(self, lexicon):
-        Fire().escribir(lexicon)
+        necesarios = Fire().diccionario.keys()
+        opciones = {}
+        for valores in necesarios:
+            opciones[str(necesarios.index(valores))] = valores
+        lexicon = Diccionario("pronostico", opciones).mostrar()
+        print(lexicon)
+        if lexicon != {}:
+            Fire().escribir(lexicon)
         pass
 
     def consulta_avanzada(self):
@@ -53,8 +103,53 @@ class Anaf(Usuario):
     def consulta_basica(self):
         pass
 
+    def leer_base(self):
+        opciones = {"1": Users().leer, "2": Fire().leer, "3": Resources().leer}
+        salir = False
+        while not salir:
+            print("1. leer usuarios")
+            print("2. leer incendios")
+            print("3. leer recursos")
+            print("Otro. Salir")
+            opcion = input("Respuesta: ")
+            if opcion in opciones:
+                print("1. leer todo")
+                print("2. leer linea")
+                print("Otro. Salir")
+                eleccion = input("Respuesta: ")
+                frame()
+                if eleccion is "1":
+                    for i in range(len(opciones[opcion])-1):
+                        print(opciones[opcion][str(i+1)])
+                    input("Enter para continuar...")
+                    salir = True
+                elif eleccion is "2":
+                    finalizar = False
+                    n = 1
+                    while not finalizar:
+                        print(opciones[opcion][str(n)])
+                        print("1. Siguiente...")
+                        print("2. Anterior...")
+                        print("x. Terminar de leer")
+                        respuesta = input("Respuesta: ")
+                        if respuesta is "1":
+                            if n < len(opciones[opcion])-1:
+                                n +=1
+                            else:
+                                finalizar = True
+                        elif respuesta is "2":
+                            if n > 1:
+                                n -= 1
+                            else:
+                                finalizar = True
+                        elif respuesta is "x":
+                            finalizar = True
+                        frame()
+            else:
+                salir = True
+            frame()
 
-# Corresponde a los usuarios jefes o
+# Corresponde a los usuarios jefes o bomberos
 class Terreno(Usuario):
     def __init__(self, dic):
         super().__init__(dic)
@@ -68,3 +163,5 @@ class Terreno(Usuario):
 
     def consulta_basica(self):
         pass
+
+#Anaf().agregar_pronostico()

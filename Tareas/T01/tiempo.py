@@ -38,7 +38,7 @@ class Tiempo:
                         dia = 1
                         mes += 1
 
-            elif (mes > 7):
+            elif mes > 7:
                 if mes % 2 == 0:
                     # meses 31
                     if dia > 31:
@@ -52,7 +52,7 @@ class Tiempo:
             if mes == 13:
                 mes = 1
                 ano += 1
-        return fecha.format(ano, str(mes).rjust(2,"0"), str(dia).rjust(2,"0"))
+        return fecha.format(ano, str(mes).rjust(2, "0"), str(dia).rjust(2, "0"))
 
     def re_traducir(self, fecha=""):
         dias = 0
@@ -63,7 +63,7 @@ class Tiempo:
             seculares = (ano - 1) // 100
             bisiestos = ((ano - 1) // 4) - seculares + ((ano - 1) // 400)
             dias += bisiestos * 366
-            dias += ((ano - 1) - (bisiestos)) * 365
+            dias += ((ano - 1) - bisiestos) * 365
         for i in range(mes - 1):
             i += 1
             if i <= 7:
@@ -84,17 +84,3 @@ class Tiempo:
                     dias += 30
         return dias
 
-"""
-(fecha, fecha2) = ("", "")
-n = 1
-while fecha == fecha2:
-    print(n)
-    fecha = Tiempo().traducir(n)
-    print(fecha)
-    dias = Tiempo().re_traducir(fecha)
-    print(dias)
-    fecha2 = Tiempo().traducir(dias)
-    print(fecha2)
-    print("----------------")
-    n += 1
-"""
