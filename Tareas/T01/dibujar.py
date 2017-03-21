@@ -11,7 +11,6 @@ def borrar():
         except:
             print("------------------------------")
 
-
 def frame(mensaje=""):
     borrar()
     print(mensaje)

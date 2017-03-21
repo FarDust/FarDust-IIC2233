@@ -41,6 +41,8 @@ def comprobar_fecha(valor):
             temp = []
             for i in fecha:
                 temp.append(int(i))
+                if int(i) is 0:
+                    return False
             if temp[1] == 2 and temp[2] > 29 and (temp[0]%4 == 0 and temp%100 != 0 or temp[0]%400 == 0):
                 return False
             elif temp[1] == 2 and temp[2] > 28 or temp[2] > 31:

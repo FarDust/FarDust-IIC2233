@@ -1,9 +1,10 @@
 # SuperLuchín Alpha v1.0.0
 
 from menu import LogIn, Principal
-from leer import Users
+from leer import Users, Resources, Fire
 from usuarios import Terreno, Anaf
 from comprobar import comprobar_fecha
+from datos import Recurso,Incendio
 
 
 class Fecha:
@@ -28,6 +29,16 @@ if __name__ == '__main__':
     opciones = {"": iniciar.entrada}
     rutaDeUsuarios = Users()
     fechaActual = Fecha()
+    recursos = {}
+    incendios = {}
+    # Instanciar recursos
+    for key, value in Resources().leer.items():
+        recursos[key] = Recurso(**value)
+
+    # Instanciar incendios
+    for key, value in Fire().leer.items():
+        recursos[key] = Incendio(**value)
+
 
     while not salir:
         print("Iniciar sesion:".title())
@@ -57,7 +68,10 @@ if __name__ == '__main__':
                 fechaActual.cambiar(input("Ingrese la fecha en formato A*-MM-DD: "))
                 menu = Principal("main", usuarioActivo, fechaActual, opciones)
                 while not salir2:
-                    print(fechaActual.fecha.center(60,"="))
+                    print(fechaActual.fecha.center(60, "="))
+                    if usuarioActivo.recurso_id != "":
+                        # Barra de estado aqui
+                        pass
                     salir2 = menu.entrada(salir2)
             else:
                 print("Usuario no esta en la base de datos!!!\n")

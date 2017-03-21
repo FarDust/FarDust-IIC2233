@@ -5,6 +5,7 @@ from leer import Users, Meteorology, Fire, Resources
 from menu import Diccionario
 from dibujar import frame
 
+
 class Usuario(metaclass=ABCMeta):
     def __init__(self, dic):
         self.id = dic["id"]
@@ -46,7 +47,7 @@ class Usuario(metaclass=ABCMeta):
         print("cualquier otra tecla para anular...")
         eleccion = input("Respuesta: ")
         if eleccion in opciones:
-            print("Sesion cerrada".center(60,"="))
+            print("Sesion cerrada".center(60, "="))
             return True
         else:
             return False
@@ -113,41 +114,57 @@ class Anaf(Usuario):
             print("Otro. Salir")
             opcion = input("Respuesta: ")
             if opcion in opciones:
-                print("1. leer todo")
-                print("2. leer linea")
-                print("Otro. Salir")
-                eleccion = input("Respuesta: ")
-                frame()
-                if eleccion is "1":
-                    for i in range(len(opciones[opcion])-1):
-                        print(opciones[opcion][str(i+1)])
-                    input("Enter para continuar...")
-                    salir = True
-                elif eleccion is "2":
-                    finalizar = False
-                    n = 1
-                    while not finalizar:
-                        print(opciones[opcion][str(n)])
-                        print("1. Siguiente...")
-                        print("2. Anterior...")
-                        print("x. Terminar de leer")
-                        respuesta = input("Respuesta: ")
-                        if respuesta is "1":
-                            if n < len(opciones[opcion])-1:
-                                n +=1
-                            else:
+                terminar = False
+                while not terminar:
+                    print("1. leer todo")
+                    print("2. leer linea")
+                    print("3. leer por id")
+                    print("Otro. Salir")
+                    eleccion = input("Respuesta: ")
+                    frame()
+                    if eleccion is "1":
+                        for i in range(len(opciones[opcion]) - 1):
+                            for key, value in opciones[opcion][str(i + 1)].items():
+                                print("{}: {}|".format(key, value), end="")
+                            print("\n",end = "")
+                        print("".center(60, "="))
+                    elif eleccion is "2":
+                        finalizar = False
+                        n = 1
+                        while not finalizar:
+                            print(opciones[opcion][str(n)])
+                            print("1. Siguiente...")
+                            print("2. Anterior...")
+                            print("x. Terminar de leer")
+                            respuesta = input("Respuesta: ")
+                            if respuesta is "1":
+                                if n < len(opciones[opcion]) - 1:
+                                    n += 1
+                                else:
+                                    finalizar = True
+                            elif respuesta is "2":
+                                if n > 1:
+                                    n -= 1
+                                else:
+                                    finalizar = True
+                            elif respuesta is "x":
                                 finalizar = True
-                        elif respuesta is "2":
-                            if n > 1:
-                                n -= 1
-                            else:
-                                finalizar = True
-                        elif respuesta is "x":
-                            finalizar = True
-                        frame()
+                            frame()
+                    elif eleccion is "3":
+                        id = input("Ingrese id: ")
+                        if id.isdigit() and id in opciones[opcion]:
+                            for key, value in opciones[opcion][str(id)].items():
+                                print("{}: {}".format(key, value), end="\n")
+                            if "potencia" in opciones[opcion][str(id)]:
+                                pass
+                            elif "" in opciones[opcion][str(id)]:
+                                pass
+                    else:
+                        terminar = True
             else:
                 salir = True
             frame()
+
 
 # Corresponde a los usuarios jefes o bomberos
 class Terreno(Usuario):
@@ -164,4 +181,4 @@ class Terreno(Usuario):
     def consulta_basica(self):
         pass
 
-#Anaf().agregar_pronostico()
+        # Anaf().agregar_pronostico()
