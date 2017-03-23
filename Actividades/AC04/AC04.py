@@ -20,15 +20,25 @@ class Principia:
             self.ultimo = self.ultimo.siguiente
         self.cantidad_nodles += 1
 
-    def buscar_nodle(self, value, contador=0, nodo=None):
-        if contador is 0:
+    def buscar_nodle_old(self, value, contador=0, nodo=None):
+        print("recursion {}".format(contador))
+        if contador == 0:
             nodo = self.ultimo
-        if nodo.valor == value:
+        print(self.primero, self.ultimo)
+        if self.ultimo is None and self.primero is None:
+            return False
+        elif nodo.valor == value:
             return True
         elif contador == self.cantidad_nodles:
             return False
         else:
             return self.buscar_nodle(value, contador + 1, nodo.siguiente)
+
+    def buscar_nodle(self, value):
+        for i in range(self.cantidad_nodles):
+            if self.obtener(i) == value:
+                return True
+        return False
 
     def obtener(self, pos):
         nodle = self.primero
@@ -49,18 +59,19 @@ class Principia:
             nodo_actual = nodo_actual.siguiente
             contador += 1
         principia.strip(">")
+        return principia
 
 
 # SEGUNDA PARTE: Clase Isla
 class Isla:
-    def __init__(self,nombre):
+    def __init__(self, nombre):
         self.nombre = nombre
         self.conexiones = Principia()
 
     def __repr__(self):
-        rep = ""
+        rep = self.nombre+ "\n"
         for i in range(self.conexiones.cantidad_nodles):
-            rep += "{} --> {}\n".format(self.nombre,self.conexiones.obtener(i))
+            rep += "{} --> {}\n".format(self.nombre, self.conexiones.obtener(i))
         return rep
 
     def __eq__(self, other):
@@ -72,11 +83,12 @@ class Isla:
 
 # TERCERA PARTE: Clase Archipielago
 class Archipielago:
-    def __init__(self):
+    def __init__(self, archivo):
         self.islas = Principia()
+        self.construir(archivo)
 
     def __repr__(self):
-
+        return ""
         pass
 
     def agregar_isla(self, nombre):
@@ -84,8 +96,17 @@ class Archipielago:
         pass
 
     def conectadas(self, nombre_origen, nombre_destino):
-
-        pass
+        if self.islas.buscar_nodle(Isla(nombre_origen)) and self.islas.buscar_nodle(Isla(nombre_destino)):
+            for i in range(self.islas.cantidad_nodles):
+                if self.islas.obtener(i) is Isla(nombre_origen):
+                    if self.islas.obtener(i).conexiones.buscar_nodle(Isla(nombre_destino)):
+                        return True
+                    else:
+                        return False
+                else:
+                    return False
+        else:
+            return False
 
     def agregar_conexion(self, nombre_origen, nombre_destino):
         if not self.islas.buscar_nodle(Isla(nombre_destino)):
@@ -93,15 +114,36 @@ class Archipielago:
         if not self.islas.buscar_nodle(Isla(nombre_origen)):
             self.islas.agregar_nodle(Isla(nombre_origen))
         else:
-            self.islas.obtener(i).conexiones.agregar_nodle(Isla(nombre_destino))
+            for i in range(self.islas.cantidad_nodles):
+                if self.islas.obtener(i).nombre == nombre_origen:
+                    for j in range(self.islas.obtener(i).conexiones.cantidad_nodles):
+                        if self.islas.obtener(i).conexiones.obetener(j).nombre == nombre_destino:
+                            self.islas.obtener(i).conexiones.agregar_nodle(self.islas.obtener(i).conexiones.obetener(j))
+        pass
 
     def construir(self, archivo):
-        
+        with open(archivo, "r") as mapa:
+            for linea in mapa:
+                linea = linea.strip()
+                nombre_origen = linea.split(",")[0]
+                nombre_destino = linea.split(",")[1]
+                self.agregar_conexion(nombre_origen, nombre_destino)
+            mapa.close()
+
         pass
 
-    def propagacion(self, nombre_origen):
-
-        pass
+    def propagacion(self, nombre_origen, infectadas=None):
+        if infectadas is None:
+            infectadas = Principia()
+        for i in range(self.islas.cantidad_nodles):
+            if self.islas.obtener(i) is Isla(nombre_origen):
+                infectadas.agregar_nodle(self.islas.obtener(i))
+                if self.islas.obtener(i).conexiones.cantidad_nodles is 0:
+                    return
+                else:
+                    for j in range(self.islas.obtener(i).conexiones.cantidad_nodles):
+                        self.propagacion(self.islas.obtener(i).conexiones.obetener(j).nombre, infectadas)
+        return infectadas
 
 
 if __name__ == '__main__':
