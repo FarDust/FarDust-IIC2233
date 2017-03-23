@@ -10,6 +10,7 @@ class Tiempo:
     def traducir(self, dias=1):
         fecha = "{}-{}-{}"
         (ano, mes, dia) = (1, 1, 1)
+        dias = int(dias)
         for _ in range(dias - 1):
             dia += 1
             if mes <= 7:
@@ -84,3 +85,31 @@ class Tiempo:
                     dias += 30
         return dias
 
+    def traducir_horas(self, string):
+        # 17:13:00
+        horas = string.split(":")
+        return float(horas[0]) + float(horas[1]) / 60 + (float(horas[2]) / (60 * 60))
+
+    def re_traducir_horas(self, horas):
+        reloj = [0, 0, 0]
+        for _ in range(int(horas * (60 * 60))):
+            reloj[2] += 1
+            if reloj[2] is 60:
+                reloj[2] = 0
+                reloj[1] += 1
+            if reloj[1] is 60:
+                reloj[1] = 0
+                reloj[0] += 1
+        for i in range(3):
+            reloj[i] = str(reloj[i])
+        return ":".join(reloj)
+
+    def ultra_traducir(self, fecha):
+        horas = self.re_traducir(fecha.split(" ")[0]) * 24 + self.traducir_horas(fecha.split(" ")[1])
+        return horas
+
+    def ultra_re_traducir(self, horas):
+        dias = horas // 24
+        hora = horas % 24
+        fecha = self.traducir(dias)+" "+self.re_traducir_horas(hora)
+        return fecha

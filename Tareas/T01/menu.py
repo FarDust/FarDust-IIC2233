@@ -131,7 +131,6 @@ class Principal(Menu):
 
     def mostrar(self):
         if self.usuario.recurso_id is "":
-            print("Elija una accion:\n1. Crear usuario\n2. Agregar pronostico del clima\n3. Agregar incendio\n4. "
-                  "Consulta avanzada\n5. Consulta basica\n6. Leer base de datos\nf. Cambiar fecha\nx. Cerrar sesion")
+            print("Elija una accion:\n1. Crear usuario\n2. Agregar pronostico del clima\n3. Agregar incendio\n4. Leer base de datos\nf. Cambiar fecha\nx. Cerrar sesion")
         else:
-            pass
+            print("Elija una accion:\nf. Cambiar fecha\nx. Cerrar sesion")

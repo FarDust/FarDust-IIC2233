@@ -13,34 +13,6 @@ class Usuario(metaclass=ABCMeta):
         self.password = dic["contraseña"]
         self.recurso_id = dic["recurso_id"]
 
-    @abstractmethod
-    def consulta_basica(self):
-        pass
-
-    @abstractmethod
-    def consulta_avanzada(self):
-        pass
-
-    @abstractmethod
-    def agregar_incendio(self):
-        pass
-
-    @abstractmethod
-    def consulta_avanzada(self):
-        pass
-
-    @abstractmethod
-    def consulta_basica(self):
-        pass
-
-    @abstractmethod
-    def agregar_pronostico(self):
-        pass
-
-    @abstractmethod
-    def crear_usuario(self):
-        pass
-
     def cerrar_sesion(self):
         opciones = {"": True}
         print("Si desea cerrar sesion click ENTER")
@@ -96,12 +68,6 @@ class Anaf(Usuario):
         print(lexicon)
         if lexicon != {}:
             Fire().escribir(lexicon)
-        pass
-
-    def consulta_avanzada(self):
-        pass
-
-    def consulta_basica(self):
         pass
 
     def leer_base(self):
@@ -172,13 +138,5 @@ class Terreno(Usuario):
         super().__init__(dic)
         pass
 
-    def crear_usuario(self, name, password):
-        pass
-
-    def consulta_avanzada(self):
-        pass
-
-    def consulta_basica(self):
-        pass
 
         # Anaf().agregar_pronostico()

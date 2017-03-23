@@ -1,25 +1,30 @@
 # SuperLuchín Alpha v1.0.0
 
 from menu import LogIn, Principal
-from leer import Users, Resources, Fire
+from leer import Users, Resources, Fire, Meteorology
 from usuarios import Terreno, Anaf
 from comprobar import comprobar_fecha
-from datos import Recurso,Incendio
+from datos import Recurso, Incendio, Meteorologia
 
 
 class Fecha:
     def __init__(self):
-        self.fecha = "1-01-01"
+        self.fecha = "1-01-01 00:00:00"
 
     def cambiar(self, fecha):
         if comprobar_fecha(fecha):
-            temp = fecha.split("-")
-            temp[1].rjust(2, "0")
-            temp[2].rjust(2, "0")
-            self.fecha = "-".join(temp)
+            temp = fecha.split(" ")[0].split("-")
+            temp[1] = temp[1].rjust(2, "0")
+            temp[2] = temp[2].rjust(2, "0")
+            actual = "-".join(temp)
+            temp = fecha.split(" ")[1].split(":")
+            temp[1] = temp[1].rjust(2, "0")
+            temp[2] = temp[2].rjust(2, "0")
+            hora = ":".join(temp)
+            self.fecha = actual + " " + hora
             temp.clear()
         else:
-            self.cambiar(input("Ingrese la fecha en formato A*-MM-DD: "))
+            self.cambiar(input("Ingrese la fecha en formato A*-MM-DD HH:MM:SS : "))
 
 
 if __name__ == '__main__':
@@ -31,14 +36,7 @@ if __name__ == '__main__':
     fechaActual = Fecha()
     recursos = {}
     incendios = {}
-    # Instanciar recursos
-    for key, value in Resources().leer.items():
-        recursos[key] = Recurso(**value)
-
-    # Instanciar incendios
-    for key, value in Fire().leer.items():
-        recursos[key] = Incendio(**value)
-
+    climas = {}
 
     while not salir:
         print("Iniciar sesion:".title())
@@ -52,21 +50,28 @@ if __name__ == '__main__':
                     opciones = {"1": usuarioActivo.crear_usuario,
                                 "2": usuarioActivo.agregar_pronostico,
                                 "3": usuarioActivo.agregar_incendio,
-                                "4": usuarioActivo.consulta_avanzada,
-                                "5": usuarioActivo.consulta_basica,
                                 "f": fechaActual.cambiar,
-                                "6": usuarioActivo.leer_base,
+                                "4": usuarioActivo.leer_base,
                                 "x": usuarioActivo.cerrar_sesion}
                 else:
                     usuarioActivo = Terreno(rutaDeUsuarios.completar(usuarioActual))
-                    opciones = {"1": usuarioActivo.crear_usuario,
-                                "2": usuarioActivo.consulta_avanzada,
-                                "3": usuarioActivo.consulta_basica,
-                                "4": fechaActual.cambiar,
+                    opciones = {"f": fechaActual.cambiar,
                                 "x": usuarioActivo.cerrar_sesion}
                 salir2 = False
-                fechaActual.cambiar(input("Ingrese la fecha en formato A*-MM-DD: "))
+                fechaActual.cambiar(input("Ingrese la fecha en formato A*-MM-DD HH:MM:SS : "))
                 menu = Principal("main", usuarioActivo, fechaActual, opciones)
+                # Instanciar recursos
+                for key, value in Resources().leer.items():
+                    recursos[key] = Recurso(**value)
+
+                # Instanciar incendios
+                for key, value in Fire().leer.items():
+                    incendios[key] = Incendio(fecha=fechaActual.fecha, **value)
+
+                # Instaciar climas
+                for key, value in Meteorology().leer.items():
+                    climas[key] = Meteorologia(**value)
+
                 while not salir2:
                     print(fechaActual.fecha.center(60, "="))
                     if usuarioActivo.recurso_id != "":
