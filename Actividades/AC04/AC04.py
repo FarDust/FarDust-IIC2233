@@ -18,8 +18,6 @@ class Principia:
         else:
             self.ultimo.siguiente = Nodle(value)
             self.ultimo = self.ultimo.siguiente
-        print(self)
-        print("========")
         self.cantidad_nodles += 1
 
     def buscar_nodle_old(self, value, contador=0, nodo=None):
@@ -89,7 +87,10 @@ class Archipielago:
         self.construir(archivo)
 
     def __repr__(self):
-        return ""
+        string = ""
+        for i in range(self.islas.cantidad_nodles):
+            string+= "{}".format(self.islas.obtener(i).conexiones)
+        return string
         pass
 
     def agregar_isla(self, nombre):
