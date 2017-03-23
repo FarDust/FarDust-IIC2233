@@ -18,13 +18,14 @@ class Principia:
         else:
             self.ultimo.siguiente = Nodle(value)
             self.ultimo = self.ultimo.siguiente
+        print(self)
+        print("========")
         self.cantidad_nodles += 1
 
     def buscar_nodle_old(self, value, contador=0, nodo=None):
         print("recursion {}".format(contador))
         if contador == 0:
             nodo = self.ultimo
-        print(self.primero, self.ultimo)
         if self.ultimo is None and self.primero is None:
             return False
         elif nodo.valor == value:
@@ -53,8 +54,8 @@ class Principia:
     def __repr__(self):
         principia = ""
         contador = 0
-        nodo_actual = self.ultimo
-        while contador != self.cantidad_nodles:
+        nodo_actual = self.primero
+        while nodo_actual:
             principia += "{}>".format(nodo_actual.valor)
             nodo_actual = nodo_actual.siguiente
             contador += 1
