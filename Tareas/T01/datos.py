@@ -31,47 +31,88 @@ class Incendio(BaseDeDatos):
         self.fecha_actual = str(fecha)
         self.tasa_propagacion = 500  # metros/h
         self.prendido = True
+        self.climas = {"VIENTO": None, "TEMPERATURA": None, "LLUVIA": None}
         try:
             mkdir("datos/incendios")
         except:
             pass
         self.actualizar()
 
+    def disminuir_tasa(self):
+        universo = Tiempo()
+        for value in self.climas.values():
+            if value and universo.ultra_traducir(self.fecha_actual) > universo.ultra_traducir(value.fecha_termino):
+                if value.tipo == "VIENTO":
+                    self.tasa_propagacion -= (value.valor * 1000) / 100
+                elif value.tipo == "TEMPERATURA":
+                    if value.valor > 30:
+                        self.tasa_propagacion -= (value.valor - 30) * 25
+                elif value.tipo == "LLUVIA":
+                    self.tasa_propagacion += value.valor * 50
+                self.climas[value.tipo] = None
+
     def aumentar_tasa(self, clima):
+        universo = Tiempo()
+        self.disminuir_tasa()
         if clima.tipo == "VIENTO":
-            self.tasa_propagacion += (clima.valor * 1000) / 100
+            if self.climas[clima.tipo] is None or universo.ultra_traducir(clima.fecha_inicio) > universo.ultra_traducir(
+                    self.climas[clima.tipo].fecha_inicio):
+                self.climas["VIENTO"] = clima
+                self.tasa_propagacion += (clima.valor * 1000) / 100
         elif clima.tipo == "TEMPERATURA":
-            if clima.valor > 30:
-                self.tasa_propagacion += (clima.valor - 30) * 25
+            if self.climas[clima.tipo] is None or universo.ultra_traducir(clima.fecha_inicio) > universo.ultra_traducir(
+                    self.climas[clima.tipo].fecha_inicio):
+                self.climas["TEMPERATURA"] = clima
+                if clima.valor > 30:
+                    self.tasa_propagacion += (clima.valor - 30) * 25
         elif clima.tipo == "LLUVIA":
-            self.tasa_propagacion -= clima.valor * 50
+            if self.climas[clima.tipo] is None or universo.ultra_traducir(clima.fecha_inicio) > universo.ultra_traducir(
+                    self.climas[clima.tipo].fecha_inicio):
+                self.climas["LLUVIA"] = clima
+                self.tasa_propagacion -= clima.valor * 50
 
     @property
     def superficie_afectada(self):
         return 2 * pi * self.radio ** 2
 
+    @superficie_afectada.setter
+    def superficie_afectada(self,value):
+        self.radio = (value/(2*pi))**(1/2)
+
     @property
     def puntos_poder(self):
         return self.superficie_afectada * self.potencia
 
+    @puntos_poder.setter
+    def puntos_poder(self, value):
+        self.superficie_afectada = value/self.potencia
+
     @property
     def tiempo_incendio_horas(self):
-        fecha_actual_horas = universo.re_traducir(self.fecha_actual.split(" ")[0]) * 24 + universo.traducir_horas(
-            self.fecha_actual.split(" ")[1])
-        fecha_inicio_horas = universo.re_traducir(self.fecha_inicio.split(" ")[0]) * 24 + universo.traducir_horas(
-            self.fecha_inicio.split(" ")[1])
-        return fecha_actual_horas - fecha_inicio_horas
-    @property
-    def radio(self):
         universo = Tiempo()
         fecha_actual_horas = universo.re_traducir(self.fecha_actual.split(" ")[0]) * 24 + universo.traducir_horas(
             self.fecha_actual.split(" ")[1])
         fecha_inicio_horas = universo.re_traducir(self.fecha_inicio.split(" ")[0]) * 24 + universo.traducir_horas(
             self.fecha_inicio.split(" ")[1])
+        return fecha_actual_horas - fecha_inicio_horas
+
+    @property
+    def radio(self):
+        universo = Tiempo()
+        self.disminuir_tasa()
+        fecha_actual_horas = universo.re_traducir(self.fecha_actual.split(" ")[0]) * 24 + universo.traducir_horas(
+            self.fecha_actual.split(" ")[1])
+        fecha_inicio_horas = universo.re_traducir(self.fecha_inicio.split(" ")[0]) * 24 + universo.traducir_horas(
+            self.fecha_inicio.split(" ")[1])
         if fecha_actual_horas - fecha_inicio_horas > 0.0:
-            return (self.tasa_propagacion / 1000) * (fecha_actual_horas - fecha_inicio_horas)
+            radio = (self.tasa_propagacion / 1000) * (fecha_actual_horas - fecha_inicio_horas)
+            return radio
         else:
             return 0
+
+    @radio.setter
+    def radio(self, value):
+        self.tasa_propagacion = (value*1000)/self.tiempo_incendio_horas
 
     def actualizar(self):
         with open("datos/incendios/{}.anaf".format(self.id), "w") as archivo:
@@ -117,6 +158,11 @@ class Recurso(BaseDeDatos):
         # destino tiene tupla de la forma (x,y) que indica el centro del incendio
 
         pass
+
+    def apagar(self, incendio, tiempo):
+        incendio.puntos_poder -= self.tasa_extincion*tiempo
+        self.puntos_poder_extintos += self.tasa_extincion*tiempo
+        return self.tasa_extincion*tiempo
 
     def actualizar(self):
         with open("datos/recursos/{}.anaf".format(self.id), "w") as archivo:

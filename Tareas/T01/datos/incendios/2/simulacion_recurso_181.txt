@@ -1,0 +1,14 @@
+============================================================
+fecha actual: 2017-03-01 21:11:0, fecha_incendio: 2017-03-01 11:11:00
+recurso id: 181 velocidad teorica: 2786.4 km/h
+distancia al objetivo : 114.0864542538883 Km
+x: -3861.800901648118 Km|y: -7786.555424846705 Km
+Distancia: 68.42045282373503 Km tiempo: 0.016388889402151108 Horas velocidad: 2786.399999999965 km/h
+x: -3828.5055120461234 Km|y: -7817.809236100219 Km
+Distancia: 22.75445139358051 Km tiempo: 0.032777778804302216 Horas velocidad: 2786.4000000000033 km/h
+x: -3794.645796885412 Km|y: -7849.592770078364 Km
+Distancia: 23.685545838378996 Km tiempo: 0.049444444477558136 Horas velocidad: 1828.3329779656137 km/h
+recurso id: 181|horas totatales: 0:2:58horas
+radio del incendio al llegar: 5.024722222238779 Km 
+distancia al centro: 23.685545838378996 Km
+============================================================
