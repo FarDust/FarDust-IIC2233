@@ -1,6 +1,8 @@
 from tiempo import Tiempo
 from os import mkdir
 from utiles import trigonometricas, distancia
+from leer import Resources
+from datos import Recurso
 
 
 class EstrategiaDeExtincion:
@@ -14,13 +16,46 @@ class EstrategiaDeExtincion:
             if radios >= d:
                 incendio.aumentar_tasa(clima)
 
-    def cantidad_recursos(self, climas, recursos, movilizados=[]):
-        universo = Tiempo()
-        for i in recursos:
+    def cantidad_recursos(self):
+        self.generar_reporte("No implementado", "recursos")
+        pass
+
+    def tiempo_extincion(self):
+        self.generar_reporte("No implementado", "extincion")
+        pass
+
+    def costo(self):
+        self.generar_reporte("No implementado", "costo")
+        pass
+
+    def generar_reporte(self, texto, criterio):
+        try:
+            mkdir("Reportes Estrategias de Extincion")
+        except:
             pass
+        with open("Reportes Estrategias de Extincion/{}_{}.txt".format(self.incendio.id, criterio), "w") as reporte:
+            reporte.write(texto)
+            reporte.close()
 
     def menu(self):
-        pass
+        salir = False
+        opciones = {"1": self.cantidad_recursos, "2": self.costo, "3": self.tiempo_extincion}
+        print("1. cantidad de recursos\n2. Tiempo de extincion\n3. Costo economico\ns. simular con recurso\nx. Salir")
+        while not salir:
+            respuesta = input("Respuesta: ")
+            if respuesta in opciones or respuesta is "x" or respuesta is "s":
+                if respuesta is "s":
+                    id = input("Ingrese el id de un recurso: ")
+                    if id.isdigit():
+                        recursos = {}
+                        # Instanciar recursos
+                        for key, value in Resources().leer.items():
+                            recursos[key] = Recurso(**value)
+                        self.simular(recursos[id])
+                elif respuesta is "x":
+                    salir = True
+                else:
+                    opciones[respuesta]()
 
     def simular(self, recurso):
         universo = Tiempo()
@@ -86,11 +121,13 @@ class EstrategiaDeExtincion:
                                                                                       puntos_restados))
             log.write("Tiempo: {} |horas trabajadas: {} horas\n".format(universo.re_traducir_horas(horas), h_trabajo))
         log.write("".center(60, "=") + "\n")
-        """self.incendio.fecha_actual = respaldo[0]
+        self.incendio.fecha_actual = respaldo[0]
         recurso.pos = respaldo[1]
         self.incendio.puntos_poder = respaldo[2]
-        print("log {} listo!!!".format(recurso.id))"""
+        print("Log guardado en datos/incendios/{}/simulacion_recurso_{}.txt".format(self.incendio.id, recurso.id))
+        """print("log {} listo!!!".format(recurso.id))"""
         log.close()
+
 
 
 """

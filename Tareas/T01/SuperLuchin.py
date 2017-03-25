@@ -78,6 +78,23 @@ def recursos_efectivos():
         print("RecursoID: {}|Coeficiente de eficiencia: {}".format(recurso.id, recurso.coeficiente_eficiencia))
 
 
+def estrategia_menu():
+    frame()
+    salir = False
+    while not salir:
+        print("Opciones: \n1. resolver incendio por id\nx. Salir")
+        respuesta = input("Ingrese respuesta: ")
+        if respuesta == "1":
+            resp = None
+            while not (resp in incendios) or not resp:
+                resp = input("Ingrese ID: ")
+                if resp in incendios:
+                    EstrategiaDeExtincion(incendios[resp], climas).menu()
+
+        elif (respuesta == "x"):
+            salir = True
+
+
 if __name__ == '__main__':
     salir = False
     iniciSesion = False
@@ -107,7 +124,7 @@ if __name__ == '__main__':
                                 "6": incendios_apagados,
                                 "7": recursos_utilizados,
                                 "8": recursos_efectivos,
-                                "9": EstrategiaDeExtincion().menu(),
+                                "9": estrategia_menu,
                                 "x": usuarioActivo.cerrar_sesion}
                 else:
                     usuarioActivo = Terreno(rutaDeUsuarios.completar(usuarioActual))
