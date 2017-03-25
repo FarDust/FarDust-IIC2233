@@ -5,6 +5,8 @@ from leer import Users, Resources, Fire, Meteorology
 from usuarios import Terreno, Anaf
 from comprobar import comprobar_fecha
 from datos import Recurso, Incendio, Meteorologia
+from dibujar import frame
+from estrategia import EstrategiaDeExtincion
 
 
 class Fecha:
@@ -25,6 +27,55 @@ class Fecha:
             temp.clear()
         else:
             self.cambiar(input("Ingrese la fecha en formato A*-MM-DD HH:MM:SS : "))
+
+
+def incendios_activos():
+    frame()
+    print("Incendios activos")
+    for value in incendios.values():
+        if value.puntos_poder > 0:
+            print(value)
+    input("Enter para continuar...")
+
+
+def incendios_apagados():
+    frame()
+    print("Incendios activos")
+    for value in incendios.values():
+        if value.puntos_poder <= 0:
+            print("Incendio: {} |Fecha apagado: {}|"
+                  "Fecha de inicio: {}|Recursos: {} ".format(value.id, value.fecha_apagado, value.fecha_inicio,
+                                                             value.recursos))
+    input("Enter para continuar...")
+
+
+def acceso_base_terreno():
+    frame()
+    incendio = recursos[usuarioActivo.recurso_id].incendio
+    for key, value in Fire().leer[incendio.id].items():
+        print("{}: {}".format(key, value), end="\n")
+    print(
+        "Porcentaje de extincion: {}, Recursos asignados: {}".format(incendio.porcentaje_extincion, incendio.recursos))
+    print("Enter para continuar...")
+
+
+def recursos_utilizados():
+    temp = []
+    for recurso in recursos.values():
+        temp.append(recurso)
+    temp.sort()
+    temp = temp[::-1]
+    for recurso in temp:
+        print("RecursoID: {}|Coeficiente de uso: {}".format(recurso.id, recurso.coeficiente_uso))
+
+
+def recursos_efectivos():
+    temp = {}
+    for value in recursos.values():
+        temp[value.coeficiente_eficiencia] = value
+    h = sorted(temp)[::-1]
+    for recurso in h:
+        print("RecursoID: {}|Coeficiente de eficiencia: {}".format(recurso.id, recurso.coeficiente_eficiencia))
 
 
 if __name__ == '__main__':
@@ -52,6 +103,11 @@ if __name__ == '__main__':
                                 "3": usuarioActivo.agregar_incendio,
                                 "f": fechaActual.cambiar,
                                 "4": usuarioActivo.leer_base,
+                                "5": incendios_activos,
+                                "6": incendios_apagados,
+                                "7": recursos_utilizados,
+                                "8": recursos_efectivos,
+                                "9": EstrategiaDeExtincion().menu(),
                                 "x": usuarioActivo.cerrar_sesion}
                 else:
                     usuarioActivo = Terreno(rutaDeUsuarios.completar(usuarioActual))
@@ -75,7 +131,11 @@ if __name__ == '__main__':
                 while not salir2:
                     print(fechaActual.fecha.center(60, "="))
                     if usuarioActivo.recurso_id != "":
-                        # Barra de estado aqui
+                        if recursos[usuarioActivo.recurso_id].incendio:
+                            opciones["1"] = acceso_base_terreno
+                        for key, value in Resources().leer[usuarioActivo.recurso_id].items():
+                            print("{}: {}|".format(key, value), end="")
+                        print(recursos[usuarioActivo.recurso_id])
                         pass
                     salir2 = menu.entrada(salir2)
             else:

@@ -1,6 +1,6 @@
-from os import mkdir
 from math import pi
 from tiempo import Tiempo
+from utiles import trigonometricas, distancia
 
 
 class BaseDeDatos:
@@ -8,10 +8,6 @@ class BaseDeDatos:
         self.id = str(id)
         self.lat = float(lat)
         self.lon = float(lon)
-        try:
-            mkdir("datos")
-        except:
-            pass
 
     @property
     def pos(self):
@@ -29,13 +25,11 @@ class Incendio(BaseDeDatos):
         self.potencia = int(potencia)
         self.fecha_inicio = str(fecha_inicio)
         self.fecha_actual = str(fecha)
+        self.fecha_apagado = None
         self.tasa_propagacion = 500  # metros/h
-        self.prendido = True
         self.climas = {"VIENTO": None, "TEMPERATURA": None, "LLUVIA": None}
-        try:
-            mkdir("datos/incendios")
-        except:
-            pass
+        self.recursos = []
+        self.puntos_i = self.puntos_poder
         self.actualizar()
 
     def disminuir_tasa(self):
@@ -72,12 +66,20 @@ class Incendio(BaseDeDatos):
                 self.tasa_propagacion -= clima.valor * 50
 
     @property
+    def porcentaje_extincion(self):
+        return "{}%".format((1 - (self.puntos_poder / self.puntos_i)) * 100)
+
+    @property
     def superficie_afectada(self):
-        return 2 * pi * self.radio ** 2
+        return 2 * pi * (self.radio / 1000) ** 2
 
     @superficie_afectada.setter
-    def superficie_afectada(self,value):
-        self.radio = (value/(2*pi))**(1/2)
+    def superficie_afectada(self, value):
+        self.radio = 1000 * ((value / (2 * pi)) ** (1 / 2))
+
+    def actualizar(self):
+        if self.puntos_poder <= 0 and not self.fecha_apagado:
+            self.fecha_apagado = self.fecha_actual
 
     @property
     def puntos_poder(self):
@@ -85,7 +87,7 @@ class Incendio(BaseDeDatos):
 
     @puntos_poder.setter
     def puntos_poder(self, value):
-        self.superficie_afectada = value/self.potencia
+        self.superficie_afectada = value / self.potencia
 
     @property
     def tiempo_incendio_horas(self):
@@ -112,12 +114,12 @@ class Incendio(BaseDeDatos):
 
     @radio.setter
     def radio(self, value):
-        self.tasa_propagacion = (value*1000)/self.tiempo_incendio_horas
+        self.tasa_propagacion = (value * 1000) / self.tiempo_incendio_horas
 
-    def actualizar(self):
-        with open("datos/incendios/{}.anaf".format(self.id), "w") as archivo:
-            archivo.write("prendio: " + str(self.prendido))
-            archivo.close()
+    def __repr__(self):
+        return "Incendio: {} |Porcentaje de extincion: {}|" \
+               "Fecha de inicio: {}|Recursos: {} ".format(self.id, self.porcentaje_extincion, self.fecha_inicio,
+                                                          self.recursos)
 
 
 class Recurso(BaseDeDatos):
@@ -133,14 +135,15 @@ class Recurso(BaseDeDatos):
         self.tiempo_trabajado = 0
         self.tiempo_standby = 0
         self.estado = "standby"
+        self.movilizado = 0
         self.puntos_poder_extintos = 0
+        self.incendio = None
         self.x = self.lat * 110
         self.y = self.lon * 110
-        try:
-            mkdir("datos/recursos")
-        except:
-            pass
-        self.actualizar()
+
+    @property
+    def trabajo_restante(self):
+        return self.autonomia - self.tiempo_trabajado
 
     @property
     def coeficiente_uso(self):
@@ -151,26 +154,67 @@ class Recurso(BaseDeDatos):
 
     @property
     def coeficiente_eficiencia(self):
+        if self.tiempo_trabajado is 0:
+            return 0
         return self.puntos_poder_extintos / self.tiempo_trabajado
 
-    def movilizar(self, hora_salida, hora_actual, destino, clima):
+    def asignar_incendio(self, incendio):
+        self.incendio = incendio
+
+    def movilizar(self, climas):
         # destino es un objeto del tipo Incendio
         # destino tiene tupla de la forma (x,y) que indica el centro del incendio
-
-        pass
+        self.movilizado += 1
+        universo = Tiempo()
+        for clima in climas.values():
+            d = ((clima.lat - self.incendio.lat) ** 2 + (clima.lon - self.incendio.lon) ** 2) ** (1 / 2) * 110
+            radios = self.incendio.radio + clima.radio / 1000
+            if radios >= d:
+                self.incendio.aumentar_tasa(clima)
+        d = distancia(self.pos[0], self.pos[1], self.incendio.pos[0], self.incendio.pos[1])
+        respaldo = (self.incendio.fecha_actual, self.pos, self.incendio.puntos_poder)
+        (x1, x2) = respaldo[1][0], self.incendio.pos[0]
+        (y1, y2) = respaldo[1][1], self.incendio.pos[1]
+        (velocidad, horas, d1) = self.velocidad * 3.6, 0, d
+        (cos, sen) = trigonometricas(x1, y1, x2, y2)
+        while d > self.incendio.radio and velocidad * 1.10 >= self.velocidad * 3.6:
+            for clima in climas.values():
+                dc = ((clima.lat - self.incendio.lat) ** 2 + (clima.lon - self.incendio.lon) ** 2) ** (1 / 2) * 110
+                radios = self.incendio.radio + clima.radio / 1000
+                if radios >= dc:
+                    self.incendio.aumentar_tasa(clima)
+            self.incendio.fecha_actual = universo.ultra_re_traducir(
+                universo.ultra_traducir(self.incendio.fecha_actual) + (1 / 60))
+            horas = (universo.ultra_traducir(self.incendio.fecha_actual)) - universo.ultra_traducir(respaldo[0])
+            horas.as_integer_ratio()
+            self.pos = (x1 + (self.velocidad * cos * 3.6 * horas),
+                        y1 + (self.velocidad * sen * 3.6 * horas))
+            d = distancia(self.pos[0], self.pos[1], self.incendio.pos[0], self.incendio.pos[1])
+            velocidad = (d1 - d) / horas
+        self.incendio.fecha_actual = respaldo[0]
+        self.pos = respaldo[1]
+        return horas
 
     def apagar(self, incendio, tiempo):
-        incendio.puntos_poder -= self.tasa_extincion*tiempo
-        self.puntos_poder_extintos += self.tasa_extincion*tiempo
-        return self.tasa_extincion*tiempo
+        incendio.puntos_poder -= self.tasa_extincion * tiempo
+        self.puntos_poder_extintos += self.tasa_extincion * tiempo
+        return self.tasa_extincion * tiempo
 
-    def actualizar(self):
-        with open("datos/recursos/{}.anaf".format(self.id), "w") as archivo:
-            archivo.write("estado: " + str(self.estado) + "\n")
-            archivo.write("trabajado: " + str(self.tiempo_trabajado) + "\n")
-            archivo.write("standby: " + str(self.tiempo_standby) + "\n")
-            archivo.write("extinto: " + str(self.puntos_poder_extintos) + "\n")
-            archivo.close()
+    def __lt__(self, other):
+        if self.coeficiente_uso <= other.coeficiente_uso:
+            return True
+        else:
+            return False
+
+    def __repr__(self):
+        string = "estado: {}, posicion(lat,lon): ({},{}))".format(self.estado, self.lat, self.lon)
+        if self.estado != "standby":
+            string += "\nTiempo trabajado: {},Tiempo de Trabajo restante: {}".format(self.tiempo_trabajado,
+                                                                                     self.trabajo_restante)
+        if self.estado == "viajando":
+            string += "\nDistancia al objetivo: {}".format(distancia(self.pos[0], self.pos[1],
+                                                                     self.incendio.pos[0], self.incendio.pos[1]))
+        return string
 
 
 class Meteorologia(BaseDeDatos):

@@ -160,3 +160,550 @@ recurso id: 19|horas totatales: 1:16:9horas
 radio del incendio al llegar: 7.507001855785198 Km 
 distancia al centro: 4.693304329215692 Km
 ============================================================
+Puntos de poder del incedio: 75638.16004986549
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:17:8 |horas trabajadas: 0.016388889402151108 horas
+Puntos de poder del incedio: 75859.32083260322
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:18:7 |horas trabajadas: 0.03305555507540703 horas
+Puntos de poder del incedio: 76077.07007461275
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:19:7 |horas trabajadas: 0.049444444477558136 horas
+Puntos de poder del incedio: 76295.13134301192
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:20:6 |horas trabajadas: 0.06583333387970924 horas
+Puntos de poder del incedio: 76517.24956940189
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:21:5 |horas trabajadas: 0.08249999955296516 horas
+Puntos de poder del incedio: 76735.94029766839
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:22:5 |horas trabajadas: 0.09888888895511627 horas
+Puntos de poder del incedio: 76954.94305249547
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:23:4 |horas trabajadas: 0.11527777835726738 horas
+Puntos de poder del incedio: 77178.01872253758
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:24:3 |horas trabajadas: 0.1319444440305233 horas
+Puntos de poder del incedio: 77397.65093706174
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:25:3 |horas trabajadas: 0.1483333334326744 horas
+Puntos de poder del incedio: 77617.59517831595
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:26:2 |horas trabajadas: 0.16472222283482552 horas
+Puntos de poder del incedio: 77841.62829201006
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:27:1 |horas trabajadas: 0.18138888850808144 horas
+Puntos de poder del incedio: 78062.20199279243
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:28:1 |horas trabajadas: 0.19777777791023254 horas
+Puntos de poder del incedio: 78286.87523476254
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:29:0 |horas trabajadas: 0.21444444358348846 horas
+Puntos de poder del incedio: 78508.07839507313
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:30:0 |horas trabajadas: 0.23083333298563957 horas
+Puntos de poder del incedio: 78729.5935824489
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:30:59 |horas trabajadas: 0.24722222238779068 horas
+Puntos de poder del incedio: 78955.22426824133
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:31:58 |horas trabajadas: 0.2638888880610466 horas
+Puntos de poder del incedio: 79177.36891497878
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:32:58 |horas trabajadas: 0.2802777774631977 horas
+Puntos de poder del incedio: 79399.82558894707
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:33:57 |horas trabajadas: 0.2966666668653488 horas
+Puntos de poder del incedio: 79626.41371856166
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:34:56 |horas trabajadas: 0.31333333253860474 horas
+Puntos de poder del incedio: 79849.49985172665
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:35:56 |horas trabajadas: 0.32972222194075584 horas
+Puntos de poder del incedio: 80072.89801228669
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:36:55 |horas trabajadas: 0.34611111134290695 horas
+Puntos de poder del incedio: 80300.44358572335
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:37:54 |horas trabajadas: 0.3627777770161629 horas
+Puntos de poder del incedio: 80524.47120531647
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:38:54 |horas trabajadas: 0.379166666418314 horas
+Puntos de poder del incedio: 80748.81085246749
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:39:53 |horas trabajadas: 0.3955555558204651 horas
+Puntos de poder del incedio: 80977.31386972612
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:40:52 |horas trabajadas: 0.412222221493721 horas
+Puntos de poder del incedio: 81202.28297574798
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:41:52 |horas trabajadas: 0.4286111108958721 horas
+Puntos de poder del incedio: 81427.56410948919
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:42:51 |horas trabajadas: 0.4450000002980232 horas
+Puntos de poder del incedio: 81657.02457056972
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:43:50 |horas trabajadas: 0.46166666597127914 horas
+Puntos de poder del incedio: 81882.93516302094
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:44:50 |horas trabajadas: 0.47805555537343025 horas
+Puntos de poder del incedio: 82109.1577833516
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:45:49 |horas trabajadas: 0.49444444477558136 horas
+Puntos de poder del incedio: 82339.57568825388
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:46:48 |horas trabajadas: 0.5111111104488373 horas
+Puntos de poder del incedio: 82566.42776713501
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:47:48 |horas trabajadas: 0.5274999998509884 horas
+Puntos de poder del incedio: 82793.59187405436
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:48:47 |horas trabajadas: 0.5438888892531395 horas
+Puntos de poder del incedio: 83024.96722277833
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:49:46 |horas trabajadas: 0.5605555549263954 horas
+Puntos de poder del incedio: 83252.76078808997
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:50:46 |horas trabajadas: 0.5769444443285465 horas
+Puntos de poder del incedio: 83480.86638159725
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:51:45 |horas trabajadas: 0.5933333337306976 horas
+Puntos de poder del incedio: 83713.1991741429
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:52:44 |horas trabajadas: 0.6099999994039536 horas
+Puntos de poder del incedio: 83941.93422588562
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:53:44 |horas trabajadas: 0.6263888888061047 horas
+Puntos de poder del incedio: 84170.98130598011
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:54:43 |horas trabajadas: 0.6427777782082558 horas
+Puntos de poder del incedio: 84404.27154234724
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:55:42 |horas trabajadas: 0.6594444438815117 horas
+Puntos de poder del incedio: 84633.94808052164
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:56:42 |horas trabajadas: 0.6758333332836628 horas
+Puntos de poder del incedio: 84863.93664720267
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:57:41 |horas trabajadas: 0.6922222226858139 horas
+Puntos de poder del incedio: 85098.18432739118
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:58:40 |horas trabajadas: 0.7088888883590698 horas
+Puntos de poder del incedio: 85328.8023519978
+Puntos quitados: 2.4166666666666665
+Tiempo: 1:59:40 |horas trabajadas: 0.7252777777612209 horas
+Puntos de poder del incedio: 85559.7324052646
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:0:39 |horas trabajadas: 0.741666667163372 horas
+Puntos de poder del incedio: 85794.93752927448
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:1:38 |horas trabajadas: 0.758333332836628 horas
+Puntos de poder del incedio: 86026.49704031389
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:2:38 |horas trabajadas: 0.7747222222387791 horas
+Puntos de poder del incedio: 86258.3685801658
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:3:37 |horas trabajadas: 0.7911111116409302 horas
+Puntos de poder del incedio: 86494.53114799691
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:4:36 |horas trabajadas: 0.8077777773141861 horas
+Puntos de poder del incedio: 86727.03214546971
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:5:36 |horas trabajadas: 0.8241666667163372 horas
+Puntos de poder del incedio: 86959.84517190598
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:6:35 |horas trabajadas: 0.8405555561184883 horas
+Puntos de poder del incedio: 87196.96518355826
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:7:34 |horas trabajadas: 0.8572222217917442 horas
+Puntos de poder del incedio: 87430.40766746493
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:8:34 |horas trabajadas: 0.8736111111938953 horas
+Puntos de poder del incedio: 87664.1621804849
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:9:33 |horas trabajadas: 0.8900000005960464 horas
+Puntos de poder del incedio: 87902.23963595829
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:10:32 |horas trabajadas: 0.9066666662693024 horas
+Puntos de poder del incedio: 88136.62360629934
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:11:32 |horas trabajadas: 0.9230555556714535 horas
+Puntos de poder del incedio: 88371.31960590238
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:12:31 |horas trabajadas: 0.9394444450736046 horas
+Puntos de poder del incedio: 88610.35450519675
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:13:30 |horas trabajadas: 0.9561111107468605 horas
+Puntos de poder del incedio: 88845.67996197278
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:14:30 |horas trabajadas: 0.9725000001490116 horas
+Puntos de poder del incedio: 89085.35498714796
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:15:29 |horas trabajadas: 0.9891666658222675 horas
+Puntos de poder del incedio: 89321.30990109697
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:16:29 |horas trabajadas: 1.0055555552244186 horas
+Puntos de poder del incedio: 89557.57684460195
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:17:28 |horas trabajadas: 1.0219444446265697 horas
+Puntos de poder del incedio: 89798.20931374756
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:18:27 |horas trabajadas: 1.0386111102998257 horas
+Puntos de poder del incedio: 90035.10571427942
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:19:27 |horas trabajadas: 1.0549999997019768 horas
+Puntos de poder del incedio: 90272.31414451268
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:20:26 |horas trabajadas: 1.0713888891041279 horas
+Puntos de poder del incedio: 90513.90405762866
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:21:25 |horas trabajadas: 1.0880555547773838 horas
+Puntos de poder del incedio: 90751.74194474396
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:22:25 |horas trabajadas: 1.104444444179535 horas
+Puntos de poder del incedio: 90989.8918617049
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:23:24 |horas trabajadas: 1.120833333581686 horas
+Puntos de poder del incedio: 91232.43921879117
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:24:23 |horas trabajadas: 1.137499999254942 horas
+Puntos de poder del incedio: 91471.21859249029
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:25:23 |horas trabajadas: 1.153888888657093 horas
+Puntos de poder del incedio: 91710.30999617818
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:26:22 |horas trabajadas: 1.1702777780592442 horas
+Puntos de poder del incedio: 91953.81479723462
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:27:21 |horas trabajadas: 1.1869444437325 horas
+Puntos de poder del incedio: 92193.53565751815
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:28:21 |horas trabajadas: 1.2033333331346512 horas
+Puntos de poder del incedio: 92433.56854793249
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:29:20 |horas trabajadas: 1.2197222225368023 horas
+Puntos de poder del incedio: 92678.03079295903
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:30:19 |horas trabajadas: 1.2363888882100582 horas
+Puntos de poder del incedio: 92918.69313982746
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:31:19 |horas trabajadas: 1.2527777776122093 horas
+Puntos de poder del incedio: 93159.66751696757
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:32:18 |horas trabajadas: 1.2691666670143604 horas
+Puntos de poder del incedio: 93405.08720596411
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:33:17 |horas trabajadas: 1.2858333326876163 horas
+Puntos de poder del incedio: 93646.69103941796
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:34:17 |horas trabajadas: 1.3022222220897675 horas
+Puntos de poder del incedio: 93888.6069032832
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:35:16 |horas trabajadas: 1.3186111114919186 horas
+Puntos de poder del incedio: 94134.98403624965
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:36:15 |horas trabajadas: 1.3352777771651745 horas
+Puntos de poder del incedio: 94377.52935628936
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:37:15 |horas trabajadas: 1.3516666665673256 horas
+Puntos de poder del incedio: 94620.3867068791
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:38:14 |horas trabajadas: 1.3680555559694767 horas
+Puntos de poder del incedio: 94867.72128381547
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:39:13 |horas trabajadas: 1.3847222216427326 horas
+Puntos de poder del incedio: 95111.20809044156
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:40:13 |horas trabajadas: 1.4011111110448837 horas
+Puntos de poder del incedio: 95355.00692775531
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:41:12 |horas trabajadas: 1.4175000004470348 horas
+Puntos de poder del incedio: 95603.29894866148
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:42:11 |horas trabajadas: 1.4341666661202908 horas
+Puntos de poder del incedio: 95847.72724187441
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:43:11 |horas trabajadas: 1.4505555555224419 horas
+Puntos de poder del incedio: 96092.46756591153
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:44:10 |horas trabajadas: 1.466944444924593 horas
+Puntos de poder del incedio: 96341.71703078742
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:45:9 |horas trabajadas: 1.483611110597849 horas
+Puntos de poder del incedio: 96587.08681058764
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:46:9 |horas trabajadas: 1.5 horas
+Puntos de poder del incedio: 96832.76862134745
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:47:8 |horas trabajadas: 1.516388889402151 horas
+Puntos de poder del incedio: 97082.97553019304
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:48:7 |horas trabajadas: 1.533055555075407 horas
+Puntos de poder del incedio: 97329.286796581
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:49:7 |horas trabajadas: 1.5494444444775581 horas
+Puntos de poder del incedio: 97575.91009406299
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:50:6 |horas trabajadas: 1.5658333338797092 horas
+Puntos de poder del incedio: 97827.07444687822
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:51:5 |horas trabajadas: 1.5824999995529652 horas
+Puntos de poder del incedio: 98074.3271998544
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:52:5 |horas trabajadas: 1.5988888889551163 horas
+Puntos de poder del incedio: 98321.891984058
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:53:4 |horas trabajadas: 1.6152777783572674 horas
+Puntos de poder del incedio: 98574.01378084281
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:54:3 |horas trabajadas: 1.6319444440305233 horas
+Puntos de poder del incedio: 98822.20802040766
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:55:3 |horas trabajadas: 1.6483333334326744 horas
+Puntos de poder del incedio: 99070.71429133238
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:56:2 |horas trabajadas: 1.6647222228348255 horas
+Puntos de poder del incedio: 99323.79353208658
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:57:1 |horas trabajadas: 1.6813888885080814 horas
+Puntos de poder del incedio: 99572.9292582406
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:58:1 |horas trabajadas: 1.6977777779102325 horas
+Puntos de poder del incedio: 99826.64862289898
+Puntos quitados: 2.4166666666666665
+Tiempo: 2:59:0 |horas trabajadas: 1.7144444435834885 horas
+Puntos de poder del incedio: 100076.41380428229
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:0:0 |horas trabajadas: 1.7308333329856396 horas
+Puntos de poder del incedio: 100326.4910172875
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:0:59 |horas trabajadas: 1.7472222223877907 horas
+Puntos de poder del incedio: 100581.16782604855
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:1:58 |horas trabajadas: 1.7638888880610466 horas
+Puntos de poder del incedio: 100831.8744941528
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:2:58 |horas trabajadas: 1.7802777774631977 horas
+Puntos de poder del incedio: 101082.89319400852
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:3:57 |horas trabajadas: 1.7966666668653488 horas
+Puntos de poder del incedio: 101338.52744687215
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:4:56 |horas trabajadas: 1.8133333325386047 horas
+Puntos de poder del incedio: 101590.17560169767
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:5:56 |horas trabajadas: 1.8297222219407558 horas
+Puntos de poder del incedio: 101842.13578840348
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:6:55 |horas trabajadas: 1.846111111342907 horas
+Puntos de poder del incedio: 102098.72748536963
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:7:54 |horas trabajadas: 1.8627777770161629 horas
+Puntos de poder del incedio: 102351.31712691698
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:8:54 |horas trabajadas: 1.879166666418314 horas
+Puntos de poder del incedio: 102604.21880047237
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:9:53 |horas trabajadas: 1.895555555820465 horas
+Puntos de poder del incedio: 102861.76794154092
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:10:52 |horas trabajadas: 1.912222221493721 horas
+Puntos de poder del incedio: 103115.2990698105
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:11:52 |horas trabajadas: 1.9286111108958721 horas
+Puntos de poder del incedio: 103369.14223021487
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:12:51 |horas trabajadas: 1.9450000002980232 horas
+Puntos de poder del incedio: 103627.64881538578
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:13:50 |horas trabajadas: 1.9616666659712791 horas
+Puntos de poder del incedio: 103882.12143037797
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:14:50 |horas trabajadas: 1.9780555553734303 horas
+Puntos de poder del incedio: 104136.90607763088
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:15:49 |horas trabajadas: 1.9944444447755814 horas
+Puntos de poder del incedio: 104396.37010690416
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:16:48 |horas trabajadas: 2.0111111104488373 horas
+Puntos de poder del incedio: 104651.78420861943
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:17:48 |horas trabajadas: 2.0274999998509884 horas
+Puntos de poder del incedio: 104907.51034272024
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:18:47 |horas trabajadas: 2.0438888892531395 horas
+Puntos de poder del incedio: 105167.93181609585
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:19:46 |horas trabajadas: 2.0605555549263954 horas
+Puntos de poder del incedio: 105424.28740453464
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:20:46 |horas trabajadas: 2.0769444443285465 horas
+Puntos de poder del incedio: 105680.95502548285
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:21:45 |horas trabajadas: 2.0933333337306976 horas
+Puntos de poder del incedio: 105942.33394296066
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:22:44 |horas trabajadas: 2.1099999994039536 horas
+Puntos de poder del incedio: 106199.63101812334
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:23:44 |horas trabajadas: 2.1263888888061047 horas
+Puntos de poder del incedio: 106457.24012591851
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:24:43 |horas trabajadas: 2.1427777782082558 horas
+Puntos de poder del incedio: 106719.57648749849
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:25:42 |horas trabajadas: 2.1594444438815117 horas
+Puntos de poder del incedio: 106977.81504938539
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:26:42 |horas trabajadas: 2.175833333283663 horas
+Puntos de poder del incedio: 107236.36564402703
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:27:41 |horas trabajadas: 2.192222222685814 horas
+Puntos de poder del incedio: 107499.65944970906
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:28:40 |horas trabajadas: 2.20888888835907 horas
+Puntos de poder del incedio: 107758.83949832062
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:29:40 |horas trabajadas: 2.225277777761221 horas
+Puntos de poder del incedio: 108018.33157980823
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:30:39 |horas trabajadas: 2.241666667163372 horas
+Puntos de poder del incedio: 108282.5828295924
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:31:38 |horas trabajadas: 2.258333332836628 horas
+Puntos de poder del incedio: 108542.70436492909
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:32:38 |horas trabajadas: 2.274722222238779 horas
+Puntos de poder del incedio: 108803.13793326213
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:33:37 |horas trabajadas: 2.29111111164093 horas
+Puntos de poder del incedio: 109068.34662714828
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:34:36 |horas trabajadas: 2.307777777314186 horas
+Puntos de poder del incedio: 109329.40964921041
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:35:36 |horas trabajadas: 2.324166666716337 horas
+Puntos de poder del incedio: 109590.78470438841
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:36:35 |horas trabajadas: 2.3405555561184883 horas
+Puntos de poder del incedio: 109856.95084237652
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:37:34 |horas trabajadas: 2.3572222217917442 horas
+Puntos de poder del incedio: 110118.95535116458
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:38:34 |horas trabajadas: 2.3736111111938953 horas
+Puntos de poder del incedio: 110381.2718931872
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:39:33 |horas trabajadas: 2.3900000005960464 horas
+Puntos de poder del incedio: 110648.39547527717
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:40:32 |horas trabajadas: 2.4066666662693024 horas
+Puntos de poder del incedio: 110911.34147079146
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:41:32 |horas trabajadas: 2.4230555556714535 horas
+Puntos de poder del incedio: 111174.59949965808
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:42:31 |horas trabajadas: 2.4394444450736046 horas
+Puntos de poder del incedio: 111442.68052584995
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:43:30 |horas trabajadas: 2.4561111107468605 horas
+Puntos de poder del incedio: 111706.56800809082
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:44:30 |horas trabajadas: 2.4725000001490116 horas
+Puntos de poder del incedio: 111975.28915630035
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:45:29 |horas trabajadas: 2.4891666658222675 horas
+Puntos de poder del incedio: 112239.80609191561
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:46:29 |horas trabajadas: 2.5055555552244186 horas
+Puntos de poder del incedio: 112504.63506111651
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:47:28 |horas trabajadas: 2.5219444446265697 horas
+Puntos de poder del incedio: 112774.31365354644
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:48:27 |horas trabajadas: 2.5386111102998257 horas
+Puntos de poder del incedio: 113039.77207600568
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:49:27 |horas trabajadas: 2.5549999997019768 horas
+Puntos de poder del incedio: 113305.54253216602
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:50:26 |horas trabajadas: 2.571388889104128 horas
+Puntos de poder del incedio: 113576.17856881635
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:51:25 |horas trabajadas: 2.588055554777384 horas
+Puntos de poder del incedio: 113842.57847811985
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:52:25 |horas trabajadas: 2.604444444179535 horas
+Puntos de poder del incedio: 114109.29042123919
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:53:24 |horas trabajadas: 2.620833333581686 horas
+Puntos de poder del incedio: 114380.88390210984
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:54:23 |horas trabajadas: 2.637499999254942 horas
+Puntos de poder del incedio: 114648.22529825802
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:55:23 |horas trabajadas: 2.653888888657093 horas
+Puntos de poder del incedio: 114915.87872833588
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:56:22 |horas trabajadas: 2.670277778059244 horas
+Puntos de poder del incedio: 115188.42965342684
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:57:21 |horas trabajadas: 2.6869444437325 horas
+Puntos de poder del incedio: 115456.71253641997
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:58:21 |horas trabajadas: 2.703333333134651 horas
+Puntos de poder del incedio: 115725.30745345599
+Puntos quitados: 2.4166666666666665
+Tiempo: 3:59:20 |horas trabajadas: 2.7197222225368023 horas
+Puntos de poder del incedio: 115998.81582276711
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:0:19 |horas trabajadas: 2.736388888210058 horas
+Puntos de poder del incedio: 116268.04019260567
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:1:19 |horas trabajadas: 2.7527777776122093 horas
+Puntos de poder del incedio: 116537.57659659929
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:2:18 |horas trabajadas: 2.7691666670143604 horas
+Puntos de poder del incedio: 116812.0424101306
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:3:17 |horas trabajadas: 2.7858333326876163 horas
+Puntos de poder del incedio: 117082.20826681491
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:4:17 |horas trabajadas: 2.8022222220897675 horas
+Puntos de poder del incedio: 117352.68615776589
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:5:16 |horas trabajadas: 2.8186111114919186 horas
+Puntos de poder del incedio: 117628.10941551735
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:6:15 |horas trabajadas: 2.8352777771651745 horas
+Puntos de poder del incedio: 117899.21675904778
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:7:15 |horas trabajadas: 2.8516666665673256 horas
+Puntos de poder del incedio: 118170.63613695554
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:8:14 |horas trabajadas: 2.8680555559694767 horas
+Puntos de poder del incedio: 118447.01683892704
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:9:13 |horas trabajadas: 2.8847222216427326 horas
+Puntos de poder del incedio: 118719.06566930389
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:10:13 |horas trabajadas: 2.9011111110448837 horas
+Puntos de poder del incedio: 118991.4265341681
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:11:12 |horas trabajadas: 2.917500000447035 horas
+Puntos de poder del incedio: 119268.76468035969
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:12:11 |horas trabajadas: 2.9341666661202908 horas
+Puntos de poder del incedio: 119541.7549975833
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:13:11 |horas trabajadas: 2.950555555522442 horas
+Puntos de poder del incedio: 119815.05734940346
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:14:10 |horas trabajadas: 2.966944444924593 horas
+Puntos de poder del incedio: 120093.35293981498
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:15:9 |horas trabajadas: 2.983611110597849 horas
+Puntos de poder del incedio: 120367.28474388576
+Puntos quitados: 2.4166666666666665
+Tiempo: 4:16:9 |horas trabajadas: 3.0 horas
+============================================================

@@ -92,7 +92,7 @@ class Anaf(Usuario):
                         for i in range(len(opciones[opcion]) - 1):
                             for key, value in opciones[opcion][str(i + 1)].items():
                                 print("{}: {}|".format(key, value), end="")
-                            print("\n",end = "")
+                            print("\n", end="")
                         print("".center(60, "="))
                     elif eleccion is "2":
                         finalizar = False
@@ -137,6 +137,3 @@ class Terreno(Usuario):
     def __init__(self, dic):
         super().__init__(dic)
         pass
-
-
-        # Anaf().agregar_pronostico()

@@ -1,8 +1,6 @@
-from menu import Basico
-from datos import Incendio, Recurso, Meteorologia
-from leer import Resources, Fire, Meteorology
 from tiempo import Tiempo
 from os import mkdir
+from utiles import trigonometricas, distancia
 
 
 class EstrategiaDeExtincion:
@@ -20,6 +18,9 @@ class EstrategiaDeExtincion:
         universo = Tiempo()
         for i in recursos:
             pass
+
+    def menu(self):
+        pass
 
     def simular(self, recurso):
         universo = Tiempo()
@@ -85,24 +86,14 @@ class EstrategiaDeExtincion:
                                                                                       puntos_restados))
             log.write("Tiempo: {} |horas trabajadas: {} horas\n".format(universo.re_traducir_horas(horas), h_trabajo))
         log.write("".center(60, "=") + "\n")
-        self.incendio.fecha_actual = respaldo[0]
+        """self.incendio.fecha_actual = respaldo[0]
         recurso.pos = respaldo[1]
         self.incendio.puntos_poder = respaldo[2]
-        print("log {} listo!!!".format(recurso.id))
+        print("log {} listo!!!".format(recurso.id))"""
         log.close()
 
 
-def distancia(x1, y1, x2, y2):
-    return ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** (1 / 2)
-
-
-def trigonometricas(x1, y1, x2, y2):
-    hipotenusa = distancia(x1, y1, x2, y2)
-    cos = (x2 - x1) / hipotenusa
-    sen = (y2 - y1) / hipotenusa
-    return cos, sen
-
-
+"""
 fechaActual = "2017-03-24 08:32:00"
 recursos = {}
 incendios = {}
@@ -128,3 +119,4 @@ for incendio in incendios:
     for i in recursos.values():
         test.simular(i)
         pass
+"""
