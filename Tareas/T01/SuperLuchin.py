@@ -28,7 +28,6 @@ class Fecha:
         else:
             self.cambiar(input("Ingrese la fecha en formato A*-MM-DD HH:MM:SS : "))
 
-
 def incendios_activos():
     frame()
     print("Incendios activos")
