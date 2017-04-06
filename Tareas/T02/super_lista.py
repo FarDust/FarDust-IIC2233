@@ -6,7 +6,6 @@ class Nodo:
         self.anterior = None
         # Valor resive un valor cualquiera
         self.valor = valor
-        self.index = None
 
     def __repr__(self):
         return str(self.valor)
@@ -14,6 +13,8 @@ class Nodo:
     def __str__(self):
         return str(self.valor)
 
+
+# Destaco que esto aunque lo llame lista no es una lista, como tal
 
 class Lista:
     # Estructura basica de la lista, recibe nodos
@@ -104,7 +105,7 @@ class Lista:
                 return string + "]"
 
     def pop(self, i=None):
-        if not i:
+        if i is None:
             i = self.len - 1
         nodo = self.__find_nodo(i)
         valor = nodo.valor
@@ -112,6 +113,11 @@ class Lista:
         nodo_s = nodo.siguiente
         if i == self.len - 1:
             self.cola = nodo_a
+        elif i == 0:
+            return self.popleft()
+        if self.len == 1:
+            self.cola = None
+            self.cabeza = None
         if nodo_a:
             nodo_a.siguiente = nodo_s
         if nodo_s:
@@ -119,7 +125,8 @@ class Lista:
         return valor
 
     def popleft(self, i=None):
-        if not i:
+        a = self.len
+        if i is None:
             i = 0
         nodo = self.__find_nodo(i)
         valor = nodo.valor
@@ -127,6 +134,9 @@ class Lista:
         nodo_s = nodo.siguiente
         if i == 0:
             self.cabeza = nodo_s
+        elif self.len == 1:
+            self.cola = None
+            self.cabeza = None
         if nodo_a:
             nodo_a.siguiente = nodo_s
         if nodo_s:
@@ -147,6 +157,56 @@ class Lista:
     def __str__(self):
         return self.__assist_repr()
 
+    def sort(self):
+        temp = Lista(*sorted(self, key=lambda x: x))
+        for _ in range(self.len):
+            self.pop()
+        for i in temp:
+            self.append(i)
+
+    def insert(self, i, value):
+        nodo = self.__find_nodo(i)
+        if nodo:
+            if nodo.anterior:
+                nodo.anterior.siguiente = Nodo(value)
+                nodo.anterior.siguiente.siguiente = nodo
+                nodo.anterior.siguiente.anterior = nodo.anterior
+                nodo.anterior = nodo.anterior.siguiente
+            else:
+                self.appendleft(value)
+        elif i == self.len:
+            self.append(value)
+        else:
+            raise IndexError
+
+    def sort_cola(self):
+        temp = Lista()
+        while len(self) != 0:
+            for i in range(self.len):
+                if self[i] == max(self):
+                    a = self.pop(i)
+                    temp.append(a)
+                    break
+        while len(temp) != 0:
+            self.append(temp.popleft())
+
+    def reverse(self):
+        n = self.len
+        temp = Lista()
+        for i in range(n):
+            temp.append(self.pop())
+        for i in temp:
+            self.append(i)
+
+    def copy(self):
+        return Lista(*self)
+
+    def __delitem__(self, key):
+        self.pop(key)
+
+    def __setitem__(self, key, value):
+        self.__find_nodo(key).valor = value
+
     def __eq__(self, other):
         if self.len == other.len:
             nodo1 = self.cabeza
@@ -159,3 +219,33 @@ class Lista:
             return True
         else:
             return False
+
+    def __lt__(self, other):
+        if self[0] < other[0]:
+            return True
+        else:
+            return False
+
+
+if __name__ == "__main__":
+    l = Lista(1, 2, 8, 4, 5)
+    print(l)
+    l.sort()
+    print(l)
+    l[0] = "a"
+    print(l)
+    j = l.copy()
+    l.pop()
+    print(j, l)
+    l.reverse()
+    print(l)
+    l.insert(0, "shdahj")
+    print(l)
+    l.pop()
+    l.popleft()
+    l.append(5)
+    l.append(-1)
+    l.append(4)
+    print(l)
+    l.sort_cola()
+    print(l)

@@ -11,14 +11,17 @@ class Infecciones(metaclass=ABCMeta):
 
 
 class Virus(Infecciones):
-    super().__init__(contagiosisdad=1.5, mortalidad=1.2, resistencia=1.5, visibilidad=0.5)
+    def __init__(self):
+        super().__init__(contagiosisdad=1.5, mortalidad=1.2, resistencia=1.5, visibilidad=0.5)
 
 
 class Bacteria(Infecciones):
-    super().__init__(contagiosisdad=1.0, mortalidad=1.0, resistencia=0.5, visibilidad=0.7)
+    def __init__(self):
+        super().__init__(contagiosisdad=1.0, mortalidad=1.0, resistencia=0.5, visibilidad=0.7)
 
 
 class Parasito(Infecciones):
-    super().__init__(contagiosisdad=0.5, mortalidad=1.5, resistencia=1.0, visibilidad=0.45)
+    def __init__(self):
+        super().__init__(contagiosisdad=0.5, mortalidad=1.5, resistencia=1.0, visibilidad=0.45)
 
 

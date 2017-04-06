@@ -10,7 +10,7 @@ class Aeropuerto(Insfrastructura):
     estados = Lista("limpio", "infectado", "muerto")
 
     def __init__(self, *args):
-        super().__init__()
+        super().__init__(abierto=False)
         self.vuelos = Lista()
         self.estado = self.estados[0]
 
@@ -30,6 +30,23 @@ class Frontera(Insfrastructura):
         self.pais_b = args[1]
         self.statics_a = 0
         self.statics_b = 0
+        self.f_pais_a = True
+        self.f_pais_b = True
+
+    @property
+    def abierto(self):
+        if self.f_pais_a and self.f_pais_b:
+            return True
+        else:
+            return False
+
+    @abierto.setter
+    def abierto(self, bool):
+        if type(bool) is type(True):
+            self.f_pais_b = bool
+            self.f_pais_a = bool
+        else:
+            raise ValueError
 
     def __eq__(self, other):
         if self.pais_a == other.pais_a and self.pais_b == other.pais_b:
@@ -54,8 +71,25 @@ class RutaDeVuelo:
         self.pais_b = args[1]
         self.statics_a = None
         self.statics_b = None
+        self.f_pais_a = True
+        self.f_pais_b = True
         self.abierto = True
         self.infectada = False
+
+    @property
+    def abierto(self):
+        if self.f_pais_a and self.f_pais_b:
+            return True
+        else:
+            return False
+
+    @abierto.setter
+    def abierto(self, bool):
+        if type(bool) is type(True):
+            self.f_pais_b = bool
+            self.f_pais_a = bool
+        else:
+            raise ValueError
 
     def __eq__(self, other):
         if self.pais_a == other.pais_a and self.pais_b == other.pais_b:

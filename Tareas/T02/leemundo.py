@@ -87,8 +87,10 @@ class Leer:
 def generar_paises():
     return Leer().generar_paises()
 
-def generar_fronteras(world = None):
+
+def generar_fronteras(world=None):
     return Leer().generar_fronteras(world)
 
-def generar_aeropuertos(world = None):
+
+def generar_aeropuertos(world=None):
     return Leer().generar_aeropuertos(world)
