@@ -1,0 +1,6 @@
+Infectados en Greece: 2449
+Muertos en Greece: 0
+Infectados en Iran: 21
+Muertos en Iran: 0
+Infectados en Turkey: 49413352
+Muertos en Turkey: 11549869

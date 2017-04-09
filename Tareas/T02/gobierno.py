@@ -36,19 +36,22 @@ class Gobierno:
         re_list = Lista()
         n = 0
         for accion in self.acciones.keys():
-            i = self.prioridad(accion)
-            if n == 1 and (not(self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20)
-                    or self.pais.frontera is False):
-                i = 0.0
-            if n == 0 and (not(self.pais.poblacion.per_infectados > 50 or self.pais.poblacion.per_muertos > 25)
-                           or (self.pais.aeropuerto.abierto is False or not (self.noticias > 4))):
-                i = 0.0
-            if n == 2 and (not (self.pais.poblacion.per_infectados > ((1 / 3) * 100)) or self.pais.mascarillas is True):
-                i = 0.0
-            if n == 3 and ((self.pais.aeropuerto.abierto is True or
-                                (self.pais.poblacion.per_infectados > 50 or self.pais.poblacion.per_muertos > 25)) or
-                          (self.pais.frontera is True or (
-                                self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20))):
+            if n == 0 and (
+                            self.pais.poblacion.per_infectados > 50 or self.pais.poblacion.per_muertos > 25) and \
+                            self.pais.aeropuerto.abierto is True:
+                i = self.prioridad(accion)
+            elif n == 1 and (
+                            self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20) and \
+                            self.pais.frontera is False:
+                i = self.prioridad(accion)
+            elif n == 2 and self.pais.poblacion.per_infectados > ((1 / 3) * 100) and self.pais.mascarillas is False:
+                i = self.prioridad(accion)
+            elif n == 3 and ((self.pais.aeropuerto.abierto is False and self.noticias > 4 and not (
+                            self.pais.poblacion.per_infectados > 50 or self.pais.poblacion.per_muertos > 25)) or (
+                            self.pais.frontera is False and not (
+                                    self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20))):
+                i = self.prioridad(accion)
+            else:
                 i = 0.0
             if n == 3 and self.pais.cura is True:
                 i = 1.0
@@ -62,31 +65,52 @@ class Gobierno:
 
     def entregar_mascarillas(self):
         self.pais.mascarillas = True
-        print("{} entrego mascarillas a sus ciudadanos".format(self.pais.nombre))
+        with open("sucesos.txt", "a") as sucesos:
+            sucesos.write("{} entrego mascarillas a sus ciudadanos\n".format(self.pais.nombre))
 
     def cerrar_aeropuerto(self):
         self.pais.aeropuerto.abierto = False
-        print("{} decide cerrar todos sus aeropuertos".format(self.pais.nombre))
+        for vuelo in self.pais.aeropuerto.vuelos:
+            if self.pais.nombre == vuelo.f_pais_a:
+                vuelo.f_pais_a = False
+            else:
+                vuelo.f_pais_b = False
+        with open("sucesos.txt", "a") as sucesos:
+            sucesos.write("{} decide cerrar todos sus aeropuertos\n".format(self.pais.nombre))
+            sucesos.write("{}\n".format(self.pais))
 
     def cerrar_fronteras(self):
         self.pais.frontera = False
-        raise SystemExit
-        print("{} decide cerrar todas sus fronteras".format(self.pais.nombre))
+        for frontera in self.pais.fronteras:
+            if self.pais.nombre == frontera.f_pais_a:
+                frontera.f_pais_a = False
+            else:
+                frontera.f_pais_b = False
+        with open("sucesos.txt", "a") as sucesos:
+            sucesos.write("{} decide cerrar todas sus fronteras\n".format(self.pais.nombre))
+            sucesos.write("{}\n".format(self.pais))
 
     def desbloquear_rutas(self):
         if self.noticias > 4 and not (self.pais.poblacion.per_infectados > 50 or self.pais.poblacion.per_muertos > 25):
             self.abrir_aeropuerto()
-            print("{} abrio su aeropuerto".format(self.pais.nombre))
-        if not (self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20) and\
+        if not (self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20) and \
                 not self.pais.frontera:
             self.abrir_fronteras()
-            print("{} restablecio sus conexiones terrestres con otros paises".format(self.pais.nombre))
+        elif self.pais.cura:
+            self.abrir_aeropuerto()
+            self.abrir_fronteras()
 
     def noticias_infeccion(self, datos):
         self.noticias = datos
 
     def abrir_aeropuerto(self):
         self.pais.aeropuerto.abierto = True
+        with open("sucesos.txt", "a") as sucesos:
+            sucesos.write("{} abrio su aeropuerto\n".format(self.pais.nombre))
+            sucesos.write("{}".format(self.pais))
 
     def abrir_fronteras(self):
         self.pais.frontera = True
+        with open("sucesos.txt", "a") as sucesos:
+            sucesos.write("{} restablecio sus conexiones terrestres con otros paises\n".format(self.pais.nombre))
+            sucesos.write("{}\n".format(self.pais))

@@ -86,6 +86,10 @@ class Lista:
         if nodo:
             return nodo
 
+    def __next__(self):
+        for i in range(len(self)):
+            yield i
+
     def __getitem__(self, indexer):
         nodo = self.__assit_getitem(indexer)
         if nodo:

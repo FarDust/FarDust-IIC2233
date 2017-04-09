@@ -32,6 +32,8 @@ class Frontera(Insfrastructura):
         self.statics_b = 0
         self.f_pais_a = True
         self.f_pais_b = True
+        self.pais_a_o = None
+        self.pais_b_o = None
 
     @property
     def abierto(self):
@@ -64,17 +66,17 @@ class Frontera(Insfrastructura):
         return "{} {} {}".format(self.pais_a, conexion, self.pais_b)
 
 
-class RutaDeVuelo:
+class RutaDeVuelo(Frontera):
     def __init__(self, *args):
         args = Lista(*args)
+        super().__init__(*args)
         self.pais_a = args[0]
         self.pais_b = args[1]
         self.statics_a = None
         self.statics_b = None
         self.f_pais_a = True
         self.f_pais_b = True
-        self.abierto = True
-        self.infectada = False
+        self.abierto = False
 
     @property
     def abierto(self):

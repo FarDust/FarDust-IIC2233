@@ -10,6 +10,8 @@ class Leer:
         world = Lista()
         with open("population.csv", "r", encoding="utf8") as paises:
             countries = Lista(*paises.readlines())
+            for i in range(len(countries)):
+                countries[i] = countries[i].lower().title()
             try:
                 n_paises = Lista(*countries[0].strip().split(",")).index("Pais")
                 n_poblacion = Lista(*countries[0].strip().split(",")).index("Poblacion")
@@ -34,6 +36,8 @@ class Leer:
         fronteiras = Lista()
         with open("borders.csv", "r", encoding="utf8") as fronteras:
             borders = Lista(*fronteras.readlines())
+            for i in range(len(borders)):
+                borders[i] = borders[i].lower().title()
             for border in range(len(borders) - 1):
                 fronteiras.append(Frontera(*borders[border + 1].strip().split(";")))
             fronteras.close()
@@ -54,6 +58,8 @@ class Leer:
         generate_connections()
         with open("random_airports.csv", "r", encoding="utf8") as rutas:
             paths = Lista(*rutas.readlines())
+            for i in range(len(paths)):
+                paths[i] = paths[i].lower().title()
             paths.popleft()
             aeropuertos = Lista()
             for path in paths:
@@ -71,6 +77,8 @@ class Leer:
         rotas = Lista()
         with open("random_airports.csv", "r", encoding="utf8") as rutas:
             paths = Lista(*rutas.readlines())
+            for i in range(len(paths)):
+                paths[i] = paths[i].lower().title()
             for path in range(len(paths) - 1):
                 rotas.append(RutaDeVuelo(*paths[path + 1].strip().split(",")))
             rutas.close()

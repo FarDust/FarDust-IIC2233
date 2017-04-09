@@ -1,0 +1,6 @@
+Infectados en Argentina: 1798021
+Muertos en Argentina: 506295
+Infectados en Brazil: 147759
+Muertos en Brazil: 53522
+Infectados en Chile: 22850069
+Muertos en Chile: 4125136
