@@ -1,5 +1,5 @@
 # Empieza la fiesta
-from leemundo import generar_aeropuertos, generar_fronteras, generar_paises
+from leemundo import generar_aeropuertos, generar_fronteras, generar_paises, generar_aeropuertos_a
 from mundo import Mundo
 from infeccciones import Virus, Bacteria, Parasito
 from super_lista import Lista
@@ -64,7 +64,12 @@ def menu():
 
 def cargar():
     try:
-        open("save.txt", "r")
+        with open("random_airports.csv", "w") as archivo:
+            archivo.write(open("current/random_airports.csv", "r").read())
+            archivo.close()
+        planeta = Mundo(generar_aeropuertos_a(generar_fronteras(generar_paises())), Bacteria())
+        planeta.cargar()
+        return planeta
     except:
         print("No hay partida anterior")
         return iniciar()
@@ -77,7 +82,7 @@ def pasar_dia():
 
 
 def guardar():
-    pass
+    planeta.guardar()
 
 
 def estadisticas():
@@ -107,6 +112,7 @@ def estadisticas():
 
 def leer_sucesos():
     print(open("sucesos.txt", "r").read())
+
 
 def salir():
     raise SystemExit

@@ -1,0 +1,2 @@
+pais: string,mascarillas: bool,cura: bool,frontera: bool
+United Arab Emirates,False,False,True

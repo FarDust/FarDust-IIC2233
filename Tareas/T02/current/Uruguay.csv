@@ -1,0 +1,2 @@
+pais: string,mascarillas: bool,cura: bool,frontera: bool
+Uruguay,False,False,True

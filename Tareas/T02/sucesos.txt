@@ -1,6 +1,4 @@
-Infectados en Greece: 9629
-Muertos en Greece: 0
-Infectados en Iran: 153
-Muertos en Iran: 1
-Infectados en Turkey: 33460314
-Muertos en Turkey: 9239895
+Infectados en Chile: 2
+Muertos en Chile: 0
+Chile restablecio sus conexiones terrestres con otros paises
+Chile: [Argentina | / | Chile,Bolivia | / | Chile,Brazil | / | Chile,Chile | / | United Arab Emirates,Chile | / | Colombia,Chile | / | United States,Chile | / | Costa Rica,Chile | / | Russia,Chile | / | Switzerland,Chile | / | France,Chile | / | South Korea,Chile | / | Netherlands,Chile | / | Portugal,Chile | / | Israel,Chile | / | Greece,Chile | / | Spain,Chile | / | Austria,Chile | / | Croatia,Chile | / | Egypt,Chile | / | South Africa,Iran | / | Chile,Kenya | / | Chile,Libya | / | Chile,Mexico | / | Chile,Thailand | / | Chile,United Kingdom | / | Chile]

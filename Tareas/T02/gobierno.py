@@ -1,5 +1,6 @@
 from super_lista import Lista
 from diccionario import Posicionado
+from os import mkdir
 
 
 # Esta clase es parte de un objeto pais, pero tiene conttrol casi absoluto del pais asi que lo resive como argumento
@@ -8,7 +9,6 @@ class Gobierno:
     def __init__(self, pais, fronteras):
         self.pais = pais
         self.fronteras = fronteras
-        self.mascarillas = False
         self.prioridades = Lista()  # La superlista actua como lista, pila y cola a la vez :)
         self.acciones = Posicionado(self.cerrar_aeropuerto, 0.8,
                                     self.cerrar_fronteras, self.prioridad_fronteras,
@@ -42,7 +42,7 @@ class Gobierno:
                 i = self.prioridad(accion)
             elif n == 1 and (
                             self.pais.poblacion.per_infectados > 80 or self.pais.poblacion.per_muertos > 20) and \
-                            self.pais.frontera is False:
+                    self.pais.frontera is False:
                 i = self.prioridad(accion)
             elif n == 2 and self.pais.poblacion.per_infectados > ((1 / 3) * 100) and self.pais.mascarillas is False:
                 i = self.prioridad(accion)

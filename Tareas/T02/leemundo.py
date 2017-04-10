@@ -50,12 +50,11 @@ class Leer:
                     world[world.index(Pais(fronteira.pais_b, Poblacion()))].fronteras.append(fronteira)
         return world
 
-    def generar_aeropuertos(self, world=None):
+    def generar_aeropuertos_a(self, world=None):
         if not world:
             world = Lista()
         if len(world) == 0:
             world = self.generar_fronteras()
-        generate_connections()
         with open("random_airports.csv", "r", encoding="utf8") as rutas:
             paths = Lista(*rutas.readlines())
             for i in range(len(paths)):
@@ -72,6 +71,10 @@ class Leer:
                     world[world.index(Pais(aeropuerto, Poblacion()))].aeropuerto = Aeropuerto()
             rutas.close()
         return self.__generar_rutas_aereas(world)
+
+    def generar_aeropuertos(self, world=None):
+        generate_connections()
+        return self.generar_aeropuertos_a(world)
 
     def __generar_rutas_aereas(self, world):
         rotas = Lista()
@@ -102,3 +105,7 @@ def generar_fronteras(world=None):
 
 def generar_aeropuertos(world=None):
     return Leer().generar_aeropuertos(world)
+
+
+def generar_aeropuertos_a(world=None):
+    return Leer().generar_aeropuertos_a(world)

@@ -2,6 +2,7 @@ from super_lista import Lista
 from gobierno import Gobierno
 from random import choice, randint, random
 from os import mkdir
+from infeccciones import Virus,Bacteria,Parasito
 
 
 class Poblacion:
@@ -65,6 +66,34 @@ class Pais:
             self.cura = False
             # Encargado del manejo de entrada infeccion
             self.frontera = True
+
+    def guardar(self):
+        try:
+            mkdir("current")
+            print("Creando directorio 'current'")
+        except:
+            print("Directorio 'current' ya creado procediendo a guardar...")
+        with open("current/{}_poblacion.csv".format(self.nombre), "w") as archivo:
+            archivo.write("limpios: int,infectados: int,muertos: int\n")
+            archivo.write("{},{},{}".format(self.poblacion.limpios, self.poblacion.infectados, self.poblacion.muertos))
+
+        with open("current/{}.csv".format(self.nombre), "w") as archivo:
+            archivo.write("pais: string,mascarillas: bool,cura: bool,frontera: bool\n")
+            archivo.write("{},{},{},{}".format(self.nombre, self.mascarillas, self.cura, self.frontera))
+
+    def cargar(self):
+        with open("current/{}_poblacion.csv".format(self.nombre), "r") as archivo:
+            linea = Lista(*Lista(*archivo.readlines())[1].strip().split(","))
+            self.poblacion.limpios = int(linea[0])
+            self.poblacion.infectados = int(linea[1])
+            self.poblacion.muertos = int(linea[2])
+            archivo.close()
+        with open("current/{}.csv".format(self.nombre), "r") as archivo:
+            linea = Lista(*Lista(*archivo.readlines())[1].strip().split(","))
+            self.mascarillas = linea[0] is "True"
+            self.cura = linea[1] is "True"
+            self.frontera = linea[2] is "True"
+            archivo.close()
 
     @property
     def estado(self):
@@ -244,6 +273,61 @@ class Mundo:
         self.enfermedad_detectada = False
         self.critict_line = False
 
+    def guardar(self):
+        try:
+            mkdir("current")
+            print("Creando directorio 'current'")
+        except:
+            print("Directorio 'current' ya creado procediendo a guardar...")
+        with open("current/mundo.csv", "w") as archivo:
+            archivo.write("dias: int,enfermedad: type,detectada: bool,critict: bool, avance: Lista\n")
+            archivo.write("{},{},{},{},{}\n".format(self.dias,type(self.enfermedad), self.enfermedad_detectada, self.critict_line,
+                                                 self.avance))
+            archivo.close()
+        for pais in self.mundo:
+            pais.guardar()
+            for frontera in pais.fronteras:
+                frontera.guardar()
+            for vuelo in pais.aeropuerto.vuelos:
+                vuelo.guardar()
+        with open("current/random_airports.csv", "w") as archivo:
+            archivo.write(open("random_airports.csv", "r").read())
+            archivo.close()
+
+    def cargar(self):
+        with open("current/mundo.csv", "r") as archivo:
+            linea = Lista(*Lista(*archivo.readlines())[1].strip().split(","))
+            self.dias = int(linea[0])
+            if "Bacteria" in linea[1]:
+                self.enfermedad = Bacteria()
+            elif "Virus" in linea[1]:
+                self.enfermedad = Virus()
+            elif "Parasito" in linea[1]:
+                self.enfermedad = Parasito()
+            for pais in self.mundo:
+                pais.infeccion = self.enfermedad
+            if linea[2] == "True":
+                self.enfermedad_detectada = True
+            else:
+                self.enfermedad_detectada = False
+            if linea[3] == "True":
+                self.critict_line = True
+            else:
+                self.critict_line = False
+            self.avance = Lista(*linea[4][1:-1].strip().split(","))
+            for i in range(len(self.avance)):
+                if self.avance[i] == "":
+                    self.avance.pop(i)
+                else:
+                    self.avance[i] = float(self.avance[i])
+
+        for pais in self.mundo:
+            pais.cargar()
+            for frontera in pais.fronteras:
+                frontera.cargar()
+            for vuelo in pais.aeropuerto.vuelos:
+                vuelo.cargar()
+
     def conectar(self):
         for pais in self.mundo:
             for frontera in pais.fronteras:
@@ -388,14 +472,13 @@ class Mundo:
                                   Lista(*filter(lambda linea: "Muertos" in linea, suceso.readlines()))))
                 suceso.seek(0)
                 infectados = Lista(*(int(linea[linea.find(": ") + 2:linea.find("\n")]) for linea in
-                                  Lista(*filter(lambda linea: "Infectados " in linea, suceso.readlines()))))
+                                     Lista(*filter(lambda linea: "Infectados " in linea, suceso.readlines()))))
                 infecciones += infectados
                 moribundos += muertos
                 print("dia {} |muertos: {}| infectados: {}".format(dia, sum(muertos), sum(infectados)))
                 suceso.close()
-        print("promedio de infecciones: {} por dia".format(int(sum(infecciones)/self.dias)))
-        print("promedio de muertes: {} por dia".format(int(sum(moribundos)/self.dias)))
-
+        print("promedio de infecciones: {} por dia".format(int(sum(infecciones) / self.dias)))
+        print("promedio de muertes: {} por dia".format(int(sum(moribundos) / self.dias)))
 
     def propagar(self):
         for pais in self.mundo:
@@ -437,7 +520,7 @@ class Mundo:
             archivo.write(open("sucesos.txt", "r").read())
             archivo.close()
         with open("save/{}_mundo.csv".format(self.dias), "w") as archivo:
-            archivo.write("enfermedad: type,detectada: bool,critict: bool, avance: Lista")
+            archivo.write("enfermedad: type,detectada: bool,critict: bool, avance: Lista\n")
             archivo.write("{},{},{},{}\n".format(type(self.enfermedad), self.enfermedad_detectada, self.critict_line,
                                                  self.avance))
             archivo.close()

@@ -22,7 +22,7 @@ class Aeropuerto(Insfrastructura):
 
 
 class Frontera(Insfrastructura):
-    # Al crearse este objeto se guardara en los dos paises vecionos a la vez
+    # Al crearse este objeto se guardara en los dos paises vecinos a la vez
     def __init__(self, *args):
         super().__init__()
         args = Lista(*args)
@@ -34,6 +34,18 @@ class Frontera(Insfrastructura):
         self.f_pais_b = True
         self.pais_a_o = None
         self.pais_b_o = None
+
+    def guardar(self):
+        with open("current/{}_{}_f.csv".format(self.pais_a, self.pais_b), "w") as archivo:
+            archivo.write("{},{},{},{}".format(self.statics_a, self.statics_b, self.f_pais_a, self.f_pais_b))
+
+    def cargar(self):
+        with open("current/{}_{}_f.csv".format(self.pais_a, self.pais_b), "r") as archivo:
+            linea = Lista(*Lista(*archivo.readlines())[0].strip().split(","))
+            self.statics_a = float(linea[0])
+            self.statics_b = float(linea[1])
+            self.f_pais_a = "True" is linea[2]
+            self.f_pais_b = "True" is linea[3]
 
     @property
     def abierto(self):
@@ -72,11 +84,23 @@ class RutaDeVuelo(Frontera):
         super().__init__(*args)
         self.pais_a = args[0]
         self.pais_b = args[1]
-        self.statics_a = None
-        self.statics_b = None
+        self.statics_a = 0
+        self.statics_b = 0
         self.f_pais_a = True
         self.f_pais_b = True
         self.abierto = False
+
+    def guardar(self):
+        with open("current/{}_{}_v.csv".format(self.pais_a, self.pais_b), "w") as archivo:
+            archivo.write("{},{},{},{}".format(self.statics_a, self.statics_b, self.f_pais_a, self.f_pais_b))
+
+    def cargar(self):
+        with open("current/{}_{}_v.csv".format(self.pais_a, self.pais_b), "r") as archivo:
+            linea = Lista(*Lista(*archivo.readlines())[0].strip().split(","))
+            self.statics_a = float(linea[0])
+            self.statics_b = float(linea[1])
+            self.f_pais_a = "True" is linea[2]
+            self.f_pais_b = "True" is linea[3]
 
     @property
     def abierto(self):

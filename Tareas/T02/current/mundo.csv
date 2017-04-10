@@ -1,0 +1,2 @@
+dias: int,enfermedad: type,detectada: bool,critict: bool, avance: Lista
+1,<class 'infeccciones.Bacteria'>,False,False,[]
