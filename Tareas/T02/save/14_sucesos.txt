@@ -1,2 +1,3 @@
-Infectados en Turkey: 28171204
-Muertos en Turkey: 7103506
+Infectados en Spain: 65539827
+Muertos en Spain: 23403282
+Se infecto Portugal

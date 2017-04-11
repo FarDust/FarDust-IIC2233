@@ -1,2 +1,6 @@
-Infectados en Turkey: 57596923
-Muertos en Turkey: 17202190
+Infectados en Portugal: 1
+Muertos en Portugal: 1
+Infectados en Spain: 281375103
+Muertos en Spain: 65472849
+Spain entrego mascarillas a sus ciudadanos
+Se infecto France

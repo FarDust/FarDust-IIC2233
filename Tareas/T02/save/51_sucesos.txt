@@ -1,1 +1,12 @@
-Argentina entrego mascarillas a sus ciudadanos
+Infectados en France: 71004
+Muertos en France: 102971
+Infectados en Germany: 2360457
+Muertos en Germany: 1090411
+Infectados en Italy: 12180801
+Muertos en Italy: 4542068
+Infectados en Portugal: 60138
+Muertos en Portugal: 43853
+Infectados en Spain: 47693
+Muertos en Spain: 1
+Infectados en Switzerland: 74920869
+Muertos en Switzerland: 30508014

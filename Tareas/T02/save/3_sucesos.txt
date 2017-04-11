@@ -1,2 +1,2 @@
-Infectados en Chile: 47
-Muertos en Chile: 0
+Infectados en Spain: 398
+Muertos en Spain: 2

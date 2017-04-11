@@ -1,1 +1,12 @@
-Uruguay abrio su aeropuertoUruguay: [Brazil <-> Uruguay,Uruguay <-> Argentina,Argentina | / | Uruguay,Australia | / | Uruguay,Austria | / | Uruguay,Chile | / | Uruguay,Croatia | / | Uruguay,Germany | / | Uruguay,Hong Kong | / | Uruguay,Iran | / | Uruguay,Japan | / | Uruguay,Kenya | / | Uruguay,Netherlands | / | Uruguay,New Zealand | / | Uruguay,Norway | / | Uruguay,Portugal | / | Uruguay,Russia | / | Uruguay,Spain | / | Uruguay,Switzerland | / | Uruguay,Thailand | / | Uruguay,Turkey | / | Uruguay,United Kingdom | / | Uruguay,United States | / | Uruguay,Uruguay | / | Libya,Uruguay | / | Colombia,Uruguay | / | South Korea,Uruguay | / | France,Uruguay | / | Egypt,Uruguay | / | Canada]
+Infectados en France: 902938
+Muertos en France: 875237
+Infectados en Germany: 19469
+Muertos en Germany: 0
+Infectados en Italy: 31399
+Muertos en Italy: 2
+Infectados en Portugal: 200063
+Muertos en Portugal: 372741
+Infectados en Spain: 98853
+Muertos en Spain: 2
+Infectados en Switzerland: 226441
+Muertos en Switzerland: 90606

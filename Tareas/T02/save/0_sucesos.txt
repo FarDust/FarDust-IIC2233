@@ -1,2 +1,2 @@
-Infectados en Chile: 1
-Muertos en Chile: 1
+Infectados en Spain: 4
+Muertos en Spain: 1

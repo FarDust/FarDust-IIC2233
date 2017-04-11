@@ -1,1 +1,12 @@
-Colombia abrio su aeropuertoColombia: [Brazil <-> Colombia,Colombia <-> Ecuador,Argentina | / | Colombia,Australia | / | Colombia,Austria | / | Colombia,Canada | / | Colombia,Chile | / | Colombia,China | / | Colombia,Colombia | / | Libya,Colombia | / | Switzerland,Colombia | / | Iran,Colombia | / | India,Colombia | / | Thailand,Colombia | / | Nepal,Colombia | / | Turkey,Colombia | / | Greece,Colombia | / | Israel,Colombia | / | South Korea,Colombia | / | Hong Kong,Colombia | / | Germany,Colombia | / | Qatar,Colombia | / | Denmark,Colombia | / | South Africa,Colombia | / | New Zealand,Colombia | / | Sweden,Egypt | / | Colombia,Netherlands | / | Colombia,Uruguay | / | Colombia]
+Infectados en France: 10158234
+Muertos en France: 5207576
+Infectados en Germany: 158
+Muertos en Germany: 0
+Infectados en Italy: 59
+Muertos en Italy: 1
+Infectados en Portugal: 6608773
+Muertos en Portugal: 2217775
+Infectados en Spain: 140804
+Muertos en Spain: 1
+Infectados en Switzerland: 341
+Muertos en Switzerland: 0

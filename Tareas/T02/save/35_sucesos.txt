@@ -1,0 +1,8 @@
+Infectados en France: 117318006
+Muertos en France: 30984569
+Infectados en Portugal: 49682704
+Muertos en Portugal: 13195546
+Infectados en Spain: 90901
+Muertos en Spain: 52242
+Se infecto Switzerland
+Se infecto Germany

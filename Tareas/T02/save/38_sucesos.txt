@@ -1,1 +1,14 @@
-Argentina abrio su aeropuertoArgentina: [Argentina <-> Brazil,Argentina <-> Bolivia,Argentina <-> Chile,Uruguay <-> Argentina,Argentina | / | Kenya,Argentina | / | Uruguay,Argentina | / | Hong Kong,Argentina | / | Brazil,Argentina | / | Mexico,Argentina | / | Canada,Argentina | / | Chile,Argentina | / | United Arab Emirates,Argentina | / | Greece,Argentina | / | Libya,Argentina | / | China,Argentina | / | Colombia,Argentina | / | Denmark,Argentina | / | Germany,Argentina | / | Austria,Argentina | / | Sweden,Croatia | / | Argentina,Costa Rica | / | Argentina,Israel | / | Argentina,Italy | / | Argentina,Japan | / | Argentina,New Zealand | / | Argentina,Norway | / | Argentina,Qatar | / | Argentina,South Korea | / | Argentina,Saudi Arabia | / | Argentina,South Africa | / | Argentina,Thailand | / | Argentina,Turkey | / | Argentina]Brazil decide cerrar todos sus aeropuertosBrazil: [Argentina <-> Brazil,Bolivia <-> Brazil,Brazil <-> Colombia,Brazil <-> Uruguay,Brazil <-> Chile,Argentina | / | Brazil,Brazil | / | Canada,Brazil | / | Israel,Brazil | / | Iran,Brazil | / | Qatar,Brazil | / | Libya,Brazil | / | France,Brazil | / | United Kingdom,Brazil | / | Austria,Brazil | / | Greece,Brazil | / | Mexico,Brazil | / | Nepal,Brazil | / | Sweden,Brazil | / | Norway,Brazil | / | China,Brazil | / | Russia,Brazil | / | Spain,Brazil | / | Saudi Arabia,Chile | / | Brazil,Croatia | / | Brazil,Costa Rica | / | Brazil,Denmark | / | Brazil,Germany | / | Brazil,Hong Kong | / | Brazil,Netherlands | / | Brazil,United Arab Emirates | / | Brazil]
+Infectados en France: 26573379
+Muertos en France: 10627707
+Infectados en Germany: 23
+Muertos en Germany: 1
+Infectados en Italy: 4
+Muertos en Italy: 1
+Infectados en Portugal: 10389061
+Muertos en Portugal: 4526072
+Infectados en Spain: 41351
+Muertos en Spain: 0
+Infectados en Switzerland: 12
+Muertos en Switzerland: 0
+Italy abrio su aeropuerto
+Italy: [Austria <-> Italy,France <-> Italy,Italy <-> Switzerland,Argentina | / | Italy,Australia | / | Italy,Austria | / | Italy,Brazil | / | Italy,Canada | / | Italy,Chile | / | Italy,China | / | Italy,Colombia | / | Italy,Costa Rica | / | Italy,Greece | / | Italy,Hong Kong | / | Italy,Italy | / | Turkey,Italy | / | Spain,Italy | / | United States,Italy | / | India,Italy | / | Croatia,Italy | / | Russia,Italy | / | Germany,Italy | / | Japan,Italy | / | Sweden,Italy | / | United Arab Emirates,Italy | / | United Kingdom,Italy | / | Portugal,Italy | / | Iran,Italy | / | Libya,Mexico | / | Italy,Netherlands | / | Italy,Norway | / | Italy,Qatar | / | Italy]

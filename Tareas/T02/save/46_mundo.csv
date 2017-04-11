@@ -1,1 +1,2 @@
-enfermedad: type,detectada: bool,critict: bool, avance: Lista<class 'infeccciones.Virus'>,False,False,[]
+enfermedad: type,detectada: bool,critict: bool, avance: Lista
+<class 'infeccciones.Parasito'>,False,False,[]

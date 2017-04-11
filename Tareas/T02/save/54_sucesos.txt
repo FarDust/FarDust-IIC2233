@@ -1,0 +1,16 @@
+Infectados en France: 55231
+Muertos en France: 35319
+Infectados en Germany: 202363002
+Muertos en Germany: 71034359
+Infectados en Italy: 84173457
+Muertos en Italy: 18951877
+Infectados en Portugal: 103551
+Muertos en Portugal: 0
+Infectados en Spain: 72488
+Muertos en Spain: 1
+Infectados en Switzerland: 161231672
+Muertos en Switzerland: 27907020
+Germany decide cerrar todos sus aeropuertos
+Germany: [Austria <-> Germany,Denmark <-> Germany,France <-> Germany,Germany <-> Netherlands,Germany <-> Switzerland,Brazil | / | Germany,Canada | / | Germany,Chile | / | Germany,Colombia | / | Germany,Denmark | / | Germany,Egypt | / | Germany,France | / | Germany,Germany | / | United Kingdom,Germany | / | Argentina,Germany | / | United Arab Emirates,Germany | / | Japan,Germany | / | Austria,Germany | / | South Africa,Germany | / | Qatar,Germany | / | China,Germany | / | Greece,Germany | / | Thailand,Germany | / | Uruguay,Germany | / | New Zealand,Germany | / | South Korea,Germany | / | Switzerland,Germany | / | Portugal,Israel | / | Germany,Italy | / | Germany,Libya | / | Germany,Mexico | / | Germany,Nepal | / | Germany,Netherlands | / | Germany,Russia | / | Germany,Saudi Arabia | / | Germany,Spain | / | Germany,Turkey | / | Germany,United States | / | Germany]
+Germany entrego mascarillas a sus ciudadanos
+Se infecto Austria

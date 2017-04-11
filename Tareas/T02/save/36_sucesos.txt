@@ -1,0 +1,12 @@
+Infectados en France: 32356615
+Muertos en France: 21689198
+Infectados en Germany: 3
+Muertos en Germany: 3
+Infectados en Portugal: 34410358
+Muertos en Portugal: 9236883
+Infectados en Spain: 180439
+Muertos en Spain: 36570
+Infectados en Switzerland: 0
+Muertos en Switzerland: 1
+Germany abrio su aeropuerto
+Germany: [Austria <-> Germany,Denmark <-> Germany,France <-> Germany,Germany <-> Netherlands,Germany <-> Switzerland,Brazil | / | Germany,Canada | / | Germany,Chile | / | Germany,Colombia | / | Germany,Denmark | / | Germany,Egypt | / | Germany,France | / | Germany,Germany | / | United Kingdom,Germany | / | Argentina,Germany | / | United Arab Emirates,Germany | / | Japan,Germany | / | Austria,Germany | / | South Africa,Germany | / | Qatar,Germany | / | China,Germany | / | Greece,Germany | / | Thailand,Germany | / | Uruguay,Germany | / | New Zealand,Germany | / | South Korea,Germany | / | Switzerland,Germany | / | Portugal,Israel | / | Germany,Italy | / | Germany,Libya | / | Germany,Mexico | / | Germany,Nepal | / | Germany,Netherlands | / | Germany,Russia | / | Germany,Saudi Arabia | / | Germany,Spain | / | Germany,Turkey | / | Germany,United States | / | Germany]Se infecto Switzerland

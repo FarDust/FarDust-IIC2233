@@ -1,1 +1,15 @@
-Argentina decide cerrar todos sus aeropuertosArgentina: [Argentina <-> Brazil,Argentina <-> Bolivia,Argentina <-> Chile,Uruguay <-> Argentina,Argentina | / | Kenya,Argentina | / | Uruguay,Argentina | / | Hong Kong,Argentina | / | Brazil,Argentina | / | Mexico,Argentina | / | Canada,Argentina | / | Chile,Argentina | / | United Arab Emirates,Argentina | / | Greece,Argentina | / | Libya,Argentina | / | China,Argentina | / | Colombia,Argentina | / | Denmark,Argentina | / | Germany,Argentina | / | Austria,Argentina | / | Sweden,Croatia | / | Argentina,Costa Rica | / | Argentina,Israel | / | Argentina,Italy | / | Argentina,Japan | / | Argentina,New Zealand | / | Argentina,Norway | / | Argentina,Qatar | / | Argentina,South Korea | / | Argentina,Saudi Arabia | / | Argentina,South Africa | / | Argentina,Thailand | / | Argentina,Turkey | / | Argentina]
+Infectados en France: 176634
+Muertos en France: 72080
+Infectados en Germany: 14415991
+Muertos en Germany: 5088085
+Infectados en Italy: 36825987
+Muertos en Italy: 14227243
+Infectados en Portugal: 53889
+Muertos en Portugal: 30697
+Infectados en Spain: 144294
+Muertos en Spain: 1
+Infectados en Switzerland: 149214866
+Muertos en Switzerland: 56953103
+Switzerland decide cerrar todos sus aeropuertos
+Switzerland: [Austria <-> Switzerland,France <-> Switzerland,Germany <-> Switzerland,Italy <-> Switzerland,Egypt | / | Switzerland,Germany | / | Switzerland,Greece | / | Switzerland,Netherlands | / | Switzerland,Norway | / | Switzerland,Portugal | / | Switzerland,Qatar | / | Switzerland,Russia | / | Switzerland,South Korea | / | Switzerland,Saudi Arabia | / | Switzerland,Switzerland | / | Hong Kong,Switzerland | / | Iran,Switzerland | / | Spain,Switzerland | / | Turkey,Switzerland | / | New Zealand,Switzerland | / | India,Switzerland | / | Argentina,Switzerland | / | France,Switzerland | / | Sweden,Switzerland | / | Denmark,Switzerland | / | Canada,Switzerland | / | Costa Rica,Switzerland | / | South Africa,Switzerland | / | Austria,United Kingdom | / | Switzerland,United States | / | Switzerland,Uruguay | / | Switzerland]
+Switzerland entrego mascarillas a sus ciudadanos

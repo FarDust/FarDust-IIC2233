@@ -1,0 +1,9 @@
+Infectados en France: 333561406
+Muertos en France: 63233814
+Infectados en Portugal: 64264348
+Muertos en Portugal: 26929686
+Infectados en Spain: 544486
+Muertos en Spain: 106617
+France decide cerrar todos sus aeropuertos
+France: [France <-> Spain,France <-> Italy,France <-> Switzerland,France <-> Germany,Austria | / | France,Brazil | / | France,Canada | / | France,Chile | / | France,Colombia | / | France,Denmark | / | France,Egypt | / | France,France | / | Thailand,France | / | United States,France | / | Saudi Arabia,France | / | New Zealand,France | / | Australia,France | / | Argentina,France | / | Portugal,France | / | United Arab Emirates,France | / | Germany,France | / | Mexico,France | / | Croatia,France | / | Nepal,France | / | Greece,France | / | Hong Kong,Libya | / | France,Qatar | / | France,Russia | / | France,Switzerland | / | France,Turkey | / | France,Uruguay | / | France]
+France entrego mascarillas a sus ciudadanos

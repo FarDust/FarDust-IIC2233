@@ -1,1 +1,15 @@
-Colombia entrego mascarillas a sus ciudadanos
+Infectados en France: 41140
+Muertos en France: 50456
+Infectados en Germany: 37296652
+Muertos en Germany: 14750655
+Infectados en Italy: 100041384
+Muertos en Italy: 27074110
+Infectados en Portugal: 92605
+Muertos en Portugal: 0
+Infectados en Spain: 45178
+Muertos en Spain: 1
+Infectados en Switzerland: 110187549
+Muertos en Switzerland: 39867172
+Italy decide cerrar todos sus aeropuertos
+Italy: [Austria <-> Italy,France <-> Italy,Italy <-> Switzerland,Argentina | / | Italy,Australia | / | Italy,Austria | / | Italy,Brazil | / | Italy,Canada | / | Italy,Chile | / | Italy,China | / | Italy,Colombia | / | Italy,Costa Rica | / | Italy,Greece | / | Italy,Hong Kong | / | Italy,Italy | / | Turkey,Italy | / | Spain,Italy | / | United States,Italy | / | India,Italy | / | Croatia,Italy | / | Russia,Italy | / | Germany,Italy | / | Japan,Italy | / | Sweden,Italy | / | United Arab Emirates,Italy | / | United Kingdom,Italy | / | Portugal,Italy | / | Iran,Italy | / | Libya,Mexico | / | Italy,Netherlands | / | Italy,Norway | / | Italy,Qatar | / | Italy]
+Italy entrego mascarillas a sus ciudadanos

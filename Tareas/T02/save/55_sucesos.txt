@@ -1,1 +1,16 @@
-Colombia decide cerrar todos sus aeropuertosColombia: [Brazil <-> Colombia,Colombia <-> Ecuador,Argentina | / | Colombia,Australia | / | Colombia,Austria | / | Colombia,Canada | / | Colombia,Chile | / | Colombia,China | / | Colombia,Colombia | / | Libya,Colombia | / | Switzerland,Colombia | / | Iran,Colombia | / | India,Colombia | / | Thailand,Colombia | / | Nepal,Colombia | / | Turkey,Colombia | / | Greece,Colombia | / | Israel,Colombia | / | South Korea,Colombia | / | Hong Kong,Colombia | / | Germany,Colombia | / | Qatar,Colombia | / | Denmark,Colombia | / | South Africa,Colombia | / | New Zealand,Colombia | / | Sweden,Egypt | / | Colombia,Netherlands | / | Colombia,Uruguay | / | Colombia]
+Infectados en Austria: 4
+Muertos en Austria: 0
+Infectados en France: 50119
+Muertos en France: 0
+Infectados en Germany: 176231444
+Muertos en Germany: 82329783
+Infectados en Italy: 67244400
+Muertos en Italy: 13266314
+Infectados en Portugal: 121707
+Muertos en Portugal: 0
+Infectados en Spain: 20383
+Muertos en Spain: 0
+Infectados en Switzerland: 36374986
+Muertos en Switzerland: 19534914
+Austria abrio su aeropuerto
+Austria: [Austria <-> Italy,Austria <-> Switzerland,Austria <-> Costa Rica,Austria <-> Germany,Austria | / | Chile,Austria | / | Netherlands,Austria | / | France,Austria | / | Thailand,Austria | / | United States,Austria | / | Greece,Austria | / | Italy,Austria | / | Uruguay,Austria | / | Croatia,Austria | / | Hong Kong,Austria | / | Israel,Austria | / | Japan,Austria | / | Russia,Austria | / | Nepal,Austria | / | Norway,Austria | / | New Zealand,Austria | / | Denmark,Brazil | / | Austria,Colombia | / | Austria,Germany | / | Austria,Iran | / | Austria,South Africa | / | Austria,Switzerland | / | Austria]

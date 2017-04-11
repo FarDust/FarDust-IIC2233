@@ -1,1 +1,12 @@
-Brazil abrio su aeropuertoBrazil: [Argentina <-> Brazil,Bolivia <-> Brazil,Brazil <-> Colombia,Brazil <-> Uruguay,Brazil <-> Chile,Argentina | / | Brazil,Brazil | / | Canada,Brazil | / | Israel,Brazil | / | Iran,Brazil | / | Qatar,Brazil | / | Libya,Brazil | / | France,Brazil | / | United Kingdom,Brazil | / | Austria,Brazil | / | Greece,Brazil | / | Mexico,Brazil | / | Nepal,Brazil | / | Sweden,Brazil | / | Norway,Brazil | / | China,Brazil | / | Russia,Brazil | / | Spain,Brazil | / | Saudi Arabia,Chile | / | Brazil,Croatia | / | Brazil,Costa Rica | / | Brazil,Denmark | / | Brazil,Germany | / | Brazil,Hong Kong | / | Brazil,Netherlands | / | Brazil,United Arab Emirates | / | Brazil]Brazil entrego mascarillas a sus ciudadanos
+Infectados en France: 31510125
+Muertos en France: 15182439
+Infectados en Germany: 4
+Muertos en Germany: 0
+Infectados en Portugal: 36546916
+Muertos en Portugal: 6465818
+Infectados en Spain: 45434
+Muertos en Spain: 0
+Infectados en Switzerland: 3
+Muertos en Switzerland: 0
+Switzerland abrio su aeropuerto
+Switzerland: [Austria <-> Switzerland,France <-> Switzerland,Germany <-> Switzerland,Italy <-> Switzerland,Egypt | / | Switzerland,Germany | / | Switzerland,Greece | / | Switzerland,Netherlands | / | Switzerland,Norway | / | Switzerland,Portugal | / | Switzerland,Qatar | / | Switzerland,Russia | / | Switzerland,South Korea | / | Switzerland,Saudi Arabia | / | Switzerland,Switzerland | / | Hong Kong,Switzerland | / | Iran,Switzerland | / | Spain,Switzerland | / | Turkey,Switzerland | / | New Zealand,Switzerland | / | India,Switzerland | / | Argentina,Switzerland | / | France,Switzerland | / | Sweden,Switzerland | / | Denmark,Switzerland | / | Canada,Switzerland | / | Costa Rica,Switzerland | / | South Africa,Switzerland | / | Austria,United Kingdom | / | Switzerland,United States | / | Switzerland,Uruguay | / | Switzerland]Se infecto Italy

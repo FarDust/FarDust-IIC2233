@@ -1,4 +1,14 @@
-Infectados en Chile: 2
-Muertos en Chile: 0
-Chile restablecio sus conexiones terrestres con otros paises
-Chile: [Argentina | / | Chile,Bolivia | / | Chile,Brazil | / | Chile,Chile | / | United Arab Emirates,Chile | / | Colombia,Chile | / | United States,Chile | / | Costa Rica,Chile | / | Russia,Chile | / | Switzerland,Chile | / | France,Chile | / | South Korea,Chile | / | Netherlands,Chile | / | Portugal,Chile | / | Israel,Chile | / | Greece,Chile | / | Spain,Chile | / | Austria,Chile | / | Croatia,Chile | / | Egypt,Chile | / | South Africa,Iran | / | Chile,Kenya | / | Chile,Libya | / | Chile,Mexico | / | Chile,Thailand | / | Chile,United Kingdom | / | Chile]
+Infectados en Austria: 25
+Muertos en Austria: 0
+Infectados en France: 45645
+Muertos en France: 1
+Infectados en Germany: 42725028
+Muertos en Germany: 57630848
+Infectados en Italy: 24076381
+Muertos en Italy: 9286419
+Infectados en Portugal: 22322
+Muertos en Portugal: 1
+Infectados en Spain: 25601
+Muertos en Spain: 0
+Infectados en Switzerland: 2197623
+Muertos en Switzerland: 13674440
