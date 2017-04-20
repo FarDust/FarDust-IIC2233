@@ -45,7 +45,7 @@ def verificar_inversion(funcion):
 
 def verificar_cuenta(funcion):
     def _verificar_cuenta(self, nombre, rut, clave, numero, saldo_inicial=0):
-        numeros_cuentas = [cuenta.numero for cuenta in self.cuentas]
+        numeros_cuentas = [cuenta.numero for cuenta in self.cuentas.values()]
         try:
             if numero in numeros_cuentas:
                 raise AssertionError("Numero de cuenta ya existente")
@@ -63,8 +63,7 @@ def verificar_cuenta(funcion):
         elif not (clave.isnumeric()) and len(clave) != 4:
             raise AssertionError("La clave ingresada es invalida")
         else:
-            return funcion
-
+            return funcion(self, nombre, rut, clave, numero, saldo_inicial=0)
     return _verificar_cuenta
 
 
