@@ -9,6 +9,7 @@ import random
 
 
 class MetaPerson(type):
+    chefs = {}
     def __new__(cls, name, bases, dic):
         if (name == "Chef" or name == "Client") and not(Person in bases):
             bases = (Person,)
@@ -48,6 +49,14 @@ class MetaPerson(type):
                     [print("Que delicia!") if (plato.drink.quality + plato.food.quality)/2 > 50 else print("Esto no es digno de mi paladar")]
             dic["eat"] = eat
         return super().__new__(cls, name, bases, dic)
+
+    def __call__(cls, *args, **kwargs):
+        chef = super().__call__(*args, **kwargs)
+        if not chef.name in cls.chefs.keys():
+            cls.chefs[chef.name] = chef
+            return chef
+        else:
+            return cls.chefs[chef.name]
 
 class MetaRestaurant(type):
     instancias = {}
