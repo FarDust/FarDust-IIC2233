@@ -70,7 +70,21 @@ class MetaRestaurant(type):
                     self.clients.remove(cliente)
         dic["llega_cliente"] = llega_cliente
         dic["cliente_se_va"] = cliente_se_va
+        def start(self):
+            if len(self.clients) != 0:
+                for i in range(1):  # Se hace el estudio por 5 dias
+                    print("----- Día {} -----".format(i + 1))
+                    plates = []
+                    for chef in self.chefs:
+                        for j in range(3):  # Cada chef cocina 3 platos
+                            plates.append(chef.cook())  # Retorna platos de comida y bebida
 
+                    for client in self.clients:
+                        for plate in plates:
+                            client.eat(plate)
+            else:
+                print("{} no tiene clientes, que pena".format(self.name))
+        dic["start"] = start
         return super().__new__(meta, name, bases, dic)
 
     def __init__(cls, name, bases, dic):
