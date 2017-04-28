@@ -56,6 +56,7 @@ def comparar(numero_1: any, simbolo: str, numero_2: any) -> any:
     else:
         raise TypeError("Error de tipo")
 
+boolean = {"comparar": comparar, "comparar_columna": comparar_columna}
 
 if __name__ == "__main__":
     simbolos = {">", "<", "<=", ">=", "==", "!="}

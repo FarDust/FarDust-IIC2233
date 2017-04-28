@@ -1,4 +1,4 @@
-def __columna(dato: any) -> bool:
+def __columna(dato: any, *args) -> bool:
     """
     
     :param dato: any
@@ -7,7 +7,7 @@ def __columna(dato: any) -> bool:
     return not any(("__iter__" in dir(dato), "__getitem__" in dir(dato) and "__len__" in dir(dato)))
 
 
-def prom(datos: any) -> float:
+def prom(datos: any, *args) -> float:
     """
     
     :param datos: Columna
@@ -19,7 +19,7 @@ def prom(datos: any) -> float:
     return float(sum(datos)/len(datos))
 
 
-def desv(datos: any) -> float:
+def desv(datos: any,*args) -> float:
     """
     
     :param datos: Columna
@@ -28,7 +28,7 @@ def desv(datos: any) -> float:
     return float(sum([(datos[i]-prom(datos))**2for i in range(0, len(datos))])/(len(datos)-1))**(1/2)
 
 
-def median(datos: any) -> any:
+def median(datos: any,*args) -> any:
     """
     
     :param datos: Columna
@@ -37,7 +37,7 @@ def median(datos: any) -> any:
     return (prom((datos[len(datos)//2-1],datos[len(datos)//2])) if len(datos)%2 == 0 else datos[len(datos)//2])
 
 
-def var(datos: any) -> float:
+def var(datos: any, *args) -> float:
     """
     
     :param datos: Columna
