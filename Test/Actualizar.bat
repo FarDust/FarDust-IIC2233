@@ -1,5 +1,5 @@
-cd C:\Users\gabri\Desktop\Programacion avanzada\Syllabus
+cd D:\Users\gabri\Desktop\Programacion avanzada\Syllabus
 git pull
-cd C:\Users\gabri\Desktop\Programacion avanzada\contenidos
+cd D:\Users\gabri\Desktop\Programacion avanzada\contenidos
 git pull
 pause
