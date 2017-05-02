@@ -5,3 +5,6 @@ class InvalidArgument(Exception):
 class InvalidRef(Exception):
     def __init__(self,comando: str) -> None:
         super().__init__("Error de consulta: {}\nCausa: Referencia invalida\n".format(comando))
+
+class InvalidCommand(Exception):
+    pass

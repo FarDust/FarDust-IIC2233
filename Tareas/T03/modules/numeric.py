@@ -1,42 +1,70 @@
-def __columna(dato: any, *args) -> bool:
-    """
-    
-    :param dato: any
-    :return: boolean
-    """
-    return not any(("__iter__" in dir(dato), "__getitem__" in dir(dato) and "__len__" in dir(dato)))
+from errors import InvalidArgument
+from itertools import tee
 
 
+def arguments(funcion):
+    def _arguments(datos, *args):
+        if len(args) != 0:
+            raise InvalidArgument("")
+        return funcion(datos)
+
+    return _arguments
+
+
+@arguments
 def prom(datos: any, *args) -> float:
     """
     
     :param datos: Columna
     :return: float
     """
-    if __columna(datos):
-        # Lanzar error de datos
-        pass
-    return float(sum(datos)/len(datos))
+    if "__iter__" in dir(datos):
+        gen = tee(datos)
+        (datos, land) = (gen[0], long(gen[1]))
+    else:
+        land = long(datos)
+    return float(sum(datos) / land)
 
 
-def desv(datos: any,*args) -> float:
+@arguments
+def desv(datos: any, *args) -> float:
     """
     
     :param datos: Columna
     :return: float
     """
-    return float(sum([(datos[i]-prom(datos))**2for i in range(0, len(datos))])/(len(datos)-1))**(1/2)
+    if type(datos) is list:
+        datos = iter(datos)
+    if "__iter__" in dir(datos):
+        gen = tee(datos)
+        (datos, land) = (gen[0], long(gen[1]))
+    else:
+        land = long(datos)
+    datos = tee(datos)
+    promedium = prom(datos[1])
+    return float(sum([(next(datos[0]) - promedium) ** 2 for i in range(0, land)]) / (land - 1)) ** (1 / 2)
 
 
-def median(datos: any,*args) -> any:
+@arguments
+def median(datos: any, *args) -> any:
     """
     
     :param datos: Columna
     :return: int or float
     """
-    return (prom((datos[len(datos)//2-1],datos[len(datos)//2])) if len(datos)%2 == 0 else datos[len(datos)//2])
+    if "__iter__" in dir(datos):
+        gen = tee(datos)
+        (datos, land) = (gen[0], long(gen[1]))
+    else:
+        land = long(datos)
+    datos = list(datos)
+    respuesta = prom((datos[land // 2 - 1], datos[land // 2])) if land % 2 == 0 else datos[land // 2]
+    datos.clear()
+    datos = None
+    return respuesta
 
 
+@arguments
 def var(datos: any, *args) -> float:
     """
     
@@ -46,7 +74,12 @@ def var(datos: any, *args) -> float:
     return desv(datos) ** 2
 
 
-numeric = {"LEN": len, "PROM": prom, "DESV": desv, "MEDIAN": median, "VAR": var}
+@arguments
+def long(datos: any):
+    return len(list(datos))
+
+
+numeric = {"LEN": long, "PROM": prom, "DESV": desv, "MEDIAN": median, "VAR": var}
 
 if __name__ == "__main__":
     datos = [1, 2, 3, 4, 5, 6, 7, 8, 8]

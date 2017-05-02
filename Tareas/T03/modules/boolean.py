@@ -7,13 +7,19 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any)
     :param columna_2: Columna
     :return: any 
     """
+    from itertools import tee
+    columna_1 = iter(columna_1)
+    columna_2 = iter(columna_2)
+    gen = (*tee(columna_1), *tee(columna_2))
+    columna_1 = gen[0]
+    columna_2 = gen[2]
     from modules.numeric import numeric
     if comando not in numeric.keys():
         raise TypeError("Error de tipo")
     try:
-        if len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in columna_1]))) != 0:
+        if len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[1]]))) != 0:
             raise TypeError("Error de tipo")
-        elif len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in columna_2]))) != 0:
+        elif len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[0]]))) != 0:
             raise TypeError("Error de tipo")
     except IndexError:
         raise TypeError("Error de tipo")
