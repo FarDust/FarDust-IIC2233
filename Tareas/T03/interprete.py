@@ -27,6 +27,11 @@ def interpretar(consulta: Iterable) -> any:
             return gen[1]
         return asignar[consulta]
     elif type(consulta) is str:
+        # if __name__ == "__main__":
+        #     print("consulta fantasma: {}".format(consulta))
+        #     print(asignar.keys())
+        print("consulta fantasma: {}".format(consulta))
+        print(asignar.keys())
         return consulta
     elif type(consulta) is int or type(consulta) is float:
         return consulta
@@ -52,7 +57,7 @@ def do_if(consulta_a, consulta_b, consulta_c) -> any:
     if consulta_b is True:
         return interpretar(consulta_a)
     else:
-        return interpretar(consulta_b)
+        return interpretar(consulta_c)
 
 comandos = {"do_if": do_if}
 comandos.update(numeric)
@@ -61,16 +66,18 @@ comandos.update(basics)
 comandos.update(datos)
 
 if __name__ == "__main__":
-    print("Consulta 1:")
-    print(interpretar([["LEN", [1, 2, 3]]]))
-    print("Consulta 2:")
-    print(interpretar([['asignar', 'x', ['extraer_columna', 'registros', 'tiempo_sano']]]))
-    print("Consulta 3:")
-    print(interpretar([['asignar', 'y', ['extraer_columna', 'registros', 'muertos_avistados']]]))
-    print("consulta 4:")
-    print(interpretar([["comparar", ["PROM", "x"], ">", ["DESV", "y"]]]))
-    print("consulta: 5")
-    print(interpretar([['asignar', 'funcion_normal', ['evaluar', ['crear_funcion', 'normal', 0, 0.5], -3, 5, 0.1]]]))
-    print("Consulta 6:")
-    print(interpretar([['do_if', ['VAR', 'funcion_normal'], ['comparar_columna', 'funcion_normal', '>',['DESV', 'x']], ['PROM', 'x']]]))
+    # print("Consulta 1:")
+    # print(interpretar([["LEN", [1, 2, 3]]]))
+    # print("Consulta 2:")
+    # print(interpretar([['asignar', 'x', ['extraer_columna', 'registros', 'tiempo_sano']]]))
+    # print("Consulta 3:")
+    # print(interpretar([['asignar', 'y', ['extraer_columna', 'registros', 'muertos_avistados']]]))
+    # print("consulta 4:")
+    # print(interpretar([["comparar", ["PROM", "x"], ">", ["DESV", "y"]]]))
+    # print("consulta: 5")
+    # print(interpretar([['asignar', 'funcion_normal', ['evaluar', ['crear_funcion', 'normal', 0, 0.5], -3, 5, 0.1]]]))
+    # print("Consulta 6:")
+    # print(interpretar([['do_if', ['VAR', 'funcion_normal'], ['comparar_columna', 'funcion_normal', '>', 'DESV', 'x'], ['PROM', 'x']]]))
+    print("Superconsulta:")
+    print(interpretar([['asignar', 'x', ['extraer_columna', 'registros', 'tiempo_sano']], ['asignar', 'y', ['extraer_columna', 'registros', 'muertos_avistados']], ['comparar', ['PROM', 'x'], '>', ['DESV', 'y']], ['asignar', 'filtrado', ['filtrar', 'x', '>', 100]], ['asignar', 'funcion_normal', ['evaluar', ['crear_funcion', 'normal', 0, 0.5], -3, 5, 0.1]], ['PROM', 'filtrado'], ['VAR', 'funcion_normal'], ['do_if', ['VAR', 'funcion_normal'], ['comparar_columna', 'funcion_normal', '>', 'DESV', 'x'], ['PROM', 'x']]]))
 

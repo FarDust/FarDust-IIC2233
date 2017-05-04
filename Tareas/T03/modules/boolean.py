@@ -19,7 +19,7 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any)
     try:
         if len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[1]]))) != 0:
             raise TypeError("Error de tipo")
-        elif len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[0]]))) != 0:
+        elif len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[3]]))) != 0:
             raise TypeError("Error de tipo")
     except IndexError:
         raise TypeError("Error de tipo")

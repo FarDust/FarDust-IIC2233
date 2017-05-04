@@ -23,6 +23,7 @@ class T03Window(MyWindow):
         text = "----consulta {}----\n{}\n".format(next(self.consulta), respuesta)
         self.add_answer(text)
 
+
     def save_file(self, querry_array):
         # Crea un archivo con la solucion. NO muestra los graficos!!
         print(querry_array)
