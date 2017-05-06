@@ -1,6 +1,7 @@
 from errors import InvalidArgument
 
-def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any,*args) -> any:
+
+def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any, *args) -> any:
     """
     
     :param columna_1: Columna
@@ -43,7 +44,7 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any,
         raise TypeError
 
 
-def comparar(numero_1: any, simbolo: str, numero_2: any,*args) -> any:
+def comparar(numero_1: any, simbolo: str, numero_2: any, *args) -> any:
     """
     
     :param numero_1: int or float
@@ -67,6 +68,7 @@ def comparar(numero_1: any, simbolo: str, numero_2: any,*args) -> any:
         return numero_1 != numero_2
     else:
         raise TypeError
+
 
 boolean = {"comparar": comparar, "comparar_columna": comparar_columna}
 

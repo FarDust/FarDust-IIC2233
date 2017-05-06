@@ -57,7 +57,7 @@ def filtrar(columna: any, simbolo: str, valor: any, *args) -> any:
         raise TypeError
     if type(columna) is list:
         columna = iter(columna)
-    if not "__iter__" in dir(columna):
+    if "__iter__" not in dir(columna):
         raise TypeError
     if simbolo == "<":
         return filter(lambda x: x < valor, columna)

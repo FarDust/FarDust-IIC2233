@@ -126,12 +126,13 @@ class TestMEDIAN(unittest.TestCase):
             (self.numbers_int[len(self.numbers_int) // 2 - 1], self.numbers_int[len(self.numbers_int) // 2])) if len(
             self.numbers_int) % 2 == 0 else self.numbers_int[len(self.numbers_int) // 2])
         self.assertEqual(comandos["MEDIAN"](self.numbers_float), comandos["PROM"](
-            (self.numbers_float[len(self.numbers_float) // 2 - 1], self.numbers_float[len(self.numbers_float) // 2])) if len(
+            (self.numbers_float[len(self.numbers_float) // 2 - 1],
+             self.numbers_float[len(self.numbers_float) // 2])) if len(
             self.numbers_float) % 2 == 0 else self.numbers_float[len(self.numbers_float) // 2])
 
     @unittest.expectedFailure
     def test_argumento_invalido(self):
-        comandos["MEDIAN"](self.numbers_float,2)
+        comandos["MEDIAN"](self.numbers_float, 2)
 
     def test_referencia_inavalida(self):
         text = interpretar(["MEDIAN", "q"], False)
@@ -148,18 +149,19 @@ class TestMEDIAN(unittest.TestCase):
     def test_invalid_comand(self):
         pass
 
+
 class TestVAR(unittest.TestCase):
     def setUp(self):
         self.numbers_float = list(float(x * random()) for x in range(0, randint(1, 1000)))
         self.numbers_int = list(x for x in range(0, randint(1, 1000)))
 
     def test_resultado(self):
-        self.assertEqual(comandos["VAR"](self.numbers_int),(comandos["DESV"](self.numbers_int))**2)
+        self.assertEqual(comandos["VAR"](self.numbers_int), (comandos["DESV"](self.numbers_int)) ** 2)
         self.assertEqual(comandos["VAR"](self.numbers_float), (comandos["DESV"](self.numbers_float)) ** 2)
 
     @unittest.expectedFailure
     def test_argumento_invalido(self):
-        comandos["VAR"](self.numbers_float,2)
+        comandos["VAR"](self.numbers_float, 2)
 
     def test_referencia_inavalida(self):
         text = interpretar(["VAR", "q"], False)
@@ -177,18 +179,19 @@ class TestVAR(unittest.TestCase):
     def test_invalid_comand(self):
         pass
 
+
 class TestDESV(unittest.TestCase):
     def setUp(self):
         self.numbers_float = list(float(x * random()) for x in range(0, randint(1, 1000)))
         self.numbers_int = list(x for x in range(0, randint(1, 1000)))
 
     def test_resultado(self):
-        self.assertEqual(comandos["DESV"](self.numbers_int),(comandos["VAR"](self.numbers_int))**(1/2))
-        self.assertEqual(comandos["DESV"](self.numbers_float), (comandos["VAR"](self.numbers_float)) ** (1/2))
+        self.assertEqual(comandos["DESV"](self.numbers_int), (comandos["VAR"](self.numbers_int)) ** (1 / 2))
+        self.assertEqual(comandos["DESV"](self.numbers_float), (comandos["VAR"](self.numbers_float)) ** (1 / 2))
 
     @unittest.expectedFailure
     def test_argumento_invalido(self):
-        comandos["DESV"](self.numbers_float,2)
+        comandos["DESV"](self.numbers_float, 2)
 
     def test_referencia_inavalida(self):
         text = interpretar(["DESV", "q"], False)
@@ -205,6 +208,7 @@ class TestDESV(unittest.TestCase):
 
     def test_invalid_comand(self):
         pass
+
 
 if __name__ == "__main__":
     unittest.main()
