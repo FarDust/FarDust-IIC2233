@@ -21,7 +21,7 @@ class T03Window(MyWindow):
         # Agrega en pantalla la solución. Muestra los graficos!!
         try:
             respuestas = [interpretar([consulta], graph=True)[0] for consulta in querry_array]
-            [self.add_answer("----Consulta {}----\n{}\n".format(next(self.consulta), respuesta)) for respuesta in
+            [self.add_answer("\n----Consulta {}----\n{}\n".format(next(self.consulta), respuesta)) for respuesta in
              respuestas]
         # Solo por razones de debug para que la ventana no caiga.
         except Exception as err:
@@ -32,7 +32,7 @@ class T03Window(MyWindow):
         try:
             respuestas = interpretar(querry_array, False)
             with open("resultados.txt", "w") as archivo:
-                [archivo.write("----Consulta {}----\n{}\n".format(next(self.consulta), respuesta)) for respuesta
+                [archivo.write("\n------Consulta {}------\n{}\n".format(next(self.consulta), respuesta)) for respuesta
                  in respuestas]
                 archivo.close()
         # Solo por razones de debug para que la ventana no caiga.

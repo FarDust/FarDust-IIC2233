@@ -23,6 +23,8 @@ def crear_funcion(*args):
 
 
 def normal(u, o):
+    if o <= 0:
+        raise InvalidArgument
     def normalizado(x):
         return (1 / (2 * pi * o ** 2) ** (1 / 2)) * e ** ((-1 / 2) * ((x - u) / o) ** 2)
 
