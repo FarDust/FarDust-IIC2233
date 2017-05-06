@@ -127,7 +127,7 @@ def evaluar(funcion: any, inicio: any, final: any, intervalo: any, *args) -> any
         raise ZeroDivisionError
     if len(args) > 0:
         raise InvalidArgument
-    if not "__call__" in dir(funcion):
+    if "__call__" not in dir(funcion):
         raise InvalidCommand
     if "__call__" not in dir(funcion):
         raise TypeError

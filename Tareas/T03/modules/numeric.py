@@ -18,6 +18,12 @@ def prom(datos: any, *args) -> float:
     :param datos: Columna
     :return: float
     """
+    datos = tee(datos)
+    try:
+        [i for i in datos[0]]
+    except:
+        raise TypeError
+    datos = datos[1]
     if "__iter__" in dir(datos):
         gen = tee(datos)
         (datos, land) = (gen[0], long(gen[1]))
@@ -35,6 +41,12 @@ def desv(datos: any, *args) -> float:
     :param datos: Columna
     :return: float
     """
+    datos = tee(datos)
+    try:
+        [i for i in datos[0]]
+    except:
+        raise TypeError
+    datos = datos[1]
     if type(datos) is list:
         datos = iter(datos)
     if "__iter__" in dir(datos):
@@ -56,6 +68,12 @@ def median(datos: any, *args) -> any:
     :param datos: Columna
     :return: int or float
     """
+    datos = tee(datos)
+    try:
+        [i for i in datos[0]]
+    except:
+        raise TypeError
+    datos = datos[1]
     if "__iter__" in dir(datos):
         gen = tee(datos)
         (datos, land) = (gen[0], long(gen[1]))
