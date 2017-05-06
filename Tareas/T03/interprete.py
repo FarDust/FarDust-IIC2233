@@ -4,6 +4,7 @@ from modules.basic import basics, asignar
 from modules.datos import datos
 from itertools import tee
 from errors import InvalidArgument, InvalidRef, InvalidCommand
+from time import time
 
 
 def comprobar(interprete):
@@ -15,6 +16,7 @@ def comprobar(interprete):
 
 @comprobar
 def interpretar(consulta, graph=False) -> any:
+    inicio = time()
     if __name__ == "__main__":
         print("-----------------------------------")
         print("Entrando a la consulta: ", consulta, "|tipo:", type(consulta))
@@ -72,6 +74,8 @@ def interpretar(consulta, graph=False) -> any:
         respuesta = tuple(
             str(i[1]) + "\n" + str(i[0]) for i in
             zip(tuple(interpretar(nodo, graph) for nodo in consulta), tuple(respaldo)))
+        final = time()
+        respuesta = tuple(i+"\nTiempo: "+str(round(final-inicio,3))+" s" for i in respuesta)
         return respuesta
     else:
         return consulta
@@ -117,5 +121,5 @@ if __name__ == "__main__":
                       ['evaluar', ['crear_funcion', 'gamma', 2, 0.16666666666666666], 0, 40, 4e-05]],
                      ['comparar_columna', 'x', '>', 'DESV', 'gamma'], ['graficar', 'x', 'rango: 0.00004, 40, 0.00004'],
                      ['graficar', 'x', 'normalizado']], False)
-    print(asignar.values())
-    [print(i + "\n") for i in c]
+
+

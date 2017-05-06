@@ -1,15 +1,18 @@
 import unittest
-import modules.basic as basic
+from interprete import comandos
 from random import choice,randint,random
 
-class ChequearBasics(unittest.TestCase):
+class AsignarVariable(unittest.TestCase):
     def setUp(self):
+        self.var = comandos["asignar"]
         self.numbers_float = (float(x * random()) for x in range(0, randint(1, 1000)))
-        print(self.numbers_float)
         self.numbers_int = (x for x in range(0, randint(1, 1000)))
 
-    def test_asignar_numbers(self):
-        self.assertRaises(basic.asignar(choice(self.numbers_float), any))
+    def test_argumento_invalido(self):
+        
+        pass
+
+
 
     def test_asignar_real(self):
         pass
