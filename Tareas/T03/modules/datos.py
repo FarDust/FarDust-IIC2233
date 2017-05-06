@@ -51,7 +51,7 @@ def filtrar(columna: any, simbolo: str, valor: any, *args) -> any:
     :param valor: int or float
     :return: Columna
     """
-    if not (type(valor) is int or not type(valor) is float):
+    if not (type(valor) is int or type(valor) is float):
         raise TypeError
     if type(columna) is str:
         raise TypeError
@@ -72,7 +72,7 @@ def filtrar(columna: any, simbolo: str, valor: any, *args) -> any:
     elif simbolo == "!=":
         return filter(lambda x: x != valor, columna)
     else:
-        raise TypeError
+        raise InvalidCommand
 
 
 def operar(columna: any, simbolo: str, valor: any, *args) -> any:
@@ -123,8 +123,12 @@ def evaluar(funcion: any, inicio: any, final: any, intervalo: any, *args) -> any
     :param intervalo: int or float
     :return: Columna
     """
+    if intervalo == 0:
+        raise ZeroDivisionError
     if len(args) > 0:
         raise InvalidArgument
+    if not "__call__" in dir(funcion):
+        raise InvalidCommand
     if "__call__" not in dir(funcion):
         raise TypeError
     if not (type(inicio) is int or type(inicio) is float):

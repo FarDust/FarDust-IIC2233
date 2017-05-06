@@ -121,5 +121,6 @@ if __name__ == "__main__":
                       ['evaluar', ['crear_funcion', 'gamma', 2, 0.16666666666666666], 0, 40, 4e-05]],
                      ['comparar_columna', 'x', '>', 'DESV', 'gamma'], ['graficar', 'x', 'rango: 0.00004, 40, 0.00004'],
                      ['graficar', 'x', 'normalizado']], False)
+    print(interpretar(["filtrar","x"],False))
 
 
