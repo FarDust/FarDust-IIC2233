@@ -1,4 +1,6 @@
-def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any) -> any:
+from errors import InvalidArgument
+
+def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any,*args) -> any:
     """
     
     :param columna_1: Columna
@@ -7,6 +9,8 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any)
     :param columna_2: Columna
     :return: any 
     """
+    if len(args) > 0:
+        raise InvalidArgument
     from itertools import tee
     columna_1 = iter(columna_1)
     columna_2 = iter(columna_2)
@@ -15,14 +19,14 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any)
     columna_2 = gen[2]
     from modules.numeric import numeric
     if comando not in numeric.keys():
-        raise TypeError("Error de tipo")
+        raise TypeError
     try:
         if len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[1]]))) != 0:
-            raise TypeError("Error de tipo")
+            raise TypeError
         elif len(list(filter(lambda x: not (type(x) == float or type(x) == int), [i for i in gen[3]]))) != 0:
-            raise TypeError("Error de tipo")
+            raise TypeError
     except IndexError:
-        raise TypeError("Error de tipo")
+        raise TypeError
     if simbolo == "<":
         return numeric[comando](columna_1) < numeric[comando](columna_2)
     elif simbolo == ">":
@@ -36,10 +40,10 @@ def comparar_columna(columna_1: any, simbolo: str, comando: str, columna_2: any)
     elif simbolo == "!=":
         return numeric[comando](columna_1) != numeric[comando](columna_2)
     else:
-        raise TypeError("Error de tipo")
+        raise TypeError
 
 
-def comparar(numero_1: any, simbolo: str, numero_2: any) -> any:
+def comparar(numero_1: any, simbolo: str, numero_2: any,*args) -> any:
     """
     
     :param numero_1: int or float
@@ -47,6 +51,8 @@ def comparar(numero_1: any, simbolo: str, numero_2: any) -> any:
     :param numero_2: int or float
     :return: any
     """
+    if len(args) > 0:
+        raise InvalidArgument
     if simbolo == "<":
         return numero_1 < numero_2
     elif simbolo == ">":
@@ -60,7 +66,7 @@ def comparar(numero_1: any, simbolo: str, numero_2: any) -> any:
     elif simbolo == "!=":
         return numero_1 != numero_2
     else:
-        raise TypeError("Error de tipo")
+        raise TypeError
 
 boolean = {"comparar": comparar, "comparar_columna": comparar_columna}
 

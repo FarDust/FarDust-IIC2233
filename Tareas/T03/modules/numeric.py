@@ -5,7 +5,7 @@ from itertools import tee
 def arguments(funcion):
     def _arguments(datos, *args):
         if len(args) != 0:
-            raise InvalidArgument("")
+            raise InvalidArgument
         return funcion(datos)
 
     return _arguments
@@ -23,6 +23,8 @@ def prom(datos: any, *args) -> float:
         (datos, land) = (gen[0], long(gen[1]))
     else:
         land = long(datos)
+    if land == 0:
+        raise ZeroDivisionError
     return float(sum(datos) / land)
 
 
@@ -42,6 +44,8 @@ def desv(datos: any, *args) -> float:
         land = long(datos)
     datos = tee(datos)
     promedium = prom(datos[1])
+    if (land - 1) == 0:
+        raise ZeroDivisionError
     return float(sum([(next(datos[0]) - promedium) ** 2 for i in range(0, land)]) / (land - 1)) ** (1 / 2)
 
 
@@ -57,10 +61,11 @@ def median(datos: any, *args) -> any:
         (datos, land) = (gen[0], long(gen[1]))
     else:
         land = long(datos)
+    if land == 0:
+        return None
     datos = list(datos)
     respuesta = prom((datos[land // 2 - 1], datos[land // 2])) if land % 2 == 0 else datos[land // 2]
     datos.clear()
-    datos = None
     return respuesta
 
 
@@ -71,6 +76,7 @@ def var(datos: any, *args) -> float:
     :param datos: Columna
     :return: float
     """
+
     return desv(datos) ** 2
 
 

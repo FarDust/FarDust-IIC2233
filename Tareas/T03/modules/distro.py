@@ -1,5 +1,7 @@
 from errors import InvalidArgument
 from math import e, pi
+from sys import setrecursionlimit
+setrecursionlimit(999)
 
 
 def crear_funcion(*args):
@@ -17,7 +19,7 @@ def crear_funcion(*args):
             raise InvalidArgument("crear_funcion({})".format(save))
         return respuesta
     else:
-        raise TypeError("Error de tipo")
+        raise TypeError
 
 
 def normal(u, o):
@@ -39,7 +41,7 @@ def exponencial(v):
     return exponential
 
 
-def gamma(v, k):
+def gamma(v,k):
     def gam(x):
         if x < 0:
             raise InvalidArgument
@@ -49,8 +51,9 @@ def gamma(v, k):
 
 
 def factorial(x):
-    if x == 0:
+    if x <= 0:
         return 1
+
     return x * factorial(x - 1)
 
 

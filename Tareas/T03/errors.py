@@ -1,10 +1,13 @@
 class InvalidArgument(Exception):
-    def __init__(self,comando: str) -> None:
-        super().__init__("Error de consulta: {}\nCausa: Argumento invalido\n".format(comando))
+    def __init__(self, mesaje=""):
+        super().__init__(mesaje)
+
 
 class InvalidRef(Exception):
-    def __init__(self,comando: str) -> None:
-        super().__init__("Error de consulta: {}\nCausa: Referencia invalida\n".format(comando))
+    def __init__(self, mesaje="") -> None:
+        super().__init__(mesaje)
+
 
 class InvalidCommand(Exception):
-    pass
+    def __init__(self, mesaje="") -> None:
+        super().__init__(mesaje)
