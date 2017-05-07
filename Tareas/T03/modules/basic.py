@@ -1,6 +1,7 @@
 from modules.boolean import boolean
 from modules.numeric import numeric
 from modules.distro import crear_funcion
+from modules.datos import datos
 from errors import InvalidCommand, InvalidArgument, InvalidRef
 from itertools import tee
 
@@ -71,10 +72,11 @@ basics = {"asignar": asign, "crear_funcion": crear_funcion, "graficar": graficar
 asignar = {}
 functions = {}
 
-[keys.update(dic) for dic in (basics, boolean, numeric)]
+[keys.update(dic) for dic in (basics, boolean, numeric, datos)]
 keys = keys.keys()
 
 if __name__ == "__main__":
+    print(keys)
     import matplotlib.pyplot as plt
 
     graficar([10, 12, 13], "rango:-3,5,0.1")
