@@ -42,7 +42,7 @@ class Persona(Thread):
         self.hp = randint(80, 120)
         self.pieza_actual = inicio
         self.resistencia = randint(1, 3)
-        self.daemon = True
+        self.setDaemon(True)
         self.start()
 
     def run(self):
@@ -50,11 +50,13 @@ class Persona(Thread):
         tiempo_inicial = time()
         inicial = self.pieza_actual.id
         infeccion = Thread(target=self.infeccion, daemon=True)
+        block = False
         infeccion.start()
         while self.hp > 0:
             t_actual = time()
-            if self.pieza_actual.id == "60":
+            if self.pieza_actual.id == "60" and block == False:
                 log("{} - {} - {}".format(self,time(),time()-tiempo_inicial))
+                block = True
             if t_actual - last_election > randint(1, 3):
                 if len(self.pieza_actual.conexiones):
                     eleccion = choice(self.pieza_actual.conexiones)
@@ -114,7 +116,6 @@ class Spawner(Thread):
                 print("{} entro al laberinto en t = {}".format(self.laberinto.personas[-1], time() - t0))
                 eventos.append(time() - t0 + round(expovariate(1 / 5) + 0.5))
                 eventos.pop(0)
-        pass
 
     def crear_persona(self):
         self.laberinto.personas.append(
