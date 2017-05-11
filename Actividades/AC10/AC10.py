@@ -87,10 +87,12 @@ class Barrendero(Thread):
         self.start()
 
     def run(self):
+        self.contador = 0
         while True:
             for persona in self.laberinto.personas:
                 if not persona.isAlive():
                     print("cadaver de la {} removid@".format(persona))
+                    self.contador += 1
                     self.laberinto.personas.remove(persona)
 
 
@@ -128,4 +130,4 @@ l = Laberinto()
 k = Spawner(l)
 barrendero = Barrendero(l)
 k.join()
-log("{} - {} - {}")
+log("Muertos: {}".format(barrendero.contador))
