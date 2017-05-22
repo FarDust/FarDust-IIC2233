@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 from collections import deque
 from random import randint, random, choice
-
+from modules.log import log
 
 class Persona:
     def __init__(self, nombre: str, tipo="persona") -> None:
@@ -49,14 +49,24 @@ class Alumno(Persona, metaclass=Parlelismo):
         self.contents = dict()
         self._contents_lvl = dict()
         self._set_credits()
+        self._set_horas_semana()
         self.poketrainer_lvl = randint(1, 100)
         self.programing_lvl = randint(2, 10)
-        self.acupaciones = deque()
-        self.week = {"profesor": False, "fierta": False}
+        self.ocupaciones = deque()
+        self.week = {"profesor": False, "fiesta": False}
+        self.fiesta_countdown = 0
         self.atenticion = random()
+        self.actividades = set()
+        self.tarea_actual = None
+        self.enfoque = None
 
     @property
-    def horas(self):
+    def horas(self) -> tuple:
+        """
+        
+        :return: Rango de horas en la semana disponibles
+        :type: tuple
+        """
         if self.creditos == 40:
             return 10, 25
         elif self.creditos == 55:
@@ -67,6 +77,17 @@ class Alumno(Persona, metaclass=Parlelismo):
             return 5, 10
 
     def _set_credits(self, p60=0.05, p40=0.1, p55=0.15, p50=0.7):
+        """
+        
+        :param p60: propabilidad 60 creditos
+        :type: p60: float
+        :param p40: propabilidad 40 creditos
+        :type: p40: float
+        :param p55: propabilidad 55 creditos
+        :type: p55: float
+        :param p50: propabilidad 50 creditos
+        :type: p50: float
+        """
         n = random()
         if n < p60:
             self.creditos = 60
@@ -77,13 +98,21 @@ class Alumno(Persona, metaclass=Parlelismo):
         elif n < p60 + p40 + p55 + p50:
             self.creditos = 50
 
-    def aprender(self, content_name: str, dificultad: int):
+    def aprender(self, content_name: str, dificultad: int) -> None:
+        """
+        Funcion encargada de adquirir conocimientos
+        
+        :param content_name: nombre del contenido 
+        :type content_name: str
+        :param dificultad: dificultad del contenido
+        :type: int
+        """
         if content_name not in self.contents.keys():
             self.contents[content_name] = self._content_management(content_name, dificultad)
             self._contents_lvl[content_name] = 0
 
     def _content_management(self, content_name: str, dificultad: int):
-        def content(horas: float):
+        def content(horas: float = 0.0):
             self._contents_lvl[content_name] += (1 / dificultad) * horas
             return self._contents_lvl[content_name]
 
@@ -92,13 +121,68 @@ class Alumno(Persona, metaclass=Parlelismo):
     def bonus(self, materia: str, bonus: float):
         self._contents_lvl[materia] = self._contents_lvl[materia] * bonus
 
-    def lvl_up(self):
+    def _lvl_up(self):
         self.programing_lvl = 1.05 * (
             1 + (0.08 if self.week["profesor"] else 0) - (0.15 if self.week["fiesta"] else 0)) * self.programing_lvl
-        # Reinicia el buff2er interno de eventos de la semana
+        # Reinicia el buffer interno de eventos de la semana
         for i in self.week.keys():
             self.week[i] = False
+        log("programing lvl: {}".format(self.programing_lvl), "alumnos/{}".format(self.name))
 
+    def _get_activity(self, actividad):
+        self.actividades.add(actividad)
+
+    def resolver_actividad(self, actividad):
+        if not any(tuple(type(work) == type(actividad) for work in self.actividades)):
+            self._get_activity(actividad)
+
+        def progress(content, programming, confianza):
+            return content * self.contents[
+                actividad.materia]() + programming * self.programing_lvl + confianza * self.confianza
+
+        actividad.progress_pep = progress(.7, .2, .1)
+        actividad.progress_cont = progress(.7, .2, .1)
+        actividad.progress_func = progress(.3, .6, .1)
+        return actividad
+
+    def resibir_tarea(self, tarea):
+        self.tarea_actual = tarea
+        pass
+
+    def entregar_tarea(self):
+        tarea = self.tarea_actual
+        self.tarea_actual = None
+        return tarea
+
+    def _trabajar_tarea(self):
+        if self.tarea_actual:
+            self.horas_disponibles_semana -= (self.horas_disponibles_semana / 7) * .7
+            self.contents[self.enfoque]((self.horas_disponibles_semana / 7) * .7)
+        pass
+
+    def _set_horas_semana(self):
+        self.horas_disponibles_semana = randint(*self.horas)
+
+    def _estudiar_materia(self):
+        self.horas_disponibles_semana -= (self.horas_disponibles_semana / 7) * .3
+        self.contents[self.enfoque]((self.horas_disponibles_semana / 7) * .3)
+
+    def calcular_semana(self, materia):
+        self._lvl_up()
+        self._set_horas_semana()
+        self.enfoque = materia
+        return self.programar_dia
+
+    def programar_dia(self):
+
+        if self.fiesta_countdown == 0:
+            self.ocupaciones.append(self._estudiar_materia)
+            self.ocupaciones.append(self._trabajar_tarea)
+        else:
+            self.fiesta_countdown -= 1
+
+    def exec_dia(self):
+        [ocupacion() for ocupacion in self.ocupaciones]
 
 class Profesor(Persona):
     def __init__(self, nombre: str, seccion: int):
@@ -143,8 +227,16 @@ class Docencio(Ayudante):
 class Coordinardor(Persona):
     def __init__(self, nombre):
         super().__init__(nombre, tipo="Coordinador")
+        self.notas = dict()
 
+    def recibir_notas(self, evaluaciones):
+        self.notas[evaluaciones[0].name] = evaluaciones
 
 if __name__ == "__main__":
     gabriel = Alumno("gabriel", 2)
     gabriel.aprender("funcional", 2)
+    from objects.evaluaciones import Actividad
+
+    gabriel.aprender("gatos", 100000)
+    gabriel.resolver_actividad(Actividad(1, "gatos").getcopy())
+    print(gabriel.actividades)
