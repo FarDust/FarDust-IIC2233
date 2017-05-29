@@ -6,3 +6,4 @@ class Objects():
         if self.maxhealth == 0:
             self.inmune = True
         self.currenthealth = maxhealth
+

@@ -1,5 +1,5 @@
 class Spell:
-    def __init__(self,name, efect, cooldown: int = 0):
+    def __init__(self, name, efect, cooldown: int = 0):
         self.name = name
         self.efect = efect
         self.cooldown = cooldown
@@ -7,14 +7,12 @@ class Spell:
     def launch(self):
         self.efect()
 
+
 def alto_ahi():
     pass
+
 
 spells = {
     "alto ahi!!!": alto_ahi
 
-
-
-
 }
-
