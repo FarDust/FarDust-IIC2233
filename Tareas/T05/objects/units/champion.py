@@ -21,11 +21,11 @@ class Character(QThread):
         self.image.setPixmap(image)
         self.image.show()
         self.image.setVisible(True)
+        self.quarry = list()
         self.trigger.connect(parent.actualizar_jugador)
         # self.trigger.disconnect()
         self.__position = (0, 0)
         self.position = (x, y)
-        self.quarry = list()
         self.start()
 
     def run(self):
@@ -41,7 +41,7 @@ class Character(QThread):
     @position.setter
     def position(self, value):
         self.__position = value
-        self.trigger.emit(MoveMyImageEvent(self.image, self.position[0], self.position[1]))
+        self.trigger.emit(MoveMyImageEvent(self.image, self.position[0], self.position[1], self.quarry))
 
     def getImportartKeys(self, keylist):
         filtro = {37, 38, 39, 40}

@@ -53,7 +53,9 @@ class LeagueOfProgra(QMainWindow):
     @staticmethod
     def actualizar_jugador(myCharacter):
         label = myCharacter.image
+        print(myCharacter.quarry)
         label.move(myCharacter.x, myCharacter.y)
+
 
     def keyPressEvent(self, event):
         self.firstrelease = True
