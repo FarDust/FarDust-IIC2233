@@ -1,15 +1,21 @@
-from PyQt5.QtCore import QThread, QTimer, pyqtSignal, QObject
+from PyQt5.QtCore import QThread, QTimer, pyqtSignal, QObject, pyqtSlot
+
 from scripts.utils import distancia
-from scripts.attack import AttackEvent
+
+
+def identifier():
+    i = 0
+    while True:
+        yield i
+        i += 1
 
 
 class Map(QThread):
+    ids = identifier()
+
     def __init__(self, width: int, height: int):
         super().__init__()
         self.objects = list()
-        self.triggered = dict()
-        for i in self.objects:
-            self.triggered[i] = dict()
 
     @staticmethod
     def on_range(unit1, unit2):
@@ -19,26 +25,32 @@ class Map(QThread):
             return False
 
     def get_object(self, target):
+        target.setid(next(self.ids))
         self.objects.append(target)
-        self.triggered[target] = dict()
 
-    def attack_trigger(self):
+    # @pyqtSlot(name="attack")
+    def attack_trigger(self, unit1, attack):
+        print("resive {} from {}".format(attack, unit1.name))
+        if attack in unit1.posible_objetives:
+            unit2 = next(filter(lambda x: x.id == attack, self.objects))
+            print(unit1.name, "attacking ->", unit2.name)
+            if self.on_range(unit1, unit2):
+                unit1.trigger.connect(unit2.less_hp)
+        else:
+            print("Fail")
+
+    def attack_selector(self):
         for unit1 in self.objects:
             for unit2 in self.objects:
-                if self.on_range(unit1, unit2):
-                    unit1.triggers.append(pyqtSignal(AttackEvent))
-                    self.triggered[unit1][unit2] = unit1.triggers[-1]
-                    #unit1.triggers[-1].connect(unit2.less_hp)
-                    unit1.trigger.connect(unit2.less_hp)
-                elif unit2 in self.triggered[unit1].keys():
-                    signal = self.triggered[unit1][unit2]
-                    index = unit1.triggers.index(signal)
-                    unit1.triggers[index].disconnect()
-                    unit1.triggers.remove(signal)
+                if unit1 != unit2 and unit2.id not in unit1.posible_objetives and self.on_range(unit1, unit2):
+                    print(unit1.name, "added", unit2.name, "as objetive")
+                    unit1.posible_objetives.append(unit2.id)
+                elif not self.on_range(unit1, unit2) and unit2.id in unit1.posible_objetives:
+                    unit1.posible_objetives.remove(unit2.id)
 
     def run(self):
         while True:
-            self.attack_trigger()
+            self.attack_selector()
 
 
 if __name__ == '__main__':

@@ -20,13 +20,7 @@ def right(unit):
 def left(unit):
     unit.position = (unit.position[0] - unit.mov_speed, unit.position[1])
 
+move = {40: down,38: up,39: right, 37: left}
 
 def movement_listener(player, keys):
-    if 40 in keys:
-        down(player)
-    elif 38 in keys:
-        up(player)
-    elif 39 in keys:
-        right(player)
-    elif 37 in keys:
-        left(player)
+    [move[key](player)for key in keys]
