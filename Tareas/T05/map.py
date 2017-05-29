@@ -30,11 +30,11 @@ class Map(QThread):
 
     # @pyqtSlot(name="attack")
     def attack_trigger(self, unit1, attack):
-        print("resive {} from {}".format(attack, unit1.name))
         if attack in unit1.posible_objetives:
             unit2 = next(filter(lambda x: x.id == attack, self.objects))
-            print(unit1.name, "attacking ->", unit2.name)
-            if self.on_range(unit1, unit2):
+            if self.on_range(unit1, unit2) and not unit1.death:
+                print("get {} from {}".format(attack, unit1.name))
+                print(unit1.name, "attacking ->", unit2.name)
                 unit1.trigger.connect(unit2.less_hp)
         else:
             print("Fail")
@@ -42,10 +42,12 @@ class Map(QThread):
     def attack_selector(self):
         for unit1 in self.objects:
             for unit2 in self.objects:
-                if unit1 != unit2 and unit2.id not in unit1.posible_objetives and self.on_range(unit1, unit2):
-                    print(unit1.name, "added", unit2.name, "as objetive")
+                if unit1 != unit2 and unit2.id not in unit1.posible_objetives and self.on_range(unit1, unit2) \
+                        and not unit2.death and not unit1.death:
+                    print(unit1.name, "add", unit2.name, "as objetive")
                     unit1.posible_objetives.append(unit2.id)
-                elif not self.on_range(unit1, unit2) and unit2.id in unit1.posible_objetives:
+                elif (not self.on_range(unit1, unit2) or unit2.death or unit1.death) and unit2.id in unit1.posible_objetives:
+                    print(unit1.name, "remove", unit2.name, "as objetive")
                     unit1.posible_objetives.remove(unit2.id)
 
     def run(self):
