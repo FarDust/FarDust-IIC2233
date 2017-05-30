@@ -1,9 +1,10 @@
 class MoveMyImageEvent():
-    def __init__(self, image, x, y, quarry):
+    def __init__(self, image, x, y, quarry, animation):
         self.image = image
         self.x = x
         self.y = y
-        self.quarry = quarry
+        self.quarry = quarry.copy()
+        self.animation = animation
 
 
 

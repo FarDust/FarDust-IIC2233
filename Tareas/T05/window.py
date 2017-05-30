@@ -1,7 +1,7 @@
 import sys
 
 from PyQt5.QtCore import QThread
-from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent
+from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QTransform, QImage
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QLabel, QDesktopWidget, QLayout, \
     QHBoxLayout, QVBoxLayout, QStyle
 from objects.units.champion import Character
@@ -36,12 +36,6 @@ class LeagueOfProgra(QMainWindow):
 
 
         window.player = Character(window, 130, 40, "resources/units/champions/hernan/individuals/1.png")
-        # Test player
-        # window.player = QLabel("player", window)
-        # window.player.setGeometry(50, 50, 25, 25)
-        # player = QPixmap("resources/test_player.png")
-        # player.scaled(25, 25)
-        # window.player.setPixmap(player)
 
         window.start_menu(50)
         window.firstrelease = False
@@ -53,9 +47,30 @@ class LeagueOfProgra(QMainWindow):
     @staticmethod
     def actualizar_jugador(myCharacter):
         label = myCharacter.image
-        print(myCharacter.quarry)
+        if 40 in myCharacter.quarry and 39 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["dr"])
+        elif 40 in myCharacter.quarry and 37 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["dl"])
+        elif 38 in myCharacter.quarry and 39 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["ur"])
+        elif 38 in myCharacter.quarry and 37 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["ul"])
+        elif 38 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["up"])
+        elif 40 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["down"])
+        elif 37 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["left"])
+        elif 39 in myCharacter.quarry:
+            pixmap = next(myCharacter.animation.normal["right"])
+        else:
+            pixmap = QImage(label.pixmap())
+        pixmap = QImage(pixmap)
+        pixmap.mirrored()
+        pix = QPixmap(pixmap)
+        label.setGeometry(myCharacter.x, myCharacter.y, pix.width(), pix.height())
+        label.setPixmap(pix)
         label.move(myCharacter.x, myCharacter.y)
-
 
     def keyPressEvent(self, event):
         self.firstrelease = True

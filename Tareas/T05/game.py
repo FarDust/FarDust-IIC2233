@@ -9,14 +9,12 @@ from objects.units.champion import Champion
 from objects.units.subditos import Minion
 from objects.buildings.tower import Tower
 
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     front = LeagueOfProgra(1900, 600)
     back = Map(600, 600)
-    a = Tower(1, 2, 200, 10, "Tower a", back,19)
-    b = Tower(1, 4, 200, 10, "Tower b", back,13)
+    a = Tower(1, 2, 200, 10, "Tower a", back, 19)
+    b = Tower(1, 4, 200, 10, "Tower b", back, 13)
     back.get_object(a)
     back.get_object(b)
     back.start()

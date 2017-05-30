@@ -4,6 +4,8 @@ from PyQt5.QtWidgets import QLabel
 
 from objects.units.units import Unit
 from scripts.movement import MoveMyImageEvent, movement_listener
+from resources.animation import player
+
 
 all_habilities = dict()
 
@@ -15,6 +17,7 @@ class Character(QThread):
         super().__init__()
         self.mov_speed = 2
         self.image = QLabel(parent)
+        self.animation = player
         image = QPixmap(imagen)
         image.scaled(25, 25)
         self.image.setGeometry(0, 0, image.width(), image.height())
@@ -23,7 +26,6 @@ class Character(QThread):
         self.image.setVisible(True)
         self.quarry = list()
         self.trigger.connect(parent.actualizar_jugador)
-        # self.trigger.disconnect()
         self.__position = (0, 0)
         self.position = (x, y)
         self.start()
@@ -41,7 +43,7 @@ class Character(QThread):
     @position.setter
     def position(self, value):
         self.__position = value
-        self.trigger.emit(MoveMyImageEvent(self.image, self.position[0], self.position[1], self.quarry))
+        self.trigger.emit(MoveMyImageEvent(self.image, self.position[0], self.position[1], self.quarry, self.animation))
 
     def getImportartKeys(self, keylist):
         filtro = {37, 38, 39, 40}
