@@ -51,22 +51,23 @@ class LeagueOfProgra(QMainWindow):
             pixmap = next(myCharacter.animation.normal["dr"])
         elif 40 in myCharacter.quarry and 37 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["dl"])
+            pixmap = QImage(pixmap).mirrored(True, False)
         elif 38 in myCharacter.quarry and 39 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["ur"])
         elif 38 in myCharacter.quarry and 37 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["ul"])
+            pixmap = QImage(pixmap).mirrored(True, False)
         elif 38 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["up"])
         elif 40 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["down"])
         elif 37 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["left"])
+            pixmap = QImage(pixmap).mirrored(True,False)
         elif 39 in myCharacter.quarry:
             pixmap = next(myCharacter.animation.normal["right"])
         else:
             pixmap = QImage(label.pixmap())
-        pixmap = QImage(pixmap)
-        pixmap.mirrored()
         pix = QPixmap(pixmap)
         label.setGeometry(myCharacter.x, myCharacter.y, pix.width(), pix.height())
         label.setPixmap(pix)
