@@ -1,9 +1,10 @@
 import sys
 
-from PyQt5.QtCore import QThread
-from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QTransform, QImage
+from PyQt5.QtCore import QThread, QEvent, QPoint, pyqtSignal
+from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QTransform, QImage, QCursor
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QLabel, QDesktopWidget, QLayout, \
     QHBoxLayout, QVBoxLayout, QStyle
+
 from objects.units.champion import Character
 
 
@@ -17,6 +18,9 @@ def read_styles(path: str, window):
 
 
 class LeagueOfProgra(QMainWindow):
+    cursor = pyqtSignal(tuple)
+    key_event = pyqtSignal(list)
+
     def __init__(window, width, height):
         super().__init__()
         read_styles("styles/master.css", window)
@@ -34,8 +38,8 @@ class LeagueOfProgra(QMainWindow):
         window.background.setPixmap(background_image)
         # Cierre del mapa de fondo
 
-
-        window.player = Character(window, 130, 40, "resources/units/champions/hernan/individuals/1.png")
+        # window.player = Character(window, 130, 40, "resources/units/champions/hernan/individuals/1.png")
+        window.setMouseTracking(True)
 
         window.start_menu(50)
         window.firstrelease = False
@@ -45,33 +49,33 @@ class LeagueOfProgra(QMainWindow):
         self.menu = StartMenu(self, size)
 
     @staticmethod
-    def actualizar_jugador(myCharacter):
-        label = myCharacter.image
-        if 40 in myCharacter.quarry and 39 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["dr"])
-        elif 40 in myCharacter.quarry and 37 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["dl"])
+    def actualizar_jugador(character):
+        label = character.image
+        if 40 in character.quarry and 39 in character.quarry:
+            pixmap = next(character.animation.normal["dr"])
+        elif 40 in character.quarry and 37 in character.quarry:
+            pixmap = next(character.animation.normal["dl"])
             pixmap = QImage(pixmap).mirrored(True, False)
-        elif 38 in myCharacter.quarry and 39 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["ur"])
-        elif 38 in myCharacter.quarry and 37 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["ul"])
+        elif 38 in character.quarry and 39 in character.quarry:
+            pixmap = next(character.animation.normal["ur"])
+        elif 38 in character.quarry and 37 in character.quarry:
+            pixmap = next(character.animation.normal["ul"])
             pixmap = QImage(pixmap).mirrored(True, False)
-        elif 38 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["up"])
-        elif 40 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["down"])
-        elif 37 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["left"])
-            pixmap = QImage(pixmap).mirrored(True,False)
-        elif 39 in myCharacter.quarry:
-            pixmap = next(myCharacter.animation.normal["right"])
+        elif 38 in character.quarry:
+            pixmap = next(character.animation.normal["up"])
+        elif 40 in character.quarry:
+            pixmap = next(character.animation.normal["down"])
+        elif 37 in character.quarry:
+            pixmap = next(character.animation.normal["left"])
+            pixmap = QImage(pixmap).mirrored(True, False)
+        elif 39 in character.quarry:
+            pixmap = next(character.animation.normal["right"])
         else:
             pixmap = QImage(label.pixmap())
         pix = QPixmap(pixmap)
-        label.setGeometry(myCharacter.x, myCharacter.y, pix.width(), pix.height())
+        label.setGeometry(character.x, character.y, pix.width(), pix.height())
         label.setPixmap(pix)
-        label.move(myCharacter.x, myCharacter.y)
+        label.move(character.x, character.y)
 
     def keyPressEvent(self, event):
         self.firstrelease = True
@@ -87,6 +91,12 @@ class LeagueOfProgra(QMainWindow):
 
     def processmultikeys(self, keyspressed):
         self.player.getImportartKeys(keyspressed)
+
+    def eventFilter(self, source, event):
+        if event.type() == QEvent.MouseMove:
+            cursor = QCursor()
+            cursor = (cursor.pos().x(), cursor.pos().y())
+        return QMainWindow.eventFilter(self, source, event)
 
 
 class StartMenu(QWidget):

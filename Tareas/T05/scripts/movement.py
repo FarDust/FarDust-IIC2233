@@ -6,6 +6,9 @@ class MoveMyImageEvent():
         self.quarry = quarry.copy()
         self.animation = animation
 
+class MoveMyObjectEvent():
+    def __init__(self):
+        pass
 
 
 def up(unit):

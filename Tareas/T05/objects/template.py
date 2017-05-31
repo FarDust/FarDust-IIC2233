@@ -12,6 +12,10 @@ class Objects():
         self._regeneration = QTimer(self)
         self._regeneration.timeout.connect(self.regeneration)
         self._regeneration.start(1000)
+        self.id = None
+
+    def setid(self, value):
+        self.id = value
 
     def regeneration(self):
         if self.maxhealth > 0 and not self.death and self.currenthealth < self.maxhealth:

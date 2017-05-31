@@ -24,6 +24,10 @@ class Map(QThread):
         else:
             return False
 
+    @staticmethod
+    def move_player(movement_signal):
+        pass
+
     def get_object(self, target):
         target.setid(next(self.ids))
         self.objects.append(target)
@@ -46,7 +50,8 @@ class Map(QThread):
                         and not unit2.death and not unit1.death:
                     print(unit1.name, "add", unit2.name, "as objetive")
                     unit1.posible_objetives.append(unit2.id)
-                elif (not self.on_range(unit1, unit2) or unit2.death or unit1.death) and unit2.id in unit1.posible_objetives:
+                elif (not self.on_range(unit1,
+                                        unit2) or unit2.death or unit1.death) and unit2.id in unit1.posible_objetives:
                     print(unit1.name, "remove", unit2.name, "as objetive")
                     unit1.posible_objetives.remove(unit2.id)
 

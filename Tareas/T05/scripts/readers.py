@@ -4,6 +4,8 @@ def read_properties(path: str) -> dict:
         for line in arguments:
             temp = line.strip().replace(" ", "").replace("%20", " ").split("=")
             if len(temp) == 2:
+                if temp[1].isdigit():
+                    temp[1] = int(temp[1])
                 dictionary[temp[0]] = temp[1]
     return dictionary
 
