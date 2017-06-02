@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QLabel
 from objects.units.units import Unit
 from scripts.movement import MoveMyImageEvent, movement_listener
 from resources.animation import player
+from scripts.utils import distancia
 
 all_habilities = dict()
 
@@ -69,9 +70,25 @@ class Character(Champion):
         self.quarry = list(filter(lambda x: x in filtro, keylist))
 
     def move(self, rules):
-        cursor = rules.cursor
-
-        self.position = ()
+        print(rules.keys)
+        (factor, cofactor, reset) = (0, 0, 1)
+        if 38 in rules.keys or 87 in rules.keys:
+            factor = 1
+        elif 40 in rules.keys or 83 in rules.keys:
+            factor = -1
+        if 37 in rules.keys or 65 in rules.keys:
+            cofactor = 1
+            reset = -1
+        elif 39 in rules.keys or 68 in rules.keys:
+            cofactor = -1
+            reset = -1
+        (x2, y2) = rules.cursor
+        x1 = self.position[0]
+        y1 = self.position[1]
+        hip = distancia(x1, y1, x2, y2)
+        x = ((x2 - x1) / hip) * self.mov_speed * factor + ((y2 - y1) / hip) * self.mov_speed * cofactor
+        y = ((y2 - y1) / hip) * self.mov_speed * factor + ((x2 - x1) / hip) * self.mov_speed * cofactor
+        self.position = (x1 + x, y1 + y*reset)
 
 
 if __name__ == '__main__':

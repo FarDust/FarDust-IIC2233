@@ -19,7 +19,7 @@ def read_styles(path: str, window):
 
 
 class LeagueOfProgra(QMainWindow):
-    movement = pyqtSignal(tuple)
+    movement = pyqtSignal(PlayerKeysSender)
     key_event = pyqtSignal(list)
 
     def __init__(window, width, height):
