@@ -68,6 +68,11 @@ class Character(Champion):
         filtro = {37, 38, 39, 40}
         self.quarry = list(filter(lambda x: x in filtro, keylist))
 
+    def move(self, rules):
+        cursor = rules.cursor
+
+        self.position = ()
+
 
 if __name__ == '__main__':
     from scripts.readers import read_properties

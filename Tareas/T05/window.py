@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QLa
     QHBoxLayout, QVBoxLayout, QStyle
 
 from objects.units.champion import Character
-
+from scripts.animation import Animation
+from scripts.movement import PlayerKeysSender
 
 def read_styles(path: str, window):
     try:
@@ -18,7 +19,7 @@ def read_styles(path: str, window):
 
 
 class LeagueOfProgra(QMainWindow):
-    cursor = pyqtSignal(tuple)
+    movement = pyqtSignal(tuple)
     key_event = pyqtSignal(list)
 
     def __init__(window, width, height):
@@ -31,6 +32,8 @@ class LeagueOfProgra(QMainWindow):
         # Inicio de el mapa de fondo
         background_image = QPixmap("resources/map.jpg")
         b_size = (background_image.width(), background_image.height())
+        shield = Animation("resources/spells/shield/", window, 150)
+        shield.move(20, 20)
 
         window.background = QLabel("", window)
         window.background.move(270, 270)
@@ -44,6 +47,7 @@ class LeagueOfProgra(QMainWindow):
         window.start_menu(50)
         window.firstrelease = False
         window.keylist = list()
+        window.cursor = (0,0)
 
     def start_menu(self, size: int):
         self.menu = StartMenu(self, size)
@@ -90,12 +94,12 @@ class LeagueOfProgra(QMainWindow):
         del self.keylist[-1]
 
     def processmultikeys(self, keyspressed):
-        self.player.getImportartKeys(keyspressed)
+        self.movement.emit(PlayerKeysSender(self.cursor, keyspressed))
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove:
             cursor = QCursor()
-            cursor = (cursor.pos().x(), cursor.pos().y())
+            self.cursor = (cursor.pos().x(), cursor.pos().y())
         return QMainWindow.eventFilter(self, source, event)
 
 

@@ -6,6 +6,13 @@ class MoveMyImageEvent():
         self.quarry = quarry.copy()
         self.animation = animation
 
+
+class PlayerKeysSender():
+    def __init__(self, cursor: tuple, keys: list):
+        self.cursor = cursor
+        self.keys = keys
+
+
 class MoveMyObjectEvent():
     def __init__(self):
         pass
@@ -26,7 +33,9 @@ def right(unit):
 def left(unit):
     unit.position = (unit.position[0] - unit.mov_speed, unit.position[1])
 
-move = {40: down,38: up,39: right, 37: left}
+
+move = {40: down, 38: up, 39: right, 37: left}
+
 
 def movement_listener(player, keys):
-    [move[key](player)for key in keys]
+    [move[key](player) for key in keys]

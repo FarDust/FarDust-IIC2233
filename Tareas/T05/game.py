@@ -22,6 +22,6 @@ if __name__ == '__main__':
     b = Tower(1, 4, 200, 10, "Tower b", back, 13)
     back.get_object(a)
     back.get_object(b)
-    back.get_object(player)
+    back.get_player(player,front)
     back.start()
     sys.exit(app.exec_())

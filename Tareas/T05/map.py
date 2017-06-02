@@ -28,6 +28,10 @@ class Map(QThread):
     def move_player(movement_signal):
         pass
 
+    def get_player(self, target, front):
+        front.movement.connect(target.move)
+        self.get_object(target)
+
     def get_object(self, target):
         target.setid(next(self.ids))
         self.objects.append(target)
