@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSignal, QThread
+from PyQt5.QtCore import pyqtSignal, QThread, QTimer
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel
 
@@ -39,6 +39,7 @@ class Character(Champion):
         self.animation = player
         image = QPixmap(imagen)
         image.scaled(25, 25)
+        self.rules = None
         self.image.setGeometry(0, 0, image.width(), image.height())
         self.image.setPixmap(image)
         self.image.show()
@@ -47,10 +48,12 @@ class Character(Champion):
         self.trigger.connect(front.actualizar_jugador)
         self.__position = (0, 0)
         self.position = (x, y)
+        self.movement = QThread()
+        self.movement.__setattr__("run", self.move)
         self.start()
 
     def run(self):
-        super().run()
+        super().start()
         while True:
             if len(self.quarry) > 0:
                 movement_listener(self, self.quarry)
@@ -63,37 +66,43 @@ class Character(Champion):
     @position.setter
     def position(self, value):
         self.__position = value
-        self.trigger.emit(MoveMyImageEvent(self.image, self.position[0], self.position[1], self.quarry, self.animation))
+        if not self.rules:
+            rules = list()
+        else:
+            rules = self.rules.keys
+        self.trigger.emit(
+            MoveMyImageEvent(self.image, self.position[0], self.position[1], rules, self.animation))
 
-    def getImportartKeys(self, keylist):
-        filtro = {37, 38, 39, 40}
-        self.quarry = list(filter(lambda x: x in filtro, keylist))
+    def get_rules(self, rules):
+        self.rules = rules
+        self.movement.start()
 
-    def move(self, rules):
-        print(rules.keys)
-        (factor, cofactor, reset) = (0, 0, 1)
-        if 38 in rules.keys or 87 in rules.keys:
-            factor = 1
-        elif 40 in rules.keys or 83 in rules.keys:
-            factor = -1
-        if 37 in rules.keys or 65 in rules.keys:
-            cofactor = 1
-            reset = -1
-        elif 39 in rules.keys or 68 in rules.keys:
-            cofactor = -1
-            reset = -1
+    def move(self):
+        rules = self.rules
         (x2, y2) = rules.cursor
         x1 = self.position[0]
         y1 = self.position[1]
         hip = distancia(x1, y1, x2, y2)
-        x = ((x2 - x1) / hip) * self.mov_speed * factor + ((y2 - y1) / hip) * self.mov_speed * cofactor
-        y = ((y2 - y1) / hip) * self.mov_speed * factor + ((x2 - x1) / hip) * self.mov_speed * cofactor
-        self.position = (x1 + x, y1 + y*reset)
+
+        if 38 in rules.keys or 87 in rules.keys:
+            x = ((x2 - x1) / hip) * self.mov_speed * 1
+            y = ((y2 - y1) / hip) * self.mov_speed * 1
+            self.position = (x1 + x, y1 + y)
+        elif 40 in rules.keys or 83 in rules.keys:
+            x = ((x2 - x1) / hip) * self.mov_speed * -1
+            y = ((y2 - y1) / hip) * self.mov_speed * -1
+            self.position = (x1 + x, y1 + y)
+
+        if 37 in rules.keys or 65 in rules.keys:
+            x = ((y2 - y1) / hip) * self.mov_speed * 1
+            y = ((x2 - x1) / hip) * self.mov_speed * 1
+            self.position = (x1 + x, y1 - y)
+        elif 39 in rules.keys or 68 in rules.keys:
+            x = ((y2 - y1) / hip) * self.mov_speed * -1
+            y = ((x2 - x1) / hip) * self.mov_speed * -1
+            self.position = (x1 + x, y1 - y)
 
 
 if __name__ == '__main__':
-    from scripts.readers import read_properties
-
     test = {"gato": "100"}
     champ = Champion(**test)
-    # Champion(**read_properties(path))

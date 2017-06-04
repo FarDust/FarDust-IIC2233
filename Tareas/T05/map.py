@@ -29,7 +29,7 @@ class Map(QThread):
         pass
 
     def get_player(self, target, front):
-        front.movement.connect(target.move)
+        front.movement.connect(target.get_rules)
         self.get_object(target)
 
     def get_object(self, target):
