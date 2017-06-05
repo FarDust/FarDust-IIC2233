@@ -19,7 +19,11 @@ class Map(QThread):
 
     @staticmethod
     def on_range(unit1, unit2):
-        if unit1 != unit2 and distancia(*unit1.pos, *unit2.pos) <= unit1.atk_range:
+        x1 = unit1.pos[0] + unit1.image.width() // 2
+        y1 = unit1.pos[1] + 5 * unit1.image.height() // 6
+        x2 = unit1.pos[0] + unit2.image.width() // 2
+        y2 = unit2.pos[1] + 5 * unit2.image.height() // 6
+        if unit1 != unit2 and distancia(x1, y1, x2, y2) <= unit1.atk_range:
             return True
         else:
             return False

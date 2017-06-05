@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QLabel
 
 from objects.units.units import Unit
 from scripts.movement import MoveMyImageEvent, movement_listener
-from resources.animation import player
+from IMGS.animation import player
 from scripts.utils import distancia
 
 all_habilities = dict()
@@ -63,6 +63,7 @@ class Character(Champion):
     @position.setter
     def position(self, value):
         self.__position = value
+        self.pos = (value[0], value[1])
         if not self.rules:
             rules = list()
         else:

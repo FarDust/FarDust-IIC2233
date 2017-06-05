@@ -7,15 +7,15 @@ from objects.template import Objects
 class Inhibitor(QThread, Objects):
     super_minions = pyqtSignal(bool)
 
-    def __init__(self, front, x, y, maxhealth=1000):
+    def __init__(self, front, x, y, maxhealth=600):
         super().__init__(pos=(x, y), maxhealth=maxhealth)
         self.image = QLabel("", front)
-        image = QPixmap("resources/buildings/inhibitor.png")
+        image = QPixmap("IMGS/buildings/inhibitor.png")
         image = image.scaled(image.width() * 0.6, image.height() * 0.6)
         self.image.setGeometry(x, y, image.width(), image.height())
         self.image.setPixmap(image)
         self.release = True
-        self.spawn_event = ReSpawn(self, 60)
+        self.spawn_event = ReSpawn(self, 30)
         self.start()
 
     def run(self):
@@ -34,11 +34,11 @@ class ReSpawn(QTimer):
 
     def set(self):
         self.parent.release = False
-        self.parent.respawn.super_minions.emit(True)
+        self.parent.super_minions.emit(True)
         self.start()
 
     def internal_init(self):
-        self.parent.respawn.super_minions.emit(False)
+        self.parent.super_minions.emit(False)
         self.parent.currenthealth = self.parent.maxhealth
         self.parent.release = True
 

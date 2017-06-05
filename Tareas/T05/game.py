@@ -18,14 +18,17 @@ if __name__ == '__main__':
     app.installEventFilter(front)
     back = Map(600, 600)
     champions = {"hernan": "data/champions/hernan"}
-    player = Character(front, 200, 200, "resources/units/champions/hernan/individuals/1.png",
+    player = Character(front, 836, 447, "IMGS/units/champions/hernan/individuals/1.png",
                        read_properties(champions["hernan"]))
     c = Nexo(front, 10, 10)
-    a = Tower(front, 876, 447, 200, 10, "Tower a", back, 19)
-    b = Tower(front, 90, 90, 200, 10, "Tower b", back, 13)
+    d = Nexo(front, 1259, 678)
+    a = Tower(front, 876, 447, back, "Tower a")
+    b = Tower(front, 293, 108, back, "Tower b")
+    #e = Tower(front, 836, 447, back)
     back.get_object(a)
     back.get_object(b)
     back.get_object(c)
+    #back.get_object(e)
     back.get_player(player, front)
     back.start()
     sys.exit(app.exec_())

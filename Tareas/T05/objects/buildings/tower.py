@@ -13,10 +13,11 @@ class Tower(QThread, Objects):
     trigger = pyqtSignal(AttackEvent)
     attacking = pyqtSignal(QThread, int)
 
-    def __init__(self,front , x, y, max_hp, atk_range, name, backend, atk_dmg):
+    def __init__(self, front, x, y, backend,name="default_tower", atk_range=40, atk_dmg=30, max_hp=250,**kwargs):
         super().__init__(pos=(x, y), maxhealth=max_hp)
-        image = QPixmap("resources/buildings/tower/0.png")
-        image = image.scaled(image.width()*0.8, image.height()*0.8)
+        image = QPixmap("IMGS/buildings/tower/0.png")
+        image = image.scaled(image.width() * 0.8, image.height() * 0.8)
+        self._regeneration.stop()
         self.image = QLabel("", front)
         self.image.setGeometry(x, y, image.width(), image.height())
         self.image.setPixmap(image)
@@ -32,7 +33,7 @@ class Tower(QThread, Objects):
         if self.currenthealth > 0 and not self.death:
             self.currenthealth -= min(amount.damage, self.currenthealth)
             print(self.name, "loss {} of life".format(amount.damage))
-            print(self.name,":",self.currenthealth)
+            print(self.name, ":", self.currenthealth)
 
     def attack(self, objetive):
         if not self.death:
@@ -45,4 +46,4 @@ class Tower(QThread, Objects):
         while True:
             if len(self.posible_objetives) > 0:
                 self.attack(choice(self.posible_objetives))
-            sleep(1/self.atk_speed)
+            sleep(1 / self.atk_speed)
