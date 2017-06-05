@@ -5,9 +5,9 @@ from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QTransform, QImage, QCursor
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QLabel, QDesktopWidget, QLayout, \
     QHBoxLayout, QVBoxLayout, QStyle
 
-from objects.units.champion import Character
 from scripts.animation import Animation
 from scripts.movement import PlayerKeysSender
+
 
 def read_styles(path: str, window):
     try:
@@ -47,7 +47,7 @@ class LeagueOfProgra(QMainWindow):
         window.start_menu(50)
         window.firstrelease = False
         window.keylist = list()
-        window.cursor = (0,0)
+        window.cursor = (0, 0)
 
     def start_menu(self, size: int):
         self.menu = StartMenu(self, size)
@@ -94,6 +94,8 @@ class LeagueOfProgra(QMainWindow):
         del self.keylist[-1]
 
     def processmultikeys(self, keyspressed):
+        if 67 in keyspressed:
+            print(self.cursor)
         self.movement.emit(PlayerKeysSender(self.cursor, keyspressed))
 
     def eventFilter(self, source, event):

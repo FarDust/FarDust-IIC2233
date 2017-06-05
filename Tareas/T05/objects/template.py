@@ -9,6 +9,8 @@ class Objects():
         if self.maxhealth == 0:
             self.inmune = True
         self.currenthealth = maxhealth
+        self.posible_objetives = list()
+        self.atk_range = 0
         self._regeneration = QTimer(self)
         self._regeneration.timeout.connect(self.regeneration)
         self._regeneration.start(1000)

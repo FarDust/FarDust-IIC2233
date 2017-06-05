@@ -44,7 +44,6 @@ class Character(Champion):
         self.image.setPixmap(image)
         self.image.show()
         self.image.setVisible(True)
-        self.quarry = list()
         self.trigger.connect(front.actualizar_jugador)
         self.__position = (0, 0)
         self.position = (x, y)
@@ -55,9 +54,7 @@ class Character(Champion):
     def run(self):
         super().start()
         while True:
-            if len(self.quarry) > 0:
-                movement_listener(self, self.quarry)
-                self.quarry.clear()
+            pass
 
     @property
     def position(self):

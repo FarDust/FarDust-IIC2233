@@ -2,6 +2,8 @@ from random import choice
 from time import sleep
 
 from PyQt5.QtCore import QThread, QTimer, pyqtSignal
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import QLabel
 
 from objects.template import Objects
 from scripts.attack import AttackEvent
@@ -11,8 +13,13 @@ class Tower(QThread, Objects):
     trigger = pyqtSignal(AttackEvent)
     attacking = pyqtSignal(QThread, int)
 
-    def __init__(self, x, y, max_hp, atk_range, name, backend, atk_dmg):
+    def __init__(self,front , x, y, max_hp, atk_range, name, backend, atk_dmg):
         super().__init__(pos=(x, y), maxhealth=max_hp)
+        image = QPixmap("resources/buildings/tower/0.png")
+        image = image.scaled(image.width()*0.8, image.height()*0.8)
+        self.image = QLabel("", front)
+        self.image.setGeometry(x, y, image.width(), image.height())
+        self.image.setPixmap(image)
         self.atk_range = atk_range
         self.basic_atk = atk_dmg
         self.atk_speed = 2.55
