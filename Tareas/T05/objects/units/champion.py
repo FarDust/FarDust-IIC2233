@@ -29,7 +29,7 @@ class Champion(Unit):
 
 
 class Character(Champion):
-    trigger = pyqtSignal(MoveMyImageEvent)
+    mimage = pyqtSignal(MoveMyImageEvent)
 
     def __init__(self, front, x, y, imagen, champion):
         print(champion)
@@ -44,7 +44,7 @@ class Character(Champion):
         self.image.setPixmap(image)
         self.image.show()
         self.image.setVisible(True)
-        self.trigger.connect(front.actualizar_jugador)
+        self.mimage.connect(front.actualizar)
         self.__position = (0, 0)
         self.position = (x, y)
         self.movement = QThread()
@@ -68,8 +68,8 @@ class Character(Champion):
             rules = list()
         else:
             rules = self.rules.keys
-        self.trigger.emit(
-            MoveMyImageEvent(self.image, self.position[0], self.position[1], rules, self.animation))
+        self.mimage.emit(
+            MoveMyImageEvent(self.image, self.position[0], self.position[1]))
 
     def get_rules(self, rules):
         self.rules = rules

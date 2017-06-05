@@ -18,7 +18,7 @@ class Nexo(QThread, Objects):
         self.image.setPixmap(image)
         self.spawner = QTimer()
         self.spawner.timeout.connect(self._spawner)
-        self.spawner.start(1000)
+        self.spawner.start(1000*10)
 
     def _spawner(self):
         self.spawn.emit()

@@ -1,5 +1,8 @@
 from PyQt5.QtCore import QThread, QTimer, pyqtSignal, QObject, pyqtSlot
 
+from objects.buildings.nexo import Nexo
+from objects.units.subditos import Minion, Normal, Grande
+from scripts.movement import MoveMyImageEvent
 from scripts.utils import distancia
 
 
@@ -12,10 +15,13 @@ def identifier():
 
 class Map(QThread):
     ids = identifier()
+    show_minion = pyqtSignal(MoveMyImageEvent)
 
-    def __init__(self, width: int, height: int):
+    def __init__(self, front, width: int = 1600, height: int = 900):
         super().__init__()
         self.objects = list()
+        self.front = front
+        self.show_minion.connect(front.actualizar)
 
     @staticmethod
     def on_range(unit1, unit2):
@@ -37,6 +43,8 @@ class Map(QThread):
         self.get_object(target)
 
     def get_object(self, target):
+        if isinstance(target, Nexo):
+            target.spawn.connect(self.spawn_minion)
         target.setid(next(self.ids))
         self.objects.append(target)
 
@@ -62,6 +70,13 @@ class Map(QThread):
                                         unit2) or unit2.death or unit1.death) and unit2.id in unit1.posible_objetives:
                     print(unit1.name, "remove", unit2.name, "as objetive")
                     unit1.posible_objetives.remove(unit2.id)
+
+    def spawn_minion(self):
+        nexus = self.sender()
+        new_minions = [Normal(*nexus.pos, self.front) for _ in range(4)] + [Grande(*nexus.pos, self.front)]
+        for minion in new_minions:
+            self.show_minion.emit(MoveMyImageEvent(minion.image, *nexus.pos))
+            self.get_object(minion)
 
     def run(self):
         while True:

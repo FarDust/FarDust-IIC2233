@@ -1,10 +1,8 @@
 class MoveMyImageEvent():
-    def __init__(self, image, x, y, quarry, animation):
+    def __init__(self, image, x, y):
         self.image = image
         self.x = x
         self.y = y
-        self.quarry = quarry.copy()
-        self.animation = animation
 
 
 class PlayerKeysSender():

@@ -50,32 +50,8 @@ class LeagueOfProgra(QMainWindow):
         self.menu = StartMenu(self, size)
 
     @staticmethod
-    def actualizar_jugador(character):
+    def actualizar(character):
         label = character.image
-        if 40 in character.quarry and 39 in character.quarry:
-            pixmap = next(character.animation.normal["dr"])
-        elif 40 in character.quarry and 37 in character.quarry:
-            pixmap = next(character.animation.normal["dl"])
-            pixmap = QImage(pixmap).mirrored(True, False)
-        elif 38 in character.quarry and 39 in character.quarry:
-            pixmap = next(character.animation.normal["ur"])
-        elif 38 in character.quarry and 37 in character.quarry:
-            pixmap = next(character.animation.normal["ul"])
-            pixmap = QImage(pixmap).mirrored(True, False)
-        elif 38 in character.quarry:
-            pixmap = next(character.animation.normal["up"])
-        elif 40 in character.quarry:
-            pixmap = next(character.animation.normal["down"])
-        elif 37 in character.quarry:
-            pixmap = next(character.animation.normal["left"])
-            pixmap = QImage(pixmap).mirrored(True, False)
-        elif 39 in character.quarry:
-            pixmap = next(character.animation.normal["right"])
-        else:
-            pixmap = QImage(label.pixmap())
-        pix = QPixmap(pixmap)
-        label.setGeometry(character.x, character.y, pix.width(), pix.height())
-        label.setPixmap(pix)
         label.move(character.x, character.y)
 
     def keyPressEvent(self, event):

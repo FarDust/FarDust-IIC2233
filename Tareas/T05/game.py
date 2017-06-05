@@ -16,7 +16,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     front = LeagueOfProgra(1900, 600)
     app.installEventFilter(front)
-    back = Map(600, 600)
+    back = Map(front,600, 600)
     champions = {"hernan": "data/champions/hernan"}
     player = Character(front, 836, 447, "IMGS/units/champions/hernan/individuals/1.png",
                        read_properties(champions["hernan"]))
