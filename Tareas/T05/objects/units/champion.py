@@ -73,7 +73,7 @@ class Character(Champion):
 
     def get_rules(self, rules):
         self.rules = rules
-        self.movement.start()
+        self.move()
 
     def move(self):
         rules = self.rules
