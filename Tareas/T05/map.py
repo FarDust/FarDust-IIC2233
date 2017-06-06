@@ -1,3 +1,5 @@
+from random import randint
+
 from PyQt5.QtCore import QThread, QTimer, pyqtSignal, QObject, pyqtSlot
 
 from objects.buildings.nexo import Nexo
@@ -73,9 +75,11 @@ class Map(QThread):
 
     def spawn_minion(self):
         nexus = self.sender()
-        new_minions = [Normal(*nexus.pos, self.front) for _ in range(4)] + [Grande(*nexus.pos, self.front)]
+        # noinspection PyTypeChecker
+        new_minions = [Normal(nexus.pos[0] + 5, nexus.pos[1] + 5, self.front) for _ in range(4)] + [
+            Grande(nexus.pos[0], nexus.pos[1], self.front)]
         for minion in new_minions:
-            self.show_minion.emit(MoveMyImageEvent(minion.image, *nexus.pos))
+            self.show_minion.emit(MoveMyImageEvent(minion.image, *minion.pos))
             self.get_object(minion)
 
     def run(self):

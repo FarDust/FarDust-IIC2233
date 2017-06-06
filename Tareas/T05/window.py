@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget, QPushButton, QLa
 
 from scripts.animation import Animation
 from scripts.movement import PlayerKeysSender
+from objects.buildings.shop import Shopping
 
 
 def read_styles(path: str, window):
@@ -38,8 +39,9 @@ class LeagueOfProgra(QMainWindow):
         window.background.setPixmap(background_image)
         # Cierre del mapa de fondo
 
-        # window.player = Character(window, 130, 40, "resources/units/champions/hernan/individuals/1.png")
         window.setMouseTracking(True)
+        window.shop = Shopping()
+        window.shop.hide()
 
         window.start_menu(50)
         window.firstrelease = False
@@ -69,6 +71,11 @@ class LeagueOfProgra(QMainWindow):
     def processmultikeys(self, keyspressed):
         if 67 in keyspressed:
             print(self.cursor)
+        if 80 in keyspressed:
+            if self.shop.isHidden():
+                self.shop.show()
+            else:
+                self.shop.hide()
         self.movement.emit(PlayerKeysSender(self.cursor, keyspressed))
 
     def eventFilter(self, source, event):
