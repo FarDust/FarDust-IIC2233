@@ -1,5 +1,6 @@
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QLabel
 
 from objects.template import Objects
 
