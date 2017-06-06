@@ -3,6 +3,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QLabel
 
 from objects.units.units import Unit
+from scripts.animation import Animation
 from scripts.movement import MoveMyImageEvent, movement_listener
 from IMGS.animation import player
 from scripts.utils import distancia
@@ -35,7 +36,7 @@ class Character(Champion):
         print(champion)
         super().__init__(pos=(x, y), **champion)
         self.mov_speed = 2
-        self.image = QLabel(front)
+        self.image = Animation("IMGS/units/champions/hernan/individuals/",front)
         self.animation = player
         image = QPixmap(imagen)
         image.scaled(25, 25)

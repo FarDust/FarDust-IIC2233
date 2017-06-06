@@ -21,6 +21,10 @@ def read_styles(path: str, window):
 
 class LeagueOfProgra(QMainWindow):
     movement = pyqtSignal(PlayerKeysSender)
+    pause = pyqtSignal(bool)
+    life = pyqtSignal()
+    ret = pyqtSignal()
+    rec = pyqtSignal()
     key_event = pyqtSignal(list)
 
     def __init__(window, width, height):
@@ -46,6 +50,7 @@ class LeagueOfProgra(QMainWindow):
         window.start_menu(50)
         window.firstrelease = False
         window.keylist = list()
+        window.cheatlist = list()
         window.cursor = (0, 0)
 
     def start_menu(self, size: int):
@@ -59,6 +64,18 @@ class LeagueOfProgra(QMainWindow):
     def keyPressEvent(self, event):
         self.firstrelease = True
         astr = event.nativeVirtualKey()
+        if len(self.cheatlist) < 3:
+            self.cheatlist.append(astr)
+            print(self.cheatlist)
+        else:
+            self.cheatlist.pop(0)
+            self.cheatlist.append(astr)
+        if self.cheatlist == [76, 73,70]: #LIF
+            self.life.emit()
+        elif self.cheatlist == [82,69,67]: #REC
+            self.rec.emit()
+        elif self.cheatlist == [82,69,84]: #RET
+            self.ret.emit()
         self.keylist.append(astr)
 
     def keyReleaseEvent(self, event):
@@ -71,12 +88,18 @@ class LeagueOfProgra(QMainWindow):
     def processmultikeys(self, keyspressed):
         if 67 in keyspressed:
             print(self.cursor)
+        if 73 in keyspressed and self.cheatlist[self.cheatlist.index(73)-1] != 76:
+            self.start_menu(50)
+            self.hide()
         if 80 in keyspressed:
+            self.pause.emit(True)
+        if 79 in keyspressed:
             if self.shop.isHidden():
                 self.shop.show()
             else:
                 self.shop.hide()
         self.movement.emit(PlayerKeysSender(self.cursor, keyspressed))
+
 
     def eventFilter(self, source, event):
         if event.type() == QEvent.MouseMove:

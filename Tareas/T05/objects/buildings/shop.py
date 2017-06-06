@@ -70,6 +70,10 @@ class Shopping(QWidget):
         vbox.addStretch(1)
         self.setLayout(vbox)
 
+    def keyPressEvent(self, QKeyEvent):
+        if QKeyEvent.nativeVirtualKey() == 79:
+            self.hide()
+
     def arma_mano(self):
         self.give.emit(2, "basic_atk")
 
