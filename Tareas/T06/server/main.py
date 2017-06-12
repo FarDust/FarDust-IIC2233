@@ -10,9 +10,6 @@ from difflib import SequenceMatcher, diff_bytes, unified_diff
 import sys
 from uuid import getnode, uuid4
 
-socket1 = socket(family=AF_INET, type=SOCK_STREAM)
-socket2 = socket(family=AF_INET6, type=SOCK_STREAM)
-
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
@@ -28,7 +25,17 @@ class Server:
         self.clients = dict()
         accept_daemon = Thread(target=self.accept, daemon=True, name="aceptartor", args=())
         accept_daemon.start()
+        console = Thread(target=self.interpreter, daemon=True, name="Console", args=())
+        console.start()
         accept_daemon.join()
+
+    def interpreter(self):
+        while True:
+            quarry = input("{}:{} $ ".format(self.host, self.port)).split(" ")
+            if len(quarry) == 1 and quarry[0] == "get":
+                print("Users conected to server:")
+                for client in self.clients.values():
+                    print("User n°: {}".format(client))
 
     def accept(self):
         print("Server is accepting connections...")
@@ -38,15 +45,16 @@ class Server:
             listening_client = Thread(target=self.client_listener, args=(new_client,), daemon=True,
                                       name="{}:{}".format(*address))
             print("Listening client at adress: {}".format(listening_client.getName()))
-            if self.login(new_client):
-                listening_client.start()
-            pass
+            try:
+                if self.login(new_client):
+                    listening_client.start()
+            except ConnectionResetError:
+                print("Conection lost...")
 
     def client_listener(self, client_socket: socket):
-        print("Server connected to a new client...")
+        print("Server connected to a client n° {}".format(self.clients[client_socket]))
         salir = False
         while not salir:
-            print(client_socket)
             try:
                 mensaje = json.loads(client_socket.recv(2048).decode('utf-8'))
                 print('Datos recibidos en el server: {}'.format(mensaje))
@@ -57,9 +65,11 @@ class Server:
                     print(client_socket)
             except ConnectionResetError:
                 print('Se perdio la comunicacion con el cliente')
+            except Exception as err:
+                print("{}:{}".format(self.clients[client_socket],err))
             finally:
                 client_socket.close()
-                break
+                salir = True
 
     @staticmethod
     def send_archives(client: socket, file):
@@ -86,8 +96,28 @@ class Server:
         return False
 
     @staticmethod
-    def new_user(self,client):
-        pass
+    def new_user(client: socket, message: dict):
+        uuid = uuid4().int
+        with open(os.getcwd() + os.sep + "users.csv", "r") as database:
+            data = database.read()
+        if message["user"] in data:
+            return client.send(json.dumps({"status": "signin", "success": False, "error": 1}).encode("utf-8"))
+        elif message["email"] in data:
+            return client.send(json.dumps({"status": "signin", "success": False, "error": 2}).encode("utf-8"))
+        else:
+            client.send(json.dumps({"status": "signin", "success": True}).encode("utf-8"))
+        while str(uuid) in data:
+            uuid = uuid4().int
+        with open(os.getcwd() + os.sep + "users.csv", "a") as database:
+            database.write("\n{},{},{},{}".format(uuid, message["user"], message["email"], 0))
+        long = int.from_bytes(client.recv(4), byteorder="big")
+        bits = b''
+        while len(bits) < long:
+            bits += client.recv(2048)
+        if not os.path.isfile(os.getcwd() + os.sep + "users_secure/{}".format(uuid)):
+            with open(os.getcwd() + os.sep + "users_secure/{}".format(uuid), "wb") as passwd_hash:
+                passwd_hash.write(bits)
+        print("{} created with uuid {}".format(message["user"], uuid))
 
     def login(server, client: socket):
         login_message = json.loads(client.recv(2048).decode("utf-8"))
@@ -114,9 +144,13 @@ class Server:
                 if client in server.clients.keys():
                     server.clients.pop(client)
                 client.close()
-        elif login_message["status"] == "signin":
-            server.new_user(client)
+        elif login_message["status"] == "signin" and "user" in login_message.keys() and "email" in login_message.keys():
+            server.new_user(client, login_message)
+            client.close()
+            return False
         else:
+            # Agregar a todas las lineas
+            client.send(json.dumps({"status": "signin", "success": True}).encode("utf-8"))
             client.close()
         return False
 

@@ -1,0 +1,6 @@
+QPushButton#StartButton {
+  font-size: 14px;
+  color: black;
+  background-color: transparent;
+  text-align: center;
+}
