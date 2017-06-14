@@ -4,3 +4,22 @@ QPushButton#StartButton {
   background-color: transparent;
   text-align: center;
 }
+QPushButton#GameButton {
+  font-size: 26px;
+  color: red;
+  background-color: #B5B5B5;
+  text-align: center;
+}
+
+QLabel#Points{
+  background-color: #9B1726;
+  text-align: center;
+  font-size: 15px;
+  font-style: italic;
+  font-weight: bolder;
+  font-family: sans-serif;
+}
+
+QWidget#PrograPop {
+  background-color: #33CEAC;
+}

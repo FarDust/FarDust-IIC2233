@@ -1,5 +1,6 @@
 import json
 import os
+import re
 
 PORT = 49500
 HOST = None
@@ -9,6 +10,16 @@ from threading import Thread, Timer, Event, Barrier, Lock, Condition, local
 from difflib import SequenceMatcher, diff_bytes, unified_diff
 import sys
 from uuid import getnode, uuid4
+
+
+def validar_mail(s):
+    pattern = "([a-z\.0-9]+[@][a-zA-z]+\.[a-z]+)"
+    return bool(re.match(pattern, s))
+
+
+def validate_user(s):
+    pattern = "[A-Za-z0-9\_\-]{3,}"
+    return bool(re.match(pattern, s))
 
 
 class Server:
@@ -46,30 +57,38 @@ class Server:
                                       name="{}:{}".format(*address))
             print("Listening client at adress: {}".format(listening_client.getName()))
             try:
-                if self.login(new_client):
-                    listening_client.start()
+                listening_client.start()
             except ConnectionResetError:
                 print("Conection lost...")
 
     def client_listener(self, client_socket: socket):
-        print("Server connected to a client n° {}".format(self.clients[client_socket]))
-        salir = False
-        while not salir:
+        while True:
             try:
                 mensaje = json.loads(client_socket.recv(2048).decode('utf-8'))
                 print('Datos recibidos en el server: {}'.format(mensaje))
-                if mensaje['status'] == 'msg':
-                    print('Mensaje recibido: {}'.format(mensaje['content']))
-                elif mensaje['status'] == 'disconnect':
-                    client_socket.close()
-                    print(client_socket)
+                if client_socket in self.clients.keys():
+                    print("Server connected to a client n° {}".format(self.clients[client_socket]))
+                    if mensaje['status'] == 'msg':
+                        print('Mensaje recibido: {}'.format(mensaje['content']))
+                    elif mensaje['status'] == 'server_request':
+                        if mensaje['option'] == 'points':
+                            userid = self.clients[client_socket]
+                            with open(os.getcwd() + os.sep + "users.csv") as database:
+                                index = next(database).strip().split(",").index("points")
+                                value = next(filter(lambda x: x == userid, database)).strip().split(",")[index]
+                            client_socket.send(json.dumps({'status': 'server_response', 'points': int(value)}).encode("utf-8"))
+
+                    elif mensaje['status'] == 'disconnect':
+                        client_socket.close()
+                        break
+                else:
+                    if mensaje['status'] == 'login' or mensaje['status'] == 'signin':
+                        self.login(client_socket, mensaje)
             except ConnectionResetError:
                 print('Se perdio la comunicacion con el cliente')
-            except Exception as err:
-                print("{}:{}".format(self.clients[client_socket],err))
             finally:
                 client_socket.close()
-                salir = True
+                break
 
     @staticmethod
     def send_archives(client: socket, file):
@@ -91,8 +110,6 @@ class Server:
                 passwd = passwd_hash.read()
             if diff_bytes(unified_diff, bits, passwd):
                 return True
-        else:
-            client.close()
         return False
 
     @staticmethod
@@ -104,6 +121,10 @@ class Server:
             return client.send(json.dumps({"status": "signin", "success": False, "error": 1}).encode("utf-8"))
         elif message["email"] in data:
             return client.send(json.dumps({"status": "signin", "success": False, "error": 2}).encode("utf-8"))
+        elif not validar_mail(message["email"]):
+            return client.send(json.dumps({"status": "signin", "success": False, "error": 3}).encode("utf-8"))
+        elif not validate_user(message["user"]):
+            return client.send(json.dumps({"status": "signin", "success": False, "error": 4}).encode("utf-8"))
         else:
             client.send(json.dumps({"status": "signin", "success": True}).encode("utf-8"))
         while str(uuid) in data:
@@ -119,8 +140,7 @@ class Server:
                 passwd_hash.write(bits)
         print("{} created with uuid {}".format(message["user"], uuid))
 
-    def login(server, client: socket):
-        login_message = json.loads(client.recv(2048).decode("utf-8"))
+    def login(server, client: socket, login_message: dict):
         if login_message["status"] == "login" and "user" in login_message.keys():
             try:
                 with open(os.getcwd() + os.sep + "users.csv", "r") as database:
@@ -131,27 +151,25 @@ class Server:
                 login_response = server.recieve_compare_hash(client, user[0])
                 if not login_response:
                     print("User '{}' or password does not match".format(login_message["user"]))
-                    client.close()
+                    client.send(json.dumps({"status": "login", "success": False, "error": 8}).encode("utf-8"))
                 elif user[0] not in server.clients.values() and login_response:
                     server.clients[client] = user[0]
+                    client.send(json.dumps({"status": "login", "success": True}).encode("utf-8"))
                     print("User: {} successfuly login".format(login_message["user"]))
                     return True
                 else:
                     print("User already in use -> disconnecting")
-                    client.close()
+                    client.send(json.dumps({"status": "login", "success": False, "error": 6}).encode("utf-8"))
             except StopIteration:
                 print("User '{}' or password does not match".format(login_message["user"]))
                 if client in server.clients.keys():
                     server.clients.pop(client)
-                client.close()
+                client.send(json.dumps({"status": "login", "success": False, "error": 5}).encode("utf-8"))
         elif login_message["status"] == "signin" and "user" in login_message.keys() and "email" in login_message.keys():
             server.new_user(client, login_message)
-            client.close()
             return False
         else:
-            # Agregar a todas las lineas
             client.send(json.dumps({"status": "signin", "success": True}).encode("utf-8"))
-            client.close()
         return False
 
 

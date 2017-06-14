@@ -1,9 +1,13 @@
+import os
 import sys
+import re
 
-from PyQt5.QtCore import QSize, pyqtSignal
-from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent
+from threading import Thread
+
+from PyQt5.QtCore import QSize, pyqtSignal, QTimer
+from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QBitmap
 from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
-    QApplication, QSystemTrayIcon, QMessageBox, QLineEdit
+    QApplication, QSystemTrayIcon, QMessageBox, QLineEdit, QMenuBar, QStatusBar, QMenu, QSlider, QScrollArea
 
 
 def read_styles(path: str, window):
@@ -17,12 +21,12 @@ def read_styles(path: str, window):
 
 class StartMenu(QWidget):
     messages = pyqtSignal(dict)
+    success = pyqtSignal()
 
-    def __init__(self, main: QMainWindow = None, size: int = 60, ratio: tuple = (16, 9), client=None):
+    def __init__(self, size: int = 60, ratio: tuple = (16, 9), client=None):
         super().__init__()
         if client:
             self.messages.connect(client.receiver)
-        self.main = main
         self.flag = True
         self.menu = "start"
         read_styles("styles/master.css", self)
@@ -62,6 +66,7 @@ class StartMenu(QWidget):
         self.name_text.hide()
 
         self.passwd_edit = QLineEdit("*" * len("password"), self)
+        self.passwd_edit.setEchoMode(QLineEdit.Password)
         self.passwd_text = QLabel("Password: ", self)
         self.passwd = QHBoxLayout()
         self.passwd.addWidget(self.passwd_text)
@@ -71,6 +76,7 @@ class StartMenu(QWidget):
         self.passwd_text.hide()
 
         self.passwd2_edit = QLineEdit("*" * len("password"), self)
+        self.passwd2_edit.setEchoMode(QLineEdit.Password)
         self.passwd2_text = QLabel("Corfim: ", self)
         self.passwd2 = QHBoxLayout()
         self.passwd2.addWidget(self.passwd2_text)
@@ -131,15 +137,26 @@ class StartMenu(QWidget):
 
     def receiver(self, arguments: dict):
         alert = QMessageBox()
-        self.flag = False
         if self.flag:
+            self.flag = False
             if arguments["status"] == "error":
-                alert.warning(self, "Server says:", "Error: " + arguments["error"], QMessageBox.Ok)
+                alert.warning(self, "Server error", "Error: " + arguments["error"], QMessageBox.Ok)
+                self.show()
+            elif arguments["status"] == 'login':
+                if arguments['success']:
+                    self.success.emit()
+                    self.close()
+                else:
+                    self.login()
+                    self.show()
             elif arguments['status'] == 'signin':
                 if arguments['success']:
                     self.show()
                     alert.warning(self, "Server says:", "Success: acount created", QMessageBox.Ok)
-                    self.login()
+                    self.home()
+                else:
+                    self.show()
+                    self.signin()
             self.flag = True
             pass
         pass
@@ -153,6 +170,10 @@ class StartMenu(QWidget):
         self.menu = "login"
         self.passwd_text.show()
         self.passwd_edit.show()
+        self.passwd2_text.hide()
+        self.passwd2_edit.hide()
+        self.email_text.hide()
+        self.email_edit.hide()
         self.name_edit.show()
         self.name_text.show()
 
@@ -221,7 +242,6 @@ class StartMenu(QWidget):
                 sender.update({"status": "signin", "email": self.email_edit.text()})
                 # Send to back
                 self.messages.emit(sender)
-                self.hide()
             else:
                 alert = QMessageBox()
                 alert.warning(self, "Error", "Las claves no coinciden", QMessageBox.Ok)
@@ -229,29 +249,122 @@ class StartMenu(QWidget):
         elif self.menu == "login":
             sender.update({"status": "login"})
             self.messages.emit(sender)
-            self.hide()
+
+    def close(self):
+        self.messages.emit({"status": "disconnect"})
+        super().close()
 
 
-class PrograPop(QMainWindow):
+class PrograPop(QWidget):
     messages = pyqtSignal(dict)
-    def __init__(self):
+
+    def __init__(self, size=100, menu: QWidget = None, client=None):
         super().__init__()
+
+        if not menu:
+            self.menu = StartMenu(client=client, size=50)
+            self.menu.success.connect(self.show)
+        if client:
+            self.messages.connect(client.receiver)
         self.setObjectName("PrograPop")
-        
+        self.setGeometry(0, 0, 4 * size, 6 * size)
+        screen = QDesktopWidget().screenGeometry()
+        main_size = self.geometry()
+        self.move((screen.width() - main_size.width()) // 2, (screen.height() - main_size.height()) // 2)
+        self.setMaximumSize(main_size.width(), main_size.height())
+        self.setMinimumSize(main_size.width(), main_size.height())
+        self.setWindowIcon(QIcon("IMGS/start_icon.png"))
+        self.setWindowTitle("Progra Pop")
+        read_styles("styles/master.css", self)
 
-    def reciever(self,arguments:dict):
+        self.timer = QTimer()
+        self.timer.setInterval(1)
+        self.timer.timeout.connect(self.get_points)
+
+        self.user = QLabel("test text user", self)
+        self.user.setObjectName("TextBox")
+        self.user.setMaximumSize(64, 32)
+        self.messages.emit({"status": "server_request", "option": "name"})
+
+        self.points = QLabel("Points: 0", self)
+        self.points.setObjectName("Points")
+        self.points.setMaximumSize(64, 32)
+
+        status = QHBoxLayout()
+        status.addWidget(self.points, stretch=1)
+        status.addWidget(self.user, stretch=1)
+
+        self.salas = list()
+        sala1 = QPushButton("sala 1", self)
+        sala2 = QPushButton("sala 2", self)
+        self.salas.append(sala1)
+        self.salas.append(sala2)
+
+        self.games = QVBoxLayout()
+        for sala in self.salas:
+            self.games.addWidget(sala, stretch=1)
+
+        layout = QVBoxLayout()
+        layout.addLayout(status, stretch=1)
+        layout.addLayout(self.games, stretch=1)
+        self.setLayout(layout)
+
+        console = Thread(target=self.console, daemon=True)
+        console.start()
+
+    def receiver(self, arguments: dict):
+        if arguments['status'] == 'server_request':
+            self.set_points(int(arguments['points']))
         pass
 
+    def show(self):
+        if isinstance(self.sender(), StartMenu) and self.menu:
+            super().show()
+        elif self.menu:
+            self.menu.show()
+        else:
+            super().show()
 
+    def console(self):
+        while True:
+            response = input("{}$ ".format(os.getcwd())).split(" ")
+            if response[0] == "move" and response[1] in self.__dict__.keys() and len(response) == 6 and \
+                    isinstance(self.__dict__[response[1]], QWidget):
+                self.__dict__[response[1]].move(*[int(i) for i in response[2:]])
+            if response[0] == "help":
+                for value in self.__dict__.keys():
+                    print(value)
 
-class Carga(QMessageBox):
-    def __init__(self):
-        super().__init__()
+    def get_points(self):
+        self.messages.emit({"status": "server_request", "option": "points"})
+
+    def set_points(self, points: int):
+        self.points.setText("Points : {}".format(points))
+
+    def get_songs(self):
+        self.messages.emit({"status": "server_request", "option": "songs"})
+
+    def set_songs(self, songs: dict):
         pass
+
+    def reciever(self, arguments: dict):
+        if arguments["status"] == "server_request" and "option" in arguments.keys():
+            if arguments["option"] == "points":
+                self.set_points(arguments["points"])
+            elif arguments["option"] == "songs":
+                self.set_songs(arguments["songs"])
+            elif arguments["option"] == "name":
+                self.user.setText("User: {}".format(arguments["name"]))
+
+        pass
+
+    def close(self):
+        self.messages.emit({"status": "disconnect"})
+        super().close()
 
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    menu = StartMenu(size=50)
+    menu = PrograPop(size=100)
     menu.show()
     sys.exit(app.exec_())
