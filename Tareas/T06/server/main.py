@@ -4,6 +4,8 @@ import re
 
 PORT = 49500
 HOST = None
+S_DIR = os.getcwd()
+T_INDEX = {'int': int, 'str': str, 'float': float}
 
 from socket import socket, AF_INET, AF_INET6, SOCK_STREAM, _LOCALHOST, _LOCALHOST_V6
 from threading import Thread, Timer, Event, Barrier, Lock, Condition, local
@@ -32,8 +34,10 @@ class Server:
         self.server_socket = socket(family=AF_INET, type=SOCK_STREAM)
         self.server_socket.bind((self.host, self.port))
         self.server_socket.listen(40)
+        self.room_formats = dict()
         print("Server running at port {}".format(self.port))
         self.clients = dict()
+        self.rooms_checker()  # Analiza el directorio songs y reinicia -> escribir "rooms" en consola para ejecutar
         accept_daemon = Thread(target=self.accept, daemon=True, name="aceptartor", args=())
         accept_daemon.start()
         console = Thread(target=self.interpreter, daemon=True, name="Console", args=())
@@ -47,6 +51,8 @@ class Server:
                 print("Users conected to server:")
                 for client in self.clients.values():
                     print("User n°: {}".format(client))
+            elif len(quarry) == 1 and quarry[0] == "rooms":
+                self.rooms_checker()
 
     def accept(self):
         print("Server is accepting connections...")
@@ -60,6 +66,39 @@ class Server:
                 listening_client.start()
             except ConnectionResetError:
                 print("Conection lost...")
+
+    def rooms_checker(self):
+        self.room_formats.clear()
+        preformat = {'uuid': uuid4().int, 'users': 0, 'max': 20, 'segundos': 20, 'artist': []}
+        rooms_dir = S_DIR + os.sep + "songs"
+        rooms = os.listdir(rooms_dir)
+        for room in rooms:
+            room_format = preformat.copy()
+            if os.path.isdir(rooms_dir + os.sep + room):
+                songs = os.listdir(rooms_dir + os.sep + room)
+                room_format['artist'] = list()
+                for song in songs:
+                    if re.match("[a-zA-Z\- ]+\.(wav)$", song):
+                        header = re.split(" ?[-] ?", song)
+                        room_format['artist'].append(header[0])
+                with open(rooms_dir + os.sep + room + os.sep + "game.csv", "w") as game:
+                    game.write("player:int\n")
+                self.room_formats[uuid4().int] = room_format.copy()
+                room_format.clear()
+        print("Rooms data updated...")
+        if len(self.clients) > 0:
+            for client in self.clients.keys():
+                try:
+                    client.send(json.dumps({"status": "server_order",
+                                            "option": "rooms",
+                                            "rooms": self.room_formats}).encode("utf-8"))
+                except ConnectionResetError or ConnectionRefusedError or ConnectionAbortedError :
+                    self.clients.pop(client)
+                    client.close()
+
+    def room_controller(self):
+        rooms_dir = S_DIR + os.sep + "songs"
+        rooms = os.listdir(rooms_dir)
 
     def client_listener(self, client_socket: socket):
         while True:
@@ -76,10 +115,16 @@ class Server:
                             with open(os.getcwd() + os.sep + "users.csv") as database:
                                 index = next(database).strip().split(",").index("points")
                                 value = next(filter(lambda x: x == userid, database)).strip().split(",")[index]
-                            client_socket.send(json.dumps({'status': 'server_response', 'points': int(value)}).encode("utf-8"))
+                            client_socket.send(
+                                json.dumps({'status': 'server_response', 'points': int(value)}).encode("utf-8"))
+                        elif mensaje['option'] == 'game_status':
+                            print(mensaje)
+                            pass
 
                     elif mensaje['status'] == 'disconnect':
                         client_socket.close()
+                        self.clients.pop(client_socket)
+                        print("client disconnected")
                         break
                 else:
                     if mensaje['status'] == 'login' or mensaje['status'] == 'signin':
@@ -87,7 +132,9 @@ class Server:
             except ConnectionResetError:
                 print('Se perdio la comunicacion con el cliente')
             finally:
+                raise SystemExit
                 client_socket.close()
+                self.clients.pop(client_socket)
                 break
 
     @staticmethod
@@ -109,6 +156,7 @@ class Server:
             with open(os.getcwd() + os.sep + "users_secure/{}".format(uuid), "rb") as passwd_hash:
                 passwd = passwd_hash.read()
             if diff_bytes(unified_diff, bits, passwd):
+
                 return True
         return False
 
@@ -116,6 +164,7 @@ class Server:
     def new_user(client: socket, message: dict):
         uuid = uuid4().int
         with open(os.getcwd() + os.sep + "users.csv", "r") as database:
+            header = next(database)
             data = database.read()
         if message["user"] in data:
             return client.send(json.dumps({"status": "signin", "success": False, "error": 1}).encode("utf-8"))
@@ -158,7 +207,6 @@ class Server:
                     print("User: {} successfuly login".format(login_message["user"]))
                     return True
                 else:
-                    print("User already in use -> disconnecting")
                     client.send(json.dumps({"status": "login", "success": False, "error": 6}).encode("utf-8"))
             except StopIteration:
                 print("User '{}' or password does not match".format(login_message["user"]))

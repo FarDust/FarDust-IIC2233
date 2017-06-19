@@ -16,11 +16,13 @@ sha3_512 = 10
 PORT = 49500
 HOST = None
 
+
 def validate_passwd(s):
     pattern = "[A-Za-z0-9]{16,}"
     return bool(re.match(pattern, s))
 
-class Client(QObject,Thread):
+
+class Client(QObject, Thread):
     messages = pyqtSignal(dict)
 
     def __init__(self, host=HOST, port=PORT):
@@ -37,29 +39,40 @@ class Client(QObject,Thread):
 
     def receiver(self, arguments: dict):
         self.getInteface(self.sender())
-        rule = arguments['status']
         try:
+            rule = arguments['status']
             if rule == "login":
                 self.login(**arguments)
             elif rule == "signin":
                 self.signin(**arguments)
             elif rule == 'server_request':
                 self.v4socket.send(json.dumps(arguments).encode("utf-8"))
+            else:
+                self.v4socket.send(json.dumps(arguments).encode("utf-8"))
+                print(arguments)
 
         except ConnectionRefusedError:
-            message = "Coneccion negada por el servidor"
+            message = "Conexion negada por el servidor"
             self.messages.emit({"status": "error", "error": message})
             print(message)
-        pass
 
     def server_listener(self):
         while True:
             rules = json.loads(self.v4socket.recv(2048).decode("utf-8"))
+            print("Informacion recivida por el cliente: {}".format(rules))
             rule = rules['status']
             if rule == 'server_response':
                 self.messages.emit(rules)
-
-        pass
+            elif rule == 'server_order':
+                if rules['option'] == 'rooms':
+                    self.messages.emit({'status': 'destroy', 'compare': set(rules['rooms'].keys())})
+                    for uuid, room in rules['rooms'].items():
+                        room.update({'uuid': uuid})
+                        self.messages.emit({'status': 'server_request',
+                                            'option': 'game_status',
+                                            'format': room})
+            elif rule == 'name':
+                self.messages.emit(rules)
 
     def login(self, user: str, key: str, **kwargs):
         try:
@@ -74,10 +87,11 @@ class Client(QObject,Thread):
             message = json.loads(self.v4socket.recv(2048).decode("utf-8"))
             if message["status"] == 'login' and message["success"]:
                 self.messages.emit({"status": "login", "success": True})
-                listener = Thread(target=self.server_listener,name="server_listener",daemon=True)
+                self.messages.emit({"status": "name", "name": user})
+                listener = Thread(target=self.server_listener, name="server_listener", daemon=True)
                 listener.start()
             elif message["error"] == 5:
-                self.messages.emit({"status":"error", "error":"Wrong user or password"})
+                self.messages.emit({"status": "error", "error": "Wrong user or password"})
             else:
                 self.messages.emit({"status": "error", "error": "Error n°{}".format(message["error"])})
         except ConnectionRefusedError:

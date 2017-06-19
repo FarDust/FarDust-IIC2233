@@ -1,11 +1,14 @@
+import os
 import sys
 from PyQt5.QtWidgets import QApplication
 
-from client.local import PrograPop
-from client.connect import Client
+from local import PrograPop
+from connect import Client
 
 PORT = 49500
 HOST = None
+
+print(os.curdir)
 
 if __name__ == '__main__':
     cliente = Client(host=HOST, port=PORT)

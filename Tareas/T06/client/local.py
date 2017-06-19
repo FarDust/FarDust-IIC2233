@@ -2,12 +2,15 @@ import os
 import sys
 import re
 
-from threading import Thread
+from threading import Thread, Timer
 
 from PyQt5.QtCore import QSize, pyqtSignal, QTimer
 from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QBitmap
 from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
-    QApplication, QSystemTrayIcon, QMessageBox, QLineEdit, QMenuBar, QStatusBar, QMenu, QSlider, QScrollArea
+    QApplication, QSystemTrayIcon, QMessageBox, QLineEdit, QMenuBar, QStatusBar, QMenu, QSlider, QScrollArea, \
+    QListWidgetItem, QListView, QListWidget, QLayout
+
+from Salas import Salitas, Sala
 
 
 def read_styles(path: str, window):
@@ -25,6 +28,7 @@ class StartMenu(QWidget):
 
     def __init__(self, size: int = 60, ratio: tuple = (16, 9), client=None):
         super().__init__()
+        self.loggedin = False
         if client:
             self.messages.connect(client.receiver)
         self.flag = True
@@ -145,6 +149,7 @@ class StartMenu(QWidget):
             elif arguments["status"] == 'login':
                 if arguments['success']:
                     self.success.emit()
+                    self.loggedin = True
                     self.close()
                 else:
                     self.login()
@@ -162,7 +167,6 @@ class StartMenu(QWidget):
         pass
 
     def keyPressEvent(self, event: QKeyEvent):
-        print("key: ", event.nativeVirtualKey())
         if (self.menu == "login" or self.menu == "signin") and event.nativeVirtualKey() == 13 and self.flag:  # Enter
             self.send()
 
@@ -251,7 +255,8 @@ class StartMenu(QWidget):
             self.messages.emit(sender)
 
     def close(self):
-        self.messages.emit({"status": "disconnect"})
+        if not self.loggedin:
+            self.messages.emit({"status": "disconnect"})
         super().close()
 
 
@@ -260,7 +265,7 @@ class PrograPop(QWidget):
 
     def __init__(self, size=100, menu: QWidget = None, client=None):
         super().__init__()
-
+        self.menu = menu
         if not menu:
             self.menu = StartMenu(client=client, size=50)
             self.menu.success.connect(self.show)
@@ -284,7 +289,6 @@ class PrograPop(QWidget):
         self.user = QLabel("test text user", self)
         self.user.setObjectName("TextBox")
         self.user.setMaximumSize(64, 32)
-        self.messages.emit({"status": "server_request", "option": "name"})
 
         self.points = QLabel("Points: 0", self)
         self.points.setObjectName("Points")
@@ -294,33 +298,28 @@ class PrograPop(QWidget):
         status.addWidget(self.points, stretch=1)
         status.addWidget(self.user, stretch=1)
 
-        self.salas = list()
-        sala1 = QPushButton("sala 1", self)
-        sala2 = QPushButton("sala 2", self)
-        self.salas.append(sala1)
-        self.salas.append(sala2)
-
-        self.games = QVBoxLayout()
-        for sala in self.salas:
-            self.games.addWidget(sala, stretch=1)
+        games = QVBoxLayout()
+        self.games_list = dict()
+        self.games = Salitas(self)
+        games.addWidget(self.games)
 
         layout = QVBoxLayout()
         layout.addLayout(status, stretch=1)
-        layout.addLayout(self.games, stretch=1)
+        layout.addLayout(games, stretch=1)
         self.setLayout(layout)
+
+        games = Timer(function=self.game_retriever,interval=1)
+        games.start()
 
         console = Thread(target=self.console, daemon=True)
         console.start()
 
-    def receiver(self, arguments: dict):
-        if arguments['status'] == 'server_request':
-            self.set_points(int(arguments['points']))
-        pass
-
     def show(self):
         if isinstance(self.sender(), StartMenu) and self.menu:
+            self.messages.emit({"status": "server_request", "option": "name"})
+            # self.timer.start()
             super().show()
-        elif self.menu:
+        elif isinstance(self.menu, StartMenu):
             self.menu.show()
         else:
             super().show()
@@ -331,9 +330,42 @@ class PrograPop(QWidget):
             if response[0] == "move" and response[1] in self.__dict__.keys() and len(response) == 6 and \
                     isinstance(self.__dict__[response[1]], QWidget):
                 self.__dict__[response[1]].move(*[int(i) for i in response[2:]])
-            if response[0] == "help":
+            elif response[0] == "help":
                 for value in self.__dict__.keys():
                     print(value)
+            elif response[0] == "layout":
+                pass
+            elif response[0] == "show":
+                self.show()
+            elif response[0] == "hide":
+                self.hide()
+
+    def games_manager(self, n):
+        print(n)
+
+    def game_retriever(self):
+        for n in self.games_list:
+            self.messages.emit({"status": "server_request", "option": "game_status", "uuid": n})
+
+    def game_analizer(self):
+        games = set(self.games_list.keys())
+        self.messages.emit({"status": "server_request", "option": "game_list", "actual_games": games})
+
+    def game_destroyer(self, o: set):
+        destroy = set(self.games_list.keys()).difference(o)
+        for value in destroy:
+            objeto = self.games_list.pop(value)
+            self.games.clear()
+            del objeto
+
+    def game_format(self, formated: dict):
+        if formated['uuid'] in self.games_list:
+            current = self.games_list[formated['uuid']]
+            current.uptodate(**formated)
+        else:
+            current = Sala(**formated,target=self.games_manager)
+            self.games_list.update({formated['uuid']: current})
+            self.games.addItem(current)
 
     def get_points(self):
         self.messages.emit({"status": "server_request", "option": "points"})
@@ -347,7 +379,8 @@ class PrograPop(QWidget):
     def set_songs(self, songs: dict):
         pass
 
-    def reciever(self, arguments: dict):
+    def receiver(self, arguments: dict):
+        print("Informacion recivida por la interfaz: {}".format(arguments))
         if arguments["status"] == "server_request" and "option" in arguments.keys():
             if arguments["option"] == "points":
                 self.set_points(arguments["points"])
@@ -355,8 +388,12 @@ class PrograPop(QWidget):
                 self.set_songs(arguments["songs"])
             elif arguments["option"] == "name":
                 self.user.setText("User: {}".format(arguments["name"]))
-
-        pass
+            elif arguments['option'] == 'game_status':
+                self.game_format(arguments['format'])
+        if arguments['status'] == 'destroy':
+            self.game_destroyer(arguments['compare'])
+        if arguments['status'] == 'name':
+            self.user.setText(arguments['name'])
 
     def close(self):
         self.messages.emit({"status": "disconnect"})
@@ -365,6 +402,6 @@ class PrograPop(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    menu = PrograPop(size=100)
+    menu = PrograPop(menu=1, size=100)
     menu.show()
     sys.exit(app.exec_())
