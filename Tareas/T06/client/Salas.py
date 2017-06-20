@@ -96,16 +96,27 @@ class Room(QWidget):
         while len(buttons) < 4:
             buttons.append(choice(buttons))
         shuffle(buttons)
-        for text, button in buttons, self.buttons:
-            button.setText(text)
+        buttons = buttons[0:4]
+        i = 0
+        for button in self.buttons:
+            button.setText(buttons[i])
+            i += 1
 
     def closeEvent(self, QCloseEvent):
         self.getter.cancel()
         self.messages.emit({"status": "leave"})
 
-    def receiver(self):
+    def receiver(self,rules: dict):
         # Poner el cambio de flag y agregar cambios de color
-        pass
+        if rules['status'] == 'answer_match':
+            for button in self.buttons:
+                if button.text() == rules['ans']:
+                    if rules['succes']:
+                        button.setObjectName("Correct")
+                        self.flag = True
+                    else:
+                        button.setObjectName("Incorrect")
+                        self.flag = True
 
 
 def console(target):
@@ -116,7 +127,7 @@ def console(target):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    lista = GAto()
+    lista = Room(None)
     lista.show()
     console = Thread(target=console, args=(lista,), daemon=True)
     console.start()

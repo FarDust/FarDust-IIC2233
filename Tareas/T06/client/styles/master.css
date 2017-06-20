@@ -13,6 +13,7 @@ QPushButton#GameButton {
 
 QLabel#Points{
   background-color: #9B1726;
+  color: White;
   text-align: center;
   font-size: 15px;
   font-style: italic;
@@ -22,4 +23,12 @@ QLabel#Points{
 
 QWidget#PrograPop {
   background-color: #33CEAC;
+}
+
+QPushButton#Correct{
+  background-color: Green;
+}
+
+QPushButton#Incorrect{
+  background-color: Red;
 }

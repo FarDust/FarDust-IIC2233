@@ -391,7 +391,8 @@ class PrograPop(QWidget):
         if self.lastmessage != arguments:
             self.lastmessage = arguments
             if not ("option" in arguments.keys() and arguments["option"] == "game_status"):
-                print("Informacion recivida por la interfaz: {}".format(arguments))
+                # print("Informacion recivida por la interfaz: {}".format(arguments))
+                pass
             if arguments["status"] == "server_response" and "option" in arguments.keys():
                 if arguments["option"] == "points":
                     self.set_points(arguments["points"])
@@ -408,6 +409,8 @@ class PrograPop(QWidget):
             elif arguments['status'] == 'disconnect':
                 self.menu.loggedin = False
                 self.menu.show()
+                if self.room:
+                    self.room.close()
                 self.hide()
             elif arguments['status'] == 'server_display':
                 if not self.room:
@@ -423,6 +426,10 @@ class PrograPop(QWidget):
             elif arguments['status'] == 'game':
                 if arguments['option'] == 'getbuttons':
                     self.messages.emit(arguments)
+            elif arguments['status'] == 'answer':
+                self.messages.emit(arguments)
+            elif arguments['status'] == 'answer_match':
+                self.internal.emit(arguments)
             elif arguments['status'] == 'hide':
                 # self.hide()
                 pass

@@ -67,6 +67,8 @@ class Client(QObject, Thread):
             print(message)
         except ConnectionResetError:
             self.messages.emit({"status": "disconnect"})
+        except ConnectionAbortedError:
+            raise SystemExit
 
     def server_listener(self):
         self.messages.emit({"status": "ready"})
@@ -74,7 +76,8 @@ class Client(QObject, Thread):
             try:
                 rules = json.loads(self.v4socket.recv(2048).decode("utf-8"))
                 if not("option" in rules.keys() and rules["option"] == "points"):
-                    print("Informacion recivida por el cliente: {}".format(rules))
+                    pass
+                    # print("Informacion recivida por el cliente: {}".format(rules))
                 rule = rules['status']
                 if rule == 'server_response':
                     self.messages.emit(rules)
@@ -89,7 +92,10 @@ class Client(QObject, Thread):
                 elif rule == "server_display":
                     if rules["order"] == "show":
                         self.messages.emit(rules)
-                        self.messages.emit({"status":"hide"})
+                elif rule == 'answer':
+                    self.v4socket.send(json.dumps(rules).encode("utf-8"))
+                elif rule == 'answer_match':
+                    self.messages.emit(rules)
             except ConnectionAbortedError:
                 self.messages.emit({"status": "disconnect"})
                 break
