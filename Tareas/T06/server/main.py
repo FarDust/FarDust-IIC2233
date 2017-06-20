@@ -26,6 +26,8 @@ def validate_user(s):
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
+        self.onroom = list()
+        self.block = Lock
         if not host:
             host = _LOCALHOST
         self.host = host
@@ -37,7 +39,7 @@ class Server:
         self.room_formats = dict()
         print("Server running at port {}".format(self.port))
         self.clients = dict()
-        self.rooms_checker()  # Analiza el directorio songs y reinicia -> escribir "rooms" en consola para ejecutar
+        self.rooms_checker()  # Analiza el directorio songs -> escribir "rooms" en consola para ejecutar
         accept_daemon = Thread(target=self.accept, daemon=True, name="aceptartor", args=())
         accept_daemon.start()
         console = Thread(target=self.interpreter, daemon=True, name="Console", args=())
@@ -67,7 +69,7 @@ class Server:
             except ConnectionResetError:
                 print("Conection lost...")
 
-    def rooms_checker(self):
+    def rooms_checker(self, client=None):
         self.room_formats.clear()
         preformat = {'uuid': uuid4().int, 'users': 0, 'max': 20, 'segundos': 20, 'artist': []}
         rooms_dir = S_DIR + os.sep + "songs"
@@ -81,32 +83,57 @@ class Server:
                     if re.match("[a-zA-Z\- ]+\.(wav)$", song):
                         header = re.split(" ?[-] ?", song)
                         room_format['artist'].append(header[0])
-                with open(rooms_dir + os.sep + room + os.sep + "game.csv", "w") as game:
-                    game.write("player:int\n")
-                self.room_formats[uuid4().int] = room_format.copy()
+                if not (os.path.isfile(rooms_dir + os.sep + room + os.sep + "game.csv")) or not client:
+                    uuid = uuid4().int
+                    with open(rooms_dir + os.sep + room + os.sep + "game.csv", "w") as game:
+                        game.write("player:int\n")
+                    with open(rooms_dir + os.sep + "manifest.csv", "a") as file:
+                        file.write("{},{}\n".format(room, uuid))
+                else:
+                    with open(rooms_dir + os.sep + "manifest.csv", "r") as data:
+                        header = next(data)
+                        uuid = next(filter(lambda x: room in x, data)).strip().split(",")[1]
+                with open(rooms_dir + os.sep + room + os.sep + "game.csv", "r") as file:
+                    long = len(file.readlines()) - 1
+                room_format['users'] = long
+                self.room_formats[int(uuid)] = room_format.copy()
                 room_format.clear()
-        print("Rooms data updated...")
-        if len(self.clients) > 0:
-            for client in self.clients.keys():
-                try:
-                    client.send(json.dumps({"status": "server_order",
-                                            "option": "rooms",
-                                            "rooms": self.room_formats}).encode("utf-8"))
-                except ConnectionResetError or ConnectionRefusedError or ConnectionAbortedError :
-                    self.clients.pop(client)
-                    client.close()
+        if client:
+            client.send(json.dumps({"status": "server_order",
+                                    "option": "rooms",
+                                    "rooms": self.room_formats}).encode("utf-8"))
 
-    def room_controller(self):
+    def room_controller(self, client: socket, room: int):
         rooms_dir = S_DIR + os.sep + "songs"
-        rooms = os.listdir(rooms_dir)
+        if not self.clients[client] in self.onroom:
+            with open(rooms_dir + os.sep + "manifest.csv", "r") as data:
+                header = next(data).strip()
+                name = next(filter(lambda x: str(room) in x, data)).strip().split(",")[0]
+            with open(rooms_dir + os.sep + name + os.sep + "game.csv", "a") as game:
+                game.write("{}\n".format(self.clients[client]))
+            client.send(json.dumps({"status": "server_display", "order": "show", "room": room}).encode("utf-8"))
+
+    def room_leaver(self, room_id, client: socket):
+        rooms_dir = S_DIR + os.sep + "songs"
+        with open(rooms_dir + os.sep + "manifest.csv", "r") as data:
+            header = next(data)
+            name = next(filter(lambda x: room_id in x,data)).strip().split(",")[0]
+        with open(rooms_dir + os.sep + name + os.sep + "game.csv", "r") as file:
+            lines = file.readlines()
+            lines.pop(str(room_id))
+            new = "\n".join(lines)
+        with open(rooms_dir + os.sep + name + os.sep + "game.csv", "w") as file:
+            file.write(new)
+        self.onroom.pop(client)
+        pass
 
     def client_listener(self, client_socket: socket):
         while True:
             try:
                 mensaje = json.loads(client_socket.recv(2048).decode('utf-8'))
-                print('Datos recibidos en el server: {}'.format(mensaje))
+                if not ("option" in mensaje.keys() and (mensaje['option'] == "points" or mensaje['option'] == 'rooms')):
+                    print('Datos recibidos en el server: {}'.format(mensaje))
                 if client_socket in self.clients.keys():
-                    print("Server connected to a client n° {}".format(self.clients[client_socket]))
                     if mensaje['status'] == 'msg':
                         print('Mensaje recibido: {}'.format(mensaje['content']))
                     elif mensaje['status'] == 'server_request':
@@ -114,16 +141,30 @@ class Server:
                             userid = self.clients[client_socket]
                             with open(os.getcwd() + os.sep + "users.csv") as database:
                                 index = next(database).strip().split(",").index("points")
-                                value = next(filter(lambda x: x == userid, database)).strip().split(",")[index]
+                                value = next(filter(lambda x: userid in x, database)).strip().split(",")[index]
                             client_socket.send(
-                                json.dumps({'status': 'server_response', 'points': int(value)}).encode("utf-8"))
+                                json.dumps(
+                                    {'status': 'server_response', "option": 'points', 'points': int(value)}).encode(
+                                    "utf-8"))
                         elif mensaje['option'] == 'game_status':
                             print(mensaje)
                             pass
-
+                        elif mensaje['option'] == 'name':
+                            with open(S_DIR + os.sep + "users.csv", "r") as data:
+                                header = next(data)
+                                info = next(filter(lambda x: self.clients[client_socket] in x, data)).strip().split(",")
+                                client_socket.send(
+                                    json.dumps({"status": "server_response", "option": "name", 'name': info[1]}).encode(
+                                        "utf-8"))
+                        elif mensaje['option'] == 'rooms':
+                            self.rooms_checker(client_socket)
+                        elif mensaje['option'] == 'join':
+                            self.room_controller(client_socket, mensaje['room'])
+                    elif mensaje['status'] == 'leave':
+                        self.room_leaver(mensaje['room'])
                     elif mensaje['status'] == 'disconnect':
                         client_socket.close()
-                        self.clients.pop(client_socket)
+                        self.clients.pop(client_socket, client_socket)
                         print("client disconnected")
                         break
                 else:
@@ -131,10 +172,12 @@ class Server:
                         self.login(client_socket, mensaje)
             except ConnectionResetError:
                 print('Se perdio la comunicacion con el cliente')
-            finally:
-                raise SystemExit
                 client_socket.close()
                 self.clients.pop(client_socket)
+                break
+            except KeyError:
+                break
+            except UnicodeDecodeError:
                 break
 
     @staticmethod
@@ -156,7 +199,6 @@ class Server:
             with open(os.getcwd() + os.sep + "users_secure/{}".format(uuid), "rb") as passwd_hash:
                 passwd = passwd_hash.read()
             if diff_bytes(unified_diff, bits, passwd):
-
                 return True
         return False
 

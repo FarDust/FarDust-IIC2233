@@ -1,16 +1,17 @@
+import os
 import sys
 from random import shuffle
 from threading import Thread
 
 from PyQt5.QtCore import pyqtSignal, QObject
-from PyQt5.QtGui import QPixmap, QIcon, QStandardItem, QStandardItemModel
+from PyQt5.QtGui import QPixmap, QIcon, QStandardItem, QStandardItemModel, QCloseEvent
 from PyQt5.QtWidgets import QPushButton, QWidget, QVBoxLayout, QListWidget, QLabel, QApplication, QAction, qApp, \
-    QListWidgetItem, QListView
+    QListWidgetItem, QListView, QHBoxLayout
 
 
 class Sala(QListWidgetItem):
-
-    def __init__(self, uuid: int, users: int, max: int, segundos: int, artist: list, image: QPixmap=None, target=None):
+    def __init__(self, uuid: int, users: int, max: int, segundos: int, artist: list, image: QPixmap = None,
+                 target=None):
         super().__init__()
         self.segundos = segundos
         self.max = max
@@ -58,6 +59,34 @@ class Salitas(QListWidget):
         self.currentItem().trigger()
 
 
+class Room(QWidget):
+    messages = pyqtSignal(dict)
+    def __init__(self):
+        super().__init__()
+        self.setGeometry(150, 150, 400, 500)
+        self.setMaximumSize(400, 500)
+        self.setMinimumSize(400, 500)
+        self.setWindowIcon(QIcon(os.getcwd()+os.sep+ "IMGS" +os.sep + "start_icon.png"))
+        principal = QVBoxLayout()
+        header = QHBoxLayout()
+        botones = QVBoxLayout()
+
+        self.buttons = [QPushButton("artist",self) for i in range(4)]
+        for button in self.buttons:
+            botones.addWidget(button,stretch=1)
+        header.addWidget(QLabel("hola",self), stretch=1)
+        principal.addLayout(header, stretch=6)
+        principal.addLayout(botones,stretch=1)
+        self.setLayout(principal)
+
+    def closeEvent(self, QCloseEvent):
+        self.messages.emit({"status": "leave"})
+
+    def receiver(self):
+        pass
+
+
+
 def console(target):
     while True:
         response = input("hi: ")
@@ -66,7 +95,7 @@ def console(target):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    lista = Salitas()
+    lista = GAto()
     lista.show()
     console = Thread(target=console, args=(lista,), daemon=True)
     console.start()

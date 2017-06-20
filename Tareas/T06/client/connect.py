@@ -1,5 +1,6 @@
 import re
 import json
+from json import JSONDecodeError
 from socket import socket, AF_INET, AF_INET6, SOCK_STREAM, _LOCALHOST, _LOCALHOST_V6
 from threading import Thread, Timer, Event, Barrier, Lock, Condition, local
 import sys
@@ -47,6 +48,10 @@ class Client(QObject, Thread):
                 self.signin(**arguments)
             elif rule == 'server_request':
                 self.v4socket.send(json.dumps(arguments).encode("utf-8"))
+            elif rule == "server_response":
+                self.v4socket.send(json.dumps(arguments).encode("utf-8"))
+            elif rule == 'leave':
+                self.v4socket.send(json.dumps({"status": 'leave', 'room': arguments['room']}).encode("utf-8"))
             else:
                 self.v4socket.send(json.dumps(arguments).encode("utf-8"))
                 print(arguments)
@@ -55,24 +60,39 @@ class Client(QObject, Thread):
             message = "Conexion negada por el servidor"
             self.messages.emit({"status": "error", "error": message})
             print(message)
+        except ConnectionResetError:
+            self.messages.emit({"status": "disconnect"})
 
     def server_listener(self):
+        self.messages.emit({"status": "ready"})
         while True:
-            rules = json.loads(self.v4socket.recv(2048).decode("utf-8"))
-            print("Informacion recivida por el cliente: {}".format(rules))
-            rule = rules['status']
-            if rule == 'server_response':
-                self.messages.emit(rules)
-            elif rule == 'server_order':
-                if rules['option'] == 'rooms':
-                    self.messages.emit({'status': 'destroy', 'compare': set(rules['rooms'].keys())})
-                    for uuid, room in rules['rooms'].items():
-                        room.update({'uuid': uuid})
-                        self.messages.emit({'status': 'server_request',
-                                            'option': 'game_status',
-                                            'format': room})
-            elif rule == 'name':
-                self.messages.emit(rules)
+            try:
+                rules = json.loads(self.v4socket.recv(2048).decode("utf-8"))
+                if not("option" in rules.keys() and rules["option"] == "points"):
+                    print("Informacion recivida por el cliente: {}".format(rules))
+                rule = rules['status']
+                if rule == 'server_response':
+                    self.messages.emit(rules)
+                elif rule == 'server_order':
+                    if rules['option'] == 'rooms':
+                        self.messages.emit({'status': 'destroy', 'compare': set(rules['rooms'].keys())})
+                        for uuid, room in rules['rooms'].items():
+                            room.update({'uuid': uuid})
+                            self.messages.emit({'status': 'server_response',
+                                                'option': 'game_status',
+                                                'format': room})
+                elif rule == "server_display":
+                    if rules["order"] == "show":
+                        self.messages.emit(rules)
+                        self.messages.emit({"status":"hide"})
+            except ConnectionAbortedError:
+                self.messages.emit({"status": "disconnect"})
+                break
+            except ConnectionResetError:
+                self.messages.emit({"status": "disconnect"})
+                break
+            except JSONDecodeError:
+                pass
 
     def login(self, user: str, key: str, **kwargs):
         try:
@@ -87,7 +107,6 @@ class Client(QObject, Thread):
             message = json.loads(self.v4socket.recv(2048).decode("utf-8"))
             if message["status"] == 'login' and message["success"]:
                 self.messages.emit({"status": "login", "success": True})
-                self.messages.emit({"status": "name", "name": user})
                 listener = Thread(target=self.server_listener, name="server_listener", daemon=True)
                 listener.start()
             elif message["error"] == 5:

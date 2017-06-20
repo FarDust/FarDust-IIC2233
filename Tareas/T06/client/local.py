@@ -10,7 +10,7 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QPushButton, QHBoxLayo
     QApplication, QSystemTrayIcon, QMessageBox, QLineEdit, QMenuBar, QStatusBar, QMenu, QSlider, QScrollArea, \
     QListWidgetItem, QListView, QListWidget, QLayout
 
-from Salas import Salitas, Sala
+from Salas import Salitas, Sala, Room
 
 
 def read_styles(path: str, window):
@@ -262,9 +262,12 @@ class StartMenu(QWidget):
 
 class PrograPop(QWidget):
     messages = pyqtSignal(dict)
+    internal = pyqtSignal(dict)
 
     def __init__(self, size=100, menu: QWidget = None, client=None):
         super().__init__()
+        self.room = None
+        self.lastmessage = dict()
         self.menu = menu
         if not menu:
             self.menu = StartMenu(client=client, size=50)
@@ -283,16 +286,16 @@ class PrograPop(QWidget):
         read_styles("styles/master.css", self)
 
         self.timer = QTimer()
-        self.timer.setInterval(1)
-        self.timer.timeout.connect(self.get_points)
+        self.timer.setInterval(1000)
+        self.timer.timeout.connect(self.dependencies)
 
         self.user = QLabel("test text user", self)
         self.user.setObjectName("TextBox")
-        self.user.setMaximumSize(64, 32)
+        self.user.setMaximumSize(130, 37)
 
         self.points = QLabel("Points: 0", self)
         self.points.setObjectName("Points")
-        self.points.setMaximumSize(64, 32)
+        self.points.setMaximumSize(130, 32)
 
         status = QHBoxLayout()
         status.addWidget(self.points, stretch=1)
@@ -308,7 +311,7 @@ class PrograPop(QWidget):
         layout.addLayout(games, stretch=1)
         self.setLayout(layout)
 
-        games = Timer(function=self.game_retriever,interval=1)
+        games = Timer(function=self.game_retriever, interval=1)
         games.start()
 
         console = Thread(target=self.console, daemon=True)
@@ -317,7 +320,6 @@ class PrograPop(QWidget):
     def show(self):
         if isinstance(self.sender(), StartMenu) and self.menu:
             self.messages.emit({"status": "server_request", "option": "name"})
-            # self.timer.start()
             super().show()
         elif isinstance(self.menu, StartMenu):
             self.menu.show()
@@ -339,13 +341,18 @@ class PrograPop(QWidget):
                 self.show()
             elif response[0] == "hide":
                 self.hide()
+            elif response[0] == "points":
+                self.get_points()
 
     def games_manager(self, n):
-        print(n)
+        self.messages.emit({"status": "server_request", "option": "join", "room": n})
+
+    def dependencies(self):
+        self.get_points()
+        self.game_retriever()
 
     def game_retriever(self):
-        for n in self.games_list:
-            self.messages.emit({"status": "server_request", "option": "game_status", "uuid": n})
+        self.messages.emit({"status": "server_request", "option": "rooms"})
 
     def game_analizer(self):
         games = set(self.games_list.keys())
@@ -363,7 +370,7 @@ class PrograPop(QWidget):
             current = self.games_list[formated['uuid']]
             current.uptodate(**formated)
         else:
-            current = Sala(**formated,target=self.games_manager)
+            current = Sala(**formated, target=self.games_manager)
             self.games_list.update({formated['uuid']: current})
             self.games.addItem(current)
 
@@ -380,20 +387,43 @@ class PrograPop(QWidget):
         pass
 
     def receiver(self, arguments: dict):
-        print("Informacion recivida por la interfaz: {}".format(arguments))
-        if arguments["status"] == "server_request" and "option" in arguments.keys():
-            if arguments["option"] == "points":
-                self.set_points(arguments["points"])
-            elif arguments["option"] == "songs":
-                self.set_songs(arguments["songs"])
-            elif arguments["option"] == "name":
-                self.user.setText("User: {}".format(arguments["name"]))
-            elif arguments['option'] == 'game_status':
-                self.game_format(arguments['format'])
-        if arguments['status'] == 'destroy':
-            self.game_destroyer(arguments['compare'])
-        if arguments['status'] == 'name':
-            self.user.setText(arguments['name'])
+        if self.lastmessage != arguments:
+            self.lastmessage = arguments
+            if not ("option" in arguments.keys() and arguments["option"] == "game_status"):
+                print("Informacion recivida por la interfaz: {}".format(arguments))
+            if arguments["status"] == "server_response" and "option" in arguments.keys():
+                if arguments["option"] == "points":
+                    self.set_points(arguments["points"])
+                elif arguments["option"] == "songs":
+                    self.set_songs(arguments["songs"])
+                elif arguments["option"] == "name":
+                    self.user.setText("User: {}".format(arguments["name"]))
+                elif arguments['option'] == 'game_status':
+                    self.game_format(arguments['format'])
+            elif arguments["status"] == "ready":
+                self.timer.start()
+            elif arguments['status'] == 'destroy':
+                self.game_destroyer(arguments['compare'])
+            elif arguments['status'] == 'disconnect':
+                self.menu.loggedin = False
+                self.menu.show()
+                self.hide()
+            elif arguments['status'] == 'server_display':
+                self.room = Room()
+                read_styles(window=self.room, path=os.getcwd() + os.sep + "styles" + os.sep + "master.css")
+                self.room.setWindowTitle("Sala n° {}".format(arguments['room']))
+                self.room.room = arguments['room']
+                self.internal.connect(self.room.receiver)
+                self.room.messages.connect(self.receiver)
+                self.room.show()
+            elif arguments['status'] == 'hide':
+                # self.hide()
+                pass
+            elif arguments['status'] == 'leave':
+                self.messages.emit({"status": "leave", "room": self.room.room})
+
+    def closeEvent(self, QCloseEvent):
+        self.messages.emit({"status": "disconnect"})
 
     def close(self):
         self.messages.emit({"status": "disconnect"})
