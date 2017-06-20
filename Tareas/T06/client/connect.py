@@ -33,7 +33,10 @@ class Client(QObject, Thread):
         self.host = host
         self.port = port
         self.v4socket = socket(family=AF_INET, type=SOCK_STREAM)
-        self.v4socket.connect((self.host, self.port))
+        try:
+            self.v4socket.connect((self.host, self.port))
+        except ConnectionRefusedError:
+            raise SystemExit
 
     def getInteface(self, interface):
         self.messages.connect(interface.receiver)
@@ -52,6 +55,8 @@ class Client(QObject, Thread):
                 self.v4socket.send(json.dumps(arguments).encode("utf-8"))
             elif rule == 'leave':
                 self.v4socket.send(json.dumps({"status": 'leave', 'room': arguments['room']}).encode("utf-8"))
+            elif rule == 'game':
+                self.v4socket.send(json.dumps(arguments).encode("utf-8"))
             else:
                 self.v4socket.send(json.dumps(arguments).encode("utf-8"))
                 print(arguments)

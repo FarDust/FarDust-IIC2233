@@ -4,6 +4,7 @@ import re
 
 from threading import Thread, Timer
 
+import time
 from PyQt5.QtCore import QSize, pyqtSignal, QTimer
 from PyQt5.QtGui import QIcon, QPixmap, QKeyEvent, QBitmap
 from PyQt5.QtWidgets import QWidget, QMainWindow, QLabel, QPushButton, QHBoxLayout, QVBoxLayout, QDesktopWidget, \
@@ -409,20 +410,30 @@ class PrograPop(QWidget):
                 self.menu.show()
                 self.hide()
             elif arguments['status'] == 'server_display':
-                self.room = Room()
-                read_styles(window=self.room, path=os.getcwd() + os.sep + "styles" + os.sep + "master.css")
-                self.room.setWindowTitle("Sala n° {}".format(arguments['room']))
-                self.room.room = arguments['room']
-                self.internal.connect(self.room.receiver)
-                self.room.messages.connect(self.receiver)
-                self.room.show()
+                if not self.room:
+                    self.room = Room(arguments['room'])
+                    read_styles(window=self.room, path=os.getcwd() + os.sep + "styles" + os.sep + "master.css")
+                    self.room.title = arguments['room']
+                    self.room.setWindowTitle("Sala n° {}".format(arguments['room']))
+                    self.internal.connect(self.room.receiver)
+                    self.room.messages.connect(self.receiver)
+                    self.room.show()
+                elif self.room.title == arguments['room'] and 'buttons' in arguments.keys():
+                    self.room.set_buttons(arguments['buttons'])
+            elif arguments['status'] == 'game':
+                if arguments['option'] == 'getbuttons':
+                    self.messages.emit(arguments)
             elif arguments['status'] == 'hide':
                 # self.hide()
                 pass
             elif arguments['status'] == 'leave':
                 self.messages.emit({"status": "leave", "room": self.room.room})
+                self.room.destroy(destroyWindow=True)
+                self.room = None
 
     def closeEvent(self, QCloseEvent):
+        if self.room:
+            self.room.close()
         self.messages.emit({"status": "disconnect"})
 
     def close(self):

@@ -77,6 +77,11 @@ if __name__ == '__main__':
                             with open(C_DIR + os.sep + comandos[0], "rb") as archivito:
                                 archivo = archivito.read()
                             send(client=socket_client, value=archivo)
+                        else:
+                            if os.path.isdir(C_DIR + os.sep + comandos[0]):
+                                socket_client.send("Es una carpeta...")
+                            else:
+                                socket_client.send("no existe")
                     else:
                         pass
 

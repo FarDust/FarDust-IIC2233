@@ -1,7 +1,7 @@
 import os
 import sys
-from random import shuffle
-from threading import Thread
+from random import shuffle, choice
+from threading import Thread, Timer
 
 from PyQt5.QtCore import pyqtSignal, QObject
 from PyQt5.QtGui import QPixmap, QIcon, QStandardItem, QStandardItemModel, QCloseEvent
@@ -28,11 +28,11 @@ class Sala(QListWidgetItem):
 
     def uptodate(self, users: int = None, max: int = None, segundos: int = None, artist: list = None,
                  image: QPixmap = None, **kwargs):
-        if users:
+        if users is not None:
             self.users = users
-        if max:
+        if max is not None:
             self.max = max
-        if segundos:
+        if segundos is not None:
             self.segundos = segundos
         if artist and isinstance(artist, list):
             self.artist = artist
@@ -61,30 +61,51 @@ class Salitas(QListWidget):
 
 class Room(QWidget):
     messages = pyqtSignal(dict)
-    def __init__(self):
+
+    def __init__(self, room):
         super().__init__()
+        self.room = room
+        self.flag = True
         self.setGeometry(150, 150, 400, 500)
         self.setMaximumSize(400, 500)
         self.setMinimumSize(400, 500)
-        self.setWindowIcon(QIcon(os.getcwd()+os.sep+ "IMGS" +os.sep + "start_icon.png"))
+        self.setWindowIcon(QIcon(os.getcwd() + os.sep + "IMGS" + os.sep + "start_icon.png"))
         principal = QVBoxLayout()
         header = QHBoxLayout()
         botones = QVBoxLayout()
-
-        self.buttons = [QPushButton("artist",self) for i in range(4)]
+        self.getter = Timer(function=self.messages.emit, args=({'status': 'game',
+                                                                'option': 'getbuttons',
+                                                                'room': self.room},), interval=1)
+        self.getter.start()
+        self.buttons = [QPushButton("artist", self) for i in range(4)]
         for button in self.buttons:
-            botones.addWidget(button,stretch=1)
-        header.addWidget(QLabel("hola",self), stretch=1)
+            botones.addWidget(button, stretch=1)
+            button.pressed.connect(self.emit_self)
+        header.addWidget(QLabel("hola", self), stretch=1)
         principal.addLayout(header, stretch=6)
-        principal.addLayout(botones,stretch=1)
+        principal.addLayout(botones, stretch=1)
         self.setLayout(principal)
 
+    def emit_self(self):
+        button = self.sender()
+        if self.room and self.flag:
+            self.flag = False
+            self.messages.emit({"status": "answer", "room": int(self.room), "content": button.text()})
+
+    def set_buttons(self, buttons: list):
+        while len(buttons) < 4:
+            buttons.append(choice(buttons))
+        shuffle(buttons)
+        for text, button in buttons, self.buttons:
+            button.setText(text)
+
     def closeEvent(self, QCloseEvent):
+        self.getter.cancel()
         self.messages.emit({"status": "leave"})
 
     def receiver(self):
+        # Poner el cambio de flag y agregar cambios de color
         pass
-
 
 
 def console(target):
