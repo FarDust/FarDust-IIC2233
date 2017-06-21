@@ -1,3 +1,4 @@
+import requests
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
 with open("github_token", "r") as file:
@@ -6,3 +7,5 @@ with open("github_token", "r") as file:
 URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
 URL_GIT = "https://api.github.com/user"
 URL_GOOGLE = "http://www.google.com/search?"
+
+print(requests.get(url=URL_GIT,params={"access_token": G_TOKEN}).json())
