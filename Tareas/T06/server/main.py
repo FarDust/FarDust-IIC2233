@@ -1,6 +1,8 @@
 import json
 import os
 import re
+from json import JSONDecodeError
+from random import choice
 
 PORT = 49500
 HOST = None
@@ -26,6 +28,7 @@ def validate_user(s):
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
+        self.rooms = dict()
         self.onroom = set()
         self.block = Lock
         if not host:
@@ -100,21 +103,51 @@ class Server:
                 room_format['users'] = long
                 room_format['uuid'] = uuid
                 self.room_formats.update({int(uuid): room_format.copy()})
+                if not client:
+                    self.management(room, uuid)
+                    self.rooms.update({uuid: {'thread': Timer(function=self.management, interval=20, args=(room, uuid)),
+                                              'name': room,
+                                              'time_left': 20}})
+                    self.rooms[uuid]['thread'].start()
                 room_format.clear()
         if client:
             client.send(json.dumps({"status": "server_order",
                                     "option": "rooms",
                                     "rooms": self.room_formats}).encode("utf-8"))
 
-    def room(self, client: socket, room):
+    def management(self, room, uuid, *args):
+        room_dir = os.path.join(os.getcwd(), "songs", room)
+        songs = os.listdir(room_dir)
+        songs.remove("game.csv")
+        if "kernel.current" in songs:
+            songs.remove("kernel.current")
+        right_song = choice(songs)
+        songs.remove(right_song)
+        broadcast_songs = list()
+        while len(broadcast_songs) < 3:
+            if len(songs) >= 1:
+                selected = choice(songs)
+                songs.remove(selected)
+                broadcast_songs.append(selected)
+            else:
+                broadcast_songs.append("I'm a potato")
+        broadcast_songs.append(right_song)
+        broadcast_artists = [re.split(" ?[-] ?", i)[0] + "\n" for i in broadcast_songs]
+        with open(room_dir + os.sep + "kernel.current", "w") as file:
+            file.write(right_song + "\n")
+            file.writelines(broadcast_artists)
+
+    @staticmethod
+    def room(client: socket, room):
         manifest = os.path.join(os.getcwd(), "songs", "manifest.csv")
         with open(manifest, "r") as file:
             header = next(file).strip()
             game = next(filter(lambda x: str(room) in x, file)).strip().split(",")[0]
-        songs = os.listdir(os.path.join(os.getcwd(), "songs", game))
-        songs.remove("game.csv")
-        buttons = [re.split(" ?[-] ?",song)[0] for song in songs]
-        client.send(json.dumps({'status': 'server_display', 'order': 'show', 'room': room, 'buttons': buttons}).encode("utf-8"))
+        songs = os.path.join(os.getcwd(), "songs", game)
+        with open(songs + os.sep + "kernel.current", "r") as file:
+            buttons = [name.strip() for name in file.readlines()[1:]]
+        client.send(
+            json.dumps({'status': 'server_display', 'order': 'show', 'room': room, 'buttons': buttons}).encode("utf-8"))
 
     def room_controller(self, client: socket, room: int):
         rooms_dir = S_DIR + os.sep + "songs"
@@ -144,6 +177,30 @@ class Server:
             file.write(new)
         self.onroom.remove(self.clients[client])
         pass
+
+    def answer_check(self, client: socket, ans, room):
+        rooms = os.path.join(S_DIR, "songs")
+        with open(os.path.join(rooms, "manifest.csv"), "r") as manifest:
+            header = next(manifest).strip()
+            path = next(filter(lambda x: str(room) in x, manifest)).strip().split(",")[0]
+        songs = os.path.join(rooms, path, "kernel.current")
+        with open(songs, "r") as data:
+            right = re.split(" ?[-] ?", next(data).strip())[0]
+        if right == ans:
+            with open(S_DIR + os.sep + "users.csv", "r") as database:
+                index = next(database).strip().split(",").index("points")
+                userline = next(filter(lambda x: str(self.clients[client]) in x, database))
+                database.seek(0)
+                new = database.readlines()
+            user_index = new.index(userline)
+            uinfo = new[user_index].strip().split(",")
+            uinfo[index] = str(int(uinfo[index]) + 1)
+            new[user_index] = ",".join(uinfo) + "\n"
+            with open(S_DIR + os.sep + "users.csv", "w") as database:
+                database.writelines(new)
+            client.send(json.dumps({'status': 'answer_match', 'room': room, 'succes': True, 'ans': ans}).encode("utf-8"))
+        else:
+            client.send(json.dumps({'status': 'answer_match', 'room': room, 'succes': False, 'ans': ans}).encode("utf-8"))
 
     def client_listener(self, client_socket: socket):
         while True:
@@ -181,6 +238,8 @@ class Server:
                     elif mensaje['status'] == 'game':
                         if mensaje['option'] == 'getbuttons':
                             self.room(client_socket, mensaje['room'])
+                    elif mensaje['status'] == 'answer':
+                        self.answer_check(client_socket, mensaje['content'], mensaje['room'])
                     elif mensaje['status'] == 'leave':
                         self.room_leaver(mensaje['room'], client=client_socket)
                     elif mensaje['status'] == 'disconnect':
@@ -200,6 +259,8 @@ class Server:
                     self.clients.pop(client_socket)
                 break
             except UnicodeDecodeError:
+                break
+            except JSONDecodeError:
                 break
 
     @staticmethod

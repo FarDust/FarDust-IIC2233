@@ -165,11 +165,13 @@ class StartMenu(QWidget):
                     self.signin()
             self.flag = True
             pass
+        self.home()
         pass
 
     def keyPressEvent(self, event: QKeyEvent):
         if (self.menu == "login" or self.menu == "signin") and event.nativeVirtualKey() == 13 and self.flag:  # Enter
             self.send()
+            self.home()
 
     def login(self):
         self.menu = "login"
