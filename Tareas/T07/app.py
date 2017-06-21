@@ -11,7 +11,7 @@ URL_GIT = "https://api.github.com/user"
 URL_GOOGLE = "http://www.google.com/search?"
 
 print(requests.get(URL_TEL_BOT + "/GetUpdates").json())
-print(requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": "test"}).json())
+requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": "new_deploy"}).json()
 app = flask.Flask(__name__)
 
 
@@ -22,7 +22,7 @@ def index():
 
 @app.route("/payload/<load>")
 def github(load):
-    return print(load)
+    return requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": load}).json()
 
 
 if __name__ == '__main__':
