@@ -1,0 +1,4 @@
+get - send a message to the issue on DrMavrakis4ever 
+post - comment an issue on GitHub repository DrMavrakis4ever
+label - label a issue 
+close - close an issue
