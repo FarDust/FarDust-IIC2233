@@ -25,5 +25,3 @@ def github(load):
     return requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": load}).json()
 
 
-if __name__ == '__main__':
-    app.run(port=4567)
