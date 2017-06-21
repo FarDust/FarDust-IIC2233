@@ -289,8 +289,8 @@ class PrograPop(QWidget):
         read_styles("styles/master.css", self)
 
         self.timer = QTimer()
-        self.timer.setInterval(1000)
         self.timer.timeout.connect(self.dependencies)
+        self.timer.setInterval(1500)
 
         self.user = QLabel("test text user", self)
         self.user.setObjectName("TextBox")
@@ -315,7 +315,6 @@ class PrograPop(QWidget):
         self.setLayout(layout)
 
         games = Timer(function=self.game_retriever, interval=1)
-        games.start()
 
         console = Thread(target=self.console, daemon=True)
         console.start()
@@ -406,6 +405,7 @@ class PrograPop(QWidget):
                     self.game_format(arguments['format'])
             elif arguments["status"] == "ready":
                 self.timer.start()
+                pass
             elif arguments['status'] == 'destroy':
                 self.game_destroyer(arguments['compare'])
             elif arguments['status'] == 'disconnect':

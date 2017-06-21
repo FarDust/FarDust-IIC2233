@@ -4,13 +4,15 @@ import re
 from json import JSONDecodeError
 from random import choice
 
+from wav_mini_op_420 import wav_mini
+
 PORT = 49500
 HOST = None
 S_DIR = os.getcwd()
 T_INDEX = {'int': int, 'str': str, 'float': float}
 
 from socket import socket, AF_INET, AF_INET6, SOCK_STREAM, _LOCALHOST, _LOCALHOST_V6
-from threading import Thread, Timer, Event, Barrier, Lock, Condition, local
+from threading import Thread, Timer, Event, Barrier, Lock, Condition, local, RLock
 from difflib import SequenceMatcher, diff_bytes, unified_diff
 import sys
 from uuid import getnode, uuid4
@@ -28,9 +30,10 @@ def validate_user(s):
 
 class Server:
     def __init__(self, host=HOST, port=PORT):
+        self.locks = dict()
         self.rooms = dict()
         self.onroom = set()
-        self.block = Lock
+        self.block = RLock()
         if not host:
             host = _LOCALHOST
         self.host = host
@@ -64,6 +67,7 @@ class Server:
 
         while not self.exit:
             new_client, address = self.server_socket.accept()
+            self.locks.update({new_client: Lock()})
             listening_client = Thread(target=self.client_listener, args=(new_client,), daemon=True,
                                       name="{}:{}".format(*address))
             print("Listening client at adress: {}".format(listening_client.getName()))
@@ -83,7 +87,7 @@ class Server:
                 songs = os.listdir(rooms_dir + os.sep + room)
                 room_format['artist'] = list()
                 for song in songs:
-                    if re.match("[a-zA-Z\- ]+\.(wav)$", song):
+                    if re.match("[a-zA-Z\- ]+\.(wav)$", song) and song != "minimized.wav":
                         header = re.split(" ?[-] ?", song)
                         room_format['artist'].append(header[0])
                 if not (os.path.isfile(rooms_dir + os.sep + room + os.sep + "game.csv")) or not client:
@@ -115,10 +119,13 @@ class Server:
                                     "option": "rooms",
                                     "rooms": self.room_formats}).encode("utf-8"))
 
-    def management(self, room, uuid, *args):
+    @staticmethod
+    def management(room, uuid, *args):
         room_dir = os.path.join(os.getcwd(), "songs", room)
         songs = os.listdir(room_dir)
         songs.remove("game.csv")
+        if "minimized.wav" in songs:
+            songs.remove("minimized.wav")
         if "kernel.current" in songs:
             songs.remove("kernel.current")
         right_song = choice(songs)
@@ -133,6 +140,8 @@ class Server:
                 broadcast_songs.append("I'm a potato")
         broadcast_songs.append(right_song)
         broadcast_artists = [re.split(" ?[-] ?", i)[0] + "\n" for i in broadcast_songs]
+        with open(room_dir + os.sep + "minimized.wav", "wb") as mini:
+            mini.write(wav_mini(room_dir + os.sep + right_song))
         with open(room_dir + os.sep + "kernel.current", "w") as file:
             file.write(right_song + "\n")
             file.writelines(broadcast_artists)
@@ -159,6 +168,10 @@ class Server:
             with open(rooms_dir + os.sep + name + os.sep + "game.csv", "a") as game:
                 game.write("{}\n".format(self.clients[client]))
             client.send(json.dumps({"status": "server_display", "order": "show", "room": room}).encode("utf-8"))
+            # sender = Thread(target=self.send_archives,
+            #                args=(client, (rooms_dir + os.sep + name + os.sep + "minimized.wav"), room))
+            # sender.setName(room)
+            # sender.start()
 
     def room_leaver(self, room_id, client: socket):
         rooms_dir = S_DIR + os.sep + "songs"
@@ -198,15 +211,19 @@ class Server:
             new[user_index] = ",".join(uinfo) + "\n"
             with open(S_DIR + os.sep + "users.csv", "w") as database:
                 database.writelines(new)
-            client.send(json.dumps({'status': 'answer_match', 'room': room, 'succes': True, 'ans': ans}).encode("utf-8"))
+            client.send(
+                json.dumps({'status': 'answer_match', 'room': room, 'succes': True, 'ans': ans}).encode("utf-8"))
         else:
-            client.send(json.dumps({'status': 'answer_match', 'room': room, 'succes': False, 'ans': ans}).encode("utf-8"))
+            client.send(
+                json.dumps({'status': 'answer_match', 'room': room, 'succes': False, 'ans': ans}).encode("utf-8"))
 
     def client_listener(self, client_socket: socket):
         while True:
             try:
                 mensaje = json.loads(client_socket.recv(2048).decode('utf-8'))
-                if not ("option" in mensaje.keys() and (mensaje['option'] == "points" or mensaje['option'] == 'rooms')):
+                # with self.locks[client_socket]:
+                if not ("option" in mensaje.keys() and (
+                                mensaje['option'] == "points" or mensaje['option'] == 'rooms')):
                     print('Datos recibidos en el server: {}'.format(mensaje))
                 if client_socket in self.clients.keys():
                     if mensaje['status'] == 'msg':
@@ -227,9 +244,11 @@ class Server:
                         elif mensaje['option'] == 'name':
                             with open(S_DIR + os.sep + "users.csv", "r") as data:
                                 header = next(data)
-                                info = next(filter(lambda x: self.clients[client_socket] in x, data)).strip().split(",")
+                                info = next(filter(lambda x: self.clients[client_socket] in x, data)).strip().split(
+                                    ",")
                                 client_socket.send(
-                                    json.dumps({"status": "server_response", "option": "name", 'name': info[1]}).encode(
+                                    json.dumps(
+                                        {"status": "server_response", "option": "name", 'name': info[1]}).encode(
                                         "utf-8"))
                         elif mensaje['option'] == 'rooms':
                             self.rooms_checker(client_socket)
@@ -263,14 +282,29 @@ class Server:
             except JSONDecodeError:
                 break
 
-    @staticmethod
-    def send_archives(client: socket, file):
-        client.send(json.dumps({"status": "file"}).encode('utf-8'))
-        with open(file, "rb") as lectura:
-            file = lectura.read()
-
-        client.send(len(file).to_bytes(4, byteorder="big"))
-        client.send(file)
+    def send_archives(self, client: socket, file, name=None):
+        try:
+            with open(file, "rb") as lectura:
+                file = lectura.read()
+            client.send(
+                json.dumps({"status": "song", "option": "new_file", "room": name, "long": len(file)}).encode("utf-8"))
+            sent = 0
+            index = 0
+            buffer = 4096
+            while sent < len(file):
+                with self.locks[client]:
+                    if sent + buffer > len(file):
+                        buffer = len(file) - sent
+                    bits = file[index:index + buffer]
+                    index += buffer
+                    sent += buffer
+                    client.send(json.dumps({"status": "song",
+                                            'option': 'write',
+                                            "room": name,
+                                            "buffer": buffer}).encode("utf-8"))
+                    # client.send(bits)
+        except ConnectionResetError:
+            pass
 
     @staticmethod
     def recieve_compare_hash(client: socket, uuid):

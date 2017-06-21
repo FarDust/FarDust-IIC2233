@@ -72,12 +72,13 @@ class Client(QObject, Thread):
 
     def server_listener(self):
         self.messages.emit({"status": "ready"})
+        working = None
         while True:
             try:
                 rules = json.loads(self.v4socket.recv(2048).decode("utf-8"))
-                if not("option" in rules.keys() and rules["option"] == "points"):
+                if not ("option" in rules.keys() and rules["option"] == "points"):
                     pass
-                    # print("Informacion recivida por el cliente: {}".format(rules))
+                    print("Informacion recivida por el cliente: {}".format(rules))
                 rule = rules['status']
                 if rule == 'server_response':
                     self.messages.emit(rules)
@@ -96,14 +97,23 @@ class Client(QObject, Thread):
                     self.v4socket.send(json.dumps(rules).encode("utf-8"))
                 elif rule == 'answer_match':
                     self.messages.emit(rules)
+                elif rule == "song":
+                    if rules['option'] == "new_file":
+                        long = int.from_bytes(self.v4socket.recv(4), "big")
+                        working = rules['room']
+                        with open(working + ".wav", "wb") as room:
+                            room.write(b'')
+                    if rules['option'] == 'write':
+                        if working == rules['room']:
+                            with open(working+ ".wav", "ab") as room:
+                                bits = self.v4socket.recv(rules['buffer'])
+                                room.write(bits)
             except ConnectionAbortedError:
                 self.messages.emit({"status": "disconnect"})
                 break
             except ConnectionResetError:
                 self.messages.emit({"status": "disconnect"})
                 break
-            except JSONDecodeError:
-                pass
 
     def login(self, user: str, key: str, **kwargs):
         try:

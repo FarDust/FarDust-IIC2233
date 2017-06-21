@@ -81,7 +81,8 @@ class Room(QWidget):
         for button in self.buttons:
             botones.addWidget(button, stretch=1)
             button.pressed.connect(self.emit_self)
-        header.addWidget(QLabel("hola", self), stretch=1)
+        self.header = QLabel("Time left:{}".format(20),self)
+        header.addWidget(self.header, stretch=1)
         principal.addLayout(header, stretch=6)
         principal.addLayout(botones, stretch=1)
         self.setLayout(principal)
@@ -113,6 +114,7 @@ class Room(QWidget):
                 if button.text() == rules['ans']:
                     if rules['succes']:
                         button.setObjectName("Correct")
+                        self.header.setText("Correcto")
                         self.flag = True
                     else:
                         button.setObjectName("Incorrect")
