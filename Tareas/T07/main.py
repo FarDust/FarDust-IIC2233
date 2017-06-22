@@ -54,6 +54,8 @@ def telegram():
                 quarry = text[text.index("#") + 1:].strip()
                 close_issue(quarry, chat_data)
                 pass
+            elif re.match("\/label #[0-9]+ [\w ]+",text):
+                label_issue(" ".join(text.split(" ")[2:]),text[1],chat_data)
     return "200 OK"
 
 
@@ -74,6 +76,21 @@ def close_issue(number, chat):
                          data=flask.json.dumps({'state': 'closed'}))
     if req.status_code == 200:
         message = "Issue #{} exitosamente cerrada".format(number)
+        message = message_format(message, req)
+    elif req.status_code == 404:
+        message = "Esa issue no existe"
+    else:
+        message = "Fallo: Error {}".format(req.status_code)
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+
+
+def label_issue(number, label, chat):
+    labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['labels']
+    labels.append(label)
+    req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
+                         data=flask.json.dumps({'labels': labels}))
+    if req.status_code == 200:
+        message = "Label '{}' agregada al issue #{}".format(label, number)
         message = message_format(message, req)
     elif req.status_code == 404:
         message = "Esa issue no existe"
