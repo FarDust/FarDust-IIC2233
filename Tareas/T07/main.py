@@ -54,7 +54,8 @@ def telegram():
                 close_issue(quarry, chat_data)
                 pass
             elif re.match("\/label #[0-9]+ [\w]+", text):
-                label_issue(" ".join(text.split(" ")[2:]), text[1], chat_data)
+                text = text.split(" ")
+                label_issue(text[1], text[2], chat_data)
     return "200 OK"
 
 
@@ -85,8 +86,7 @@ def close_issue(number, chat):
 
 def label_issue(number, label, chat):
     labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
-    print(labels.url)
-    return
+    labels = labels.json()['labels']
     labels.append(label)
     req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
                          data=flask.json.dumps({'labels': labels}))
