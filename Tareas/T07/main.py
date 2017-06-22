@@ -48,8 +48,11 @@ def telegram():
         if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w ]+|close #[0-9]+)", text)):
             admin("I receive a command")
             if re.match("\/get #[0-9]+", text):
-                quarry = text[text.index("#")+1:].strip()
+                quarry = text[text.index("#") + 1:].strip()
                 get_issue(quarry, chat_data)
+            elif re.match("\/post #[0-9]+ \*[\w \n]+", text):
+                quarry = text[text.index("#") + 1:].strip()
+                pass
     return "200 OK"
 
 
@@ -64,9 +67,23 @@ def get_issue(number, chat):
         message = "Fallo: Error {}".format(req.status_code)
     requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
-def message_format(message,req):
+
+def close_issue(number, chat):
+    req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
+                         data=flask.json.dumps({'state': 'closed'}))
+    if req.status_code == 200:
+        message = "Issue #{} exitosamente cerrada".format(number)
+        message = message_format(message, req)
+    elif req.status_code == 404:
+        message = "Esa issue no existe"
+    else:
+        message = "Fallo: Error {}".format(req.status_code)
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+
+
+def message_format(message, req):
     formated = req.json()
-    formated.update({"message":message})
+    formated.update({"message": message})
     formated.update({"user": formated["user"]["login"]})
     template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {url}]".format(**formated)
     return template
