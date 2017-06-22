@@ -16,24 +16,18 @@
  * Al momento de recibir errores desde el servidor estos son entregados con las llaves "status" ***signin*** o ***login*** y "success" la cual contendra un booleano.
  * La mayoria de los mensajes de interfaz son directamente transmitidos a la inbterfaz para que se encargue del movimiento de los objetos visuales.
 3. **Local**
- * Modulo encargado del frontend del juego, contiene la funcion ***read_styles()*** , la clase ***LeagueOfProgra*** y la clase ***StartMenu***.En su conjunto administran la parte visual del juego emitiendo señales a los demas integrates del juego para tomar desiciones.
- * La funcion ***read_styles()*** lee directamente de la carpeta *styles* la que contine archivos en formato ***.css**, con esto se logra una interfaz fácilmente personalizable con los conocimientos adecuados.
+ * Encargado del frontend del juego tiene la funcion de presentar las multiples opciones y anunciar al usuario las respuestas correctas.
+ * Esta constantemente pidiendo al Cliente el nuevo estado del juego el cual en teoria deberia enviar el servidor, pero por razones de deployment quedaron a cargo de un QTimer el cual emite una señal cada una constante de 1 seg.
+ * Se encarga de mostrar los graficos solo si el servidor lo permite por lo cual la existencia de salas o el accesso a ellas son imposibles sin el cliente.
+ * Local funciona como un microservidor para el resto de la interfaz enviando señales a las interfases subordinadas, como las salas de juego siendo la unica interfaz que puede bloquearla el StartMenu.
+ * La interfaz se reinicia al momento de perder conexion con el servidor y esta no muestra los errores desde el servidor como lo hace StartMenu por razones de comodidad del usuario.
+ * Esta Interfaz es facilmente modificable mediante el archivo master.css encontrado el el directorio ***styles*** lo cual la vuelve modificable visualmente a la larga.
+ * **Siempre** y cuando no ocurra un error fatal de la aplicacion, la Local enviara la señal correspondiente para la desconexion correcta del servidor.
 4. **Start Menu**    
- La estructura del directorio principal se divide en una serie de carpetas las cuales contienen las imagenes, scripts y descriptores de animaciones para el juego.
- 1. **data**
-     * La carpeta *data* contiene las constantes del juego en 2 tipos de formatos ***.properties** y ***.json**, los archivos properties estan detinados a guardar la informacion de los campeones [^1] y las cnfiguraciones globales. Por otro lado los archivos json estan destinados a los datos no mutables del juego ya que son mas dificiles de leer para el usuario inexperto.
-     * Los archivos properties son leidos por una funcion en la carpeta *scripts* la cual se encarga de formatear estos archivos en un diccionario, a partir de ciertas reglas preconfiguradas.
- 2. **IMGS**
-     * Este directorio esta encargado de contener todas las imágenes y animaciones a utilizar en el juego (originalmente llamada resources), en primera instancia el directorio esta compuesto de 4 tipos de archivos: 
-         *  ***.png** -> representando a las imagenes.
-         *  ***.bat** -> encargado de ejecutar en consola las preview de las animaciones.
-         *  ***.pyanim** -> un archivo python comun y corriente que es un derivado de el script principal ***animation.py*** en la carpeta *scripts*.
-         *  ***.lop** -> archivo custom LeagueOfProgra el cual contiene el orden de los frames a solicitar.
- 1. **objects**
-     * Directorio que almacena todos los objetos funcionales del juego, por lo cual contiene todas las clases y sus herencias.
- 1. **scripts**
-     * Directorio encargado de almacenar funciones , modulos utiles y codigo basura :smile: . El directorio almacena la clase destinada a la emision de señales de movimiento y al paso de las animaciones.
-     * El encargado de las animaciones es el script ***animation.py*** (en su versión 2.0) el cual contiene una clase que hereda de *QLabel* y contiene un QTimer que pasa las imágenes.
-     * **PD :** Si buscan la version 1.0 de animation.py, esta se encuentra en el directorio **IMGS**, advierto que tengan miedo. :boom:
- 1. **styles**
-     * Como se menciono anteriormente esta carpeta esta detinada ha poder customizar la interfaz que incluye el juego, lamentablemente en desarrollo.
+ * Cumple con la mision de realizar el hadshake con el servidor enviando los datos de inicio de session como texto plato al cliente.
+ * Esta interfaz muestra todos los errores conocidos y dessonocidos que envie el seridor en relacion al inicio de session generando una alerta de lo mas molesta que se puede. :boom:
+ * Esta interfaz le da el paso a **Local** cuando el cliente lo indica, esto dado que local,  no puede generar ninguna instruccion de handshake.
+ * Esta interfaz vuelve a aparecer cada vez que se pierde la conexion con el servidor , asi evitando falsos positivos.
+ * Por razones de rendimiento recomiendo que se abra una instancia para generar el signin y se genere otra para el login, ya que la estabilidad d la interfaz no es la mejor del universo.
+ * Esta interfaz en modificable de la misma manera que Local.
+ * Prefiera el uso de *Enter*.
