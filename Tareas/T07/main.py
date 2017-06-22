@@ -54,9 +54,10 @@ def telegram():
 
 def get_issue(number, chat):
     print(chat)
-    message = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['body']
-    req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
-    while req.status_code != 200:
-        req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+    print(number)
+    #message = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['body']
+    #req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+    #while req.status_code != 200:
+    #    req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
 # app.run(port="")
