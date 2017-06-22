@@ -84,13 +84,12 @@ def close_issue(number, chat):
 
 
 def label_issue(number, label, chat):
-    print(number)
-    print(label)
-    return 
     labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['labels']
     labels.append(label)
     req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
                          data=flask.json.dumps({'labels': labels}))
+    print(req.status_code)
+    return 
     if req.status_code == 200:
         message = "Label '{}' agregada al issue #{}".format(label, number)
         message = message_format(message, req)
