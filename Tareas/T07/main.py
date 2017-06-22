@@ -44,7 +44,7 @@ def telegram():
         from_data = data['message']['from']
         chat_data = data['message']['chat']
         text = data['message']['text']
-        if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w ]+|close #[0-9]+)", text)):
+        if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w]+|close #[0-9]+)", text)):
             admin("I receive a command")
             if re.match("\/get #[0-9]+", text):
                 quarry = text[text.index("#") + 1:].strip()
@@ -53,7 +53,7 @@ def telegram():
                 quarry = text[text.index("#") + 1:].strip()
                 close_issue(quarry, chat_data)
                 pass
-            elif re.match("\/label #[0-9]+ [\w ]+", text):
+            elif re.match("\/label #[0-9]+ [\w]+", text):
                 label_issue(" ".join(text.split(" ")[2:]), text[1], chat_data)
     return "200 OK"
 
@@ -84,12 +84,12 @@ def close_issue(number, chat):
 
 
 def label_issue(number, label, chat):
-    labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['labels']
+    labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
+    print(labels.url)
+    return
     labels.append(label)
     req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
                          data=flask.json.dumps({'labels': labels}))
-    print(req.status_code)
-    return 
     if req.status_code == 200:
         message = "Label '{}' agregada al issue #{}".format(label, number)
         message = message_format(message, req)
