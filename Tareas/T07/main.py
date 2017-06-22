@@ -1,6 +1,8 @@
 import flask
 import requests
 import re
+
+import time
 from flask import request
 
 with open("telegram_token", "r") as file:
@@ -46,18 +48,21 @@ def telegram():
         if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w ]+|close #[0-9]+)", text)):
             admin("I receive a command")
             if re.match("\/get #[0-9]+", text):
-                quarry = text[text.index("#"):].strip()
+                quarry = text[text.index("#")+1:].strip()
                 get_issue(quarry, chat_data)
-
     return "200 OK"
 
 
 def get_issue(number, chat):
-    print(chat)
-    print(number)
-    #message = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['body']
-    #req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
-    #while req.status_code != 200:
-    #    req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+    req = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
+    if req.status_code == 200:
+        message = req.json()['body']
+    elif req.status_code == 404:
+        message = "Esa issue no existe"
+    else:
+        message = "Fallo: Error {}".format(req.status_code)
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+
+
 
 # app.run(port="")
