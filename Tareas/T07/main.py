@@ -5,8 +5,11 @@ from flask import request
 
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
+with open("github_token", "r") as file:
+    G_TOKEN = file.read().strip()
 
 URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
+URL_GIT = "https://api.github.com/repos/FarDust/DrMavrakis4ever/issues/{}"
 
 requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": "new_deploy"}).json()
 requests.get(URL_TEL_BOT + "/setWebhook", params={"url": "https://drmavrakis4ever.herokuapp.com/telegram",
@@ -43,7 +46,7 @@ def telegram():
         if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w ]+|close #[0-9]+)", text)):
             admin("I receive a command")
             if re.match("\/get #[0-9]+", text):
-                quarry = text[text.index("#"):]
+                quarry = text[text.index("#"):].strip()
                 get_issue(quarry, chat_data)
 
     return "200 OK"
@@ -51,5 +54,9 @@ def telegram():
 
 def get_issue(number, chat):
     print(chat)
+    message = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['body']
+    req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+    while req.status_code != "200":
+        req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
 # app.run(port="")

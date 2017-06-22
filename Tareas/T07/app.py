@@ -8,4 +8,4 @@ URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
 URL_GIT = "https://api.github.com/repos/FarDust/DrMavrakis4ever/issues/1"
 URL_GOOGLE = "http://www.google.com/search?"
 
-print(requests.get(url=URL_GIT,params={"access_token": G_TOKEN}).json()['body'])
+print(requests.get(url=URL_GIT,params={"access_token": G_TOKEN}).status_code)
