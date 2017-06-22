@@ -106,11 +106,11 @@ def label_issue(number, label, chat):
 def create_comment(number, message, chat):
     req = requests.patch(url=URL_GIT.format(number)+"/comments", params={"access_token": G_TOKEN},
                          data=flask.json.dumps({'body': message}))
-    print(req.status_code)
     if req.status_code == 201:
         message = "Se ha comentado en la issue #{}".format(number)
         message = message_format(message, req)
     elif req.status_code == 404:
+        print(req.text)
         message = "Esa issue no existe"
     else:
         message = "Fallo: Error {}".format(req.status_code)
@@ -124,4 +124,3 @@ def message_format(message, req):
     template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {html_url}]".format(**formated)
     return template
 
-# app.run(port="")
