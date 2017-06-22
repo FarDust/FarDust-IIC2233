@@ -1,0 +1,27 @@
+{
+  "update_id": 256159682,
+  "message": {
+    "message_id": 78,
+    "from": {
+      "id": 413925182,
+      "first_name": "Gabriel Andres",
+      "last_name": "Faundez Soto",
+      "language_code": "es"
+    },
+    "chat": {
+      "id": 413925182,
+      "first_name": "Gabriel Andres",
+      "last_name": "Faundez Soto",
+      "type": "private"
+    },
+    "date": 1498079855,
+    "text": "/get 4",
+    "entities": [
+      {
+        "type": "bot_command",
+        "offset": 0,
+        "length": 4
+      }
+    ]
+  }
+}

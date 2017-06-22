@@ -23,7 +23,7 @@ def index():
 @app.route("/admin/<message>")
 def admin(message):
     req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": message})
-    return "<p>{}</p>".format(req.status_code)
+    return "200 OK"
 
 
 @app.route("/payload", methods=["POST"])
@@ -42,7 +42,14 @@ def telegram():
         text = data['message']['text']
         if bool(re.match("\/(get #[0-9]+|post #[0-9]+ \*[\w \n]+|label #[0-9]+ [\w ]+|close #[0-9]+)", text)):
             admin("I receive a command")
+            if re.match("\/get #[0-9]+", text):
+                quarry = text[text.index("#"):]
+                get_issue(quarry)
+
 
     return "200 OK"
+
+def get_issue(number):
+    requests.get(URL_TEL_BOT + "/getUpdates").json()
 
 # app.run(port="")
