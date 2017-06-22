@@ -50,9 +50,9 @@ def telegram():
             if re.match("\/get #[0-9]+", text):
                 quarry = text[text.index("#") + 1:].strip()
                 get_issue(quarry, chat_data)
-            elif re.match("\/post #[0-9]+ \*[\w \n]+", text):
+            elif re.match("\/close #[0-9]+", text):
                 quarry = text[text.index("#") + 1:].strip()
-                close_issue(quarry,chat_data)
+                close_issue(quarry, chat_data)
                 pass
     return "200 OK"
 
