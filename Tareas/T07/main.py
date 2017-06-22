@@ -56,6 +56,9 @@ def telegram():
             elif re.match("\/label #[0-9]+ [\w]+", text):
                 text = text.split(" ")
                 label_issue(text[1][1:], text[2], chat_data)
+            elif re.match("\/post #[0-9]+ \*[\w \n]+", text):
+                text = text.split("")
+                create_comment(text[1][1:], " ".join(text[2:])[1:], chat_data)
     return "200 OK"
 
 
@@ -92,6 +95,19 @@ def label_issue(number, label, chat):
                          data=flask.json.dumps({'labels': labels}))
     if req.status_code == 200:
         message = "Label '{}' agregada al issue #{}".format(label, number)
+        message = message_format(message, req)
+    elif req.status_code == 404:
+        message = "Esa issue no existe"
+    else:
+        message = "Fallo: Error {}".format(req.status_code)
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+
+
+def create_comment(number, message, chat):
+    req = requests.patch(url=URL_GIT.format(number)+"/comments", params={"access_token": G_TOKEN},
+                         data=flask.json.dumps({'body': message}))
+    if req.status_code == 200:
+        message = "Se ha comentado en la issue".format(label, number)
         message = message_format(message, req)
     elif req.status_code == 404:
         message = "Esa issue no existe"
