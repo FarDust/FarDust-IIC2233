@@ -86,7 +86,7 @@ def message_format(message, req):
     formated = req.json()
     formated.update({"message": message})
     formated.update({"user": formated["user"]["login"]})
-    template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {url}]".format(**formated)
+    template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {html_url}]".format(**formated)
     return template
 
 # app.run(port="")
