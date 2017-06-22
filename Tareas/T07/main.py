@@ -57,12 +57,18 @@ def get_issue(number, chat):
     req = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
     if req.status_code == 200:
         message = req.json()['body']
+        message = message_format(message, req)
     elif req.status_code == 404:
         message = "Esa issue no existe"
     else:
         message = "Fallo: Error {}".format(req.status_code)
     requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
-
+def message_format(message,req):
+    formated = req.json()
+    formated.update({"message":message})
+    formated.update({"user": formated["user"]["login"]})
+    template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {url}]".format(**formated)
+    return template
 
 # app.run(port="")
