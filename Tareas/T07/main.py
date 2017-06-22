@@ -105,6 +105,7 @@ def label_issue(number, label, chat):
 
 def create_comment(number, message, chat):
     req = requests.post(url=URL_GIT.format(number)+"/comments", params={"access_token": G_TOKEN}, json={"body": message})
+    print(req.text)
     if req.status_code == 201:
         message = "Se ha comentado en la issue #{}".format(number)
         getter = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
