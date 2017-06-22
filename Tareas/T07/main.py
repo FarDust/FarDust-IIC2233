@@ -84,7 +84,9 @@ def close_issue(number, chat):
 
 
 def label_issue(number, label, chat):
-    number = number[number.index("#")+1:]
+    print(number)
+    print(label)
+    return 
     labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN}).json()['labels']
     labels.append(label)
     req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
