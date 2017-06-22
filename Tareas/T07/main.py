@@ -44,12 +44,12 @@ def telegram():
             admin("I receive a command")
             if re.match("\/get #[0-9]+", text):
                 quarry = text[text.index("#"):]
-                get_issue(quarry)
-
+                get_issue(quarry, chat_data)
 
     return "200 OK"
 
-def get_issue(number):
-    requests.get(URL_TEL_BOT + "/getUpdates").json()
+
+def get_issue(number, chat):
+    print(chat)
 
 # app.run(port="")
