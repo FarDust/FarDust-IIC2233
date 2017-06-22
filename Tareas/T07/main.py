@@ -41,7 +41,7 @@ def github():
 @app.route("/telegram", methods=["POST"])
 def telegram():
     data = request.json
-    if 'entities' in data['message']:
+    if 'message' in data and 'entities' in data['message']:
         from_data = data['message']['from']
         chat_data = data['message']['chat']
         text = data['message']['text']
