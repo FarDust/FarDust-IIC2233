@@ -105,7 +105,7 @@ def label_issue(number, label, chat):
 
 def create_comment(number, message, chat):
     req = requests.patch(url=URL_GIT.format(number)+"/comments", params={"access_token": G_TOKEN},
-                         data=flask.json.dumps({'body': message}))
+                         data=flask.json.dumps({"body": message}))
     if req.status_code == 201:
         message = "Se ha comentado en la issue #{}".format(number)
         message = message_format(message, req)
