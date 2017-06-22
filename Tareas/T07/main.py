@@ -2,7 +2,6 @@ import flask
 import requests
 import re
 
-import time
 from flask import request
 
 with open("telegram_token", "r") as file:
@@ -54,8 +53,8 @@ def telegram():
                 quarry = text[text.index("#") + 1:].strip()
                 close_issue(quarry, chat_data)
                 pass
-            elif re.match("\/label #[0-9]+ [\w ]+",text):
-                label_issue(" ".join(text.split(" ")[2:]),text[1],chat_data)
+            elif re.match("\/label #[0-9]+ [\w ]+", text):
+                label_issue(" ".join(text.split(" ")[2:]), text[1], chat_data)
     return "200 OK"
 
 
