@@ -107,7 +107,8 @@ def create_comment(number, message, chat):
     req = requests.post(url=URL_GIT.format(number)+"/comments", params={"access_token": G_TOKEN}, json={"body": message})
     if req.status_code == 201:
         message = "Se ha comentado en la issue #{}".format(number)
-        message = message_format(message, req)
+        getter = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
+        message = message_format(message, getter)
     elif req.status_code == 404:
         message = "Esa issue no existe"
     else:
