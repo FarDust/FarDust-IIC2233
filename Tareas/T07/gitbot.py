@@ -28,7 +28,7 @@ def analize(response: dict):
                                                                 "cx": GOO_CX,
                                                                 "num": 1}).json()
                 if len(google_response["items"]) > 0:
-                    return google_response["items"][0]["link"]
+                    return google_response["items"][0]["link"], number
                 else:
                     return "No lo se solucionar", number
             else:
