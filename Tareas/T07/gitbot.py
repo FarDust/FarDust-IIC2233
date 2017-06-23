@@ -23,9 +23,14 @@ def analize(response: dict):
             sender_q = re.search("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"]).group()
             sender_q = sender_q.split("\n")[3].strip()
             if sender_q != "":
-                google_response = requests.get(URL_GOO, params={"q": sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
-                print(google_response.json())
-                return sender_q
+                google_response = requests.get(URL_GOO, params={"q": sender_q,
+                                                                "key": GOO_TOKEN,
+                                                                "cx": GOO_CX,
+                                                                "num": 1}).json()
+                if len(google_response["items"]) > 0:
+                    return google_response["items"][0]["link"]
+                else:
+                    return "No lo se solucionar"
             else:
                 return "dude"
         else:
