@@ -23,6 +23,7 @@ def analize(response: dict):
             sender_q = re.search("(Traceback).+\n.+\n.+\n.+", response['issue']["body"]).group()
             if sender_q != "":
                 print(sender_q)
+                sender_q = "chile"
                 google_response = requests.get(URL_GOO,params={"q":sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
                 print(google_response.json())
                 return "200 OK"
