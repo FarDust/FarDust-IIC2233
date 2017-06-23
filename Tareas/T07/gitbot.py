@@ -20,10 +20,11 @@ def analize(response: dict):
     if "action" in response and response["action"] == 'opened' or True:
         print(response['issue'].keys())
         if "body" in response['issue']:
-            if re.match("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+$", response["body"]):
-                sender_q = re.search("(Traceback).+\n.+\n.+\n.+", response["body"]).group()
+            if re.match("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+$", response['issue']["body"]):
+                sender_q = re.search("(Traceback).+\n.+\n.+\n.+", response['issue']["body"]).group()
                 google_response = requests.get(URL_GOO,params={"q":sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
-                return google_response
+                print(google_response.json())
+                return "200 OK"
             else:
                 return "dude"
         else:
