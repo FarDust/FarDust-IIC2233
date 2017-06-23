@@ -21,7 +21,7 @@ def analize(response: dict):
         print(response['issue'].keys())
         if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?", response["issue"]["body"]):
             sender_q = re.search("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"]).group()
-            sender_q = sender_q.split("/n")[3].strip()
+            sender_q = sender_q.split("\n")[3].strip()
             if sender_q != "":
                 google_response = requests.get(URL_GOO, params={"q": sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
                 print(google_response.json())
