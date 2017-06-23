@@ -3,6 +3,8 @@ import requests
 import re
 
 from flask import request
+
+from gitbot import analize
 from telegram import get_issue, close_issue, label_issue, create_comment
 
 with open("telegram_token", "r") as file:
@@ -19,7 +21,7 @@ app = flask.Flask(__name__)
 
 @app.route("/")
 def index():
-    return "<h1>I'm a bot</h1>"
+    return "<h1>I'm a Dr. Mavrakis</h1>"
 
 
 @app.route("/admin/<message>")
@@ -32,7 +34,7 @@ def admin(message):
 def github():
     data = request.json
     admin("GitHub webHook")
-    print(data)
+    analize(data)
     return "200 OK"
 
 
