@@ -34,7 +34,7 @@ def admin(message):
 def github():
     data = request.json
     admin("GitHub webHook")
-    analize(data)
+    admin(analize(data))
     return "200 OK"
 
 
