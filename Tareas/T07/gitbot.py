@@ -19,7 +19,7 @@ URL_GOO = "https://www.googleapis.com/customsearch/v1"
 def analize(response: dict):
     if "action" in response and response["action"] == 'opened' or True:
         print(response['issue'].keys())
-        if "body" in response['issue'] and re.match("[\S\s]+?`[\S\s]+?`[\S\s]+?",response["issue"]["body"]):
+        if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?",response["issue"]["body"]):
             if re.match("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"]):
                 sender_q = re.search("(Traceback).+\n.+\n.+\n.+", response['issue']["body"]).group()
                 google_response = requests.get(URL_GOO,params={"q":sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
