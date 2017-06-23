@@ -3,14 +3,12 @@ import requests
 import re
 
 from flask import request
-from telegram import get_issue,close_issue,label_issue,create_comment
+from telegram import get_issue, close_issue, label_issue, create_comment
 
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
 
-
 URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
-
 
 requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": "new_deploy"}).json()
 requests.get(URL_TEL_BOT + "/setWebhook", params={"url": "https://drmavrakis4ever.herokuapp.com/telegram",
@@ -26,14 +24,15 @@ def index():
 
 @app.route("/admin/<message>")
 def admin(message):
-    req = requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": message})
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": message})
     return "200 OK"
 
 
 @app.route("/payload", methods=["POST"])
 def github():
     data = request.json
-    admin("GitHub say something")
+    admin("GitHub webHook")
+    print(data)
     return "200 OK"
 
 
