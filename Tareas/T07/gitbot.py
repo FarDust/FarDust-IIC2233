@@ -17,12 +17,12 @@ URL_GOO = "https://www.googleapis.com/customsearch/v1"
 
 
 def analize(response: dict):
-    if "action" in response and response["action"] == 'opened' or True:
-        print(response['issue'].keys())
+    if "action" in response and response["action"] == 'opened':
         if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?", response["issue"]["body"]):
             sender_q = re.search("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"]).group()
             sender_q = sender_q.split("\n")[3].strip()
             if sender_q != "":
+                number = response["issue"]["number"]
                 google_response = requests.get(URL_GOO, params={"q": sender_q,
                                                                 "key": GOO_TOKEN,
                                                                 "cx": GOO_CX,
@@ -30,8 +30,13 @@ def analize(response: dict):
                 if len(google_response["items"]) > 0:
                     return google_response["items"][0]["link"]
                 else:
-                    return "No lo se solucionar"
+                    return "No lo se solucionar", number
             else:
-                return "dude"
+                return "dude", 0
         else:
-            return "nobody"
+            return "nobody", 0
+
+
+def create_comment_git(message,number):
+    requests.post(url=URL_GIT.format(number) + "/comments", params={"access_token": G_TOKEN},
+                  json={"body": message})

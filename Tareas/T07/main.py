@@ -4,7 +4,7 @@ import re
 
 from flask import request
 
-from gitbot import analize
+from gitbot import analize,create_comment_git
 from telegram import get_issue, close_issue, label_issue, create_comment
 
 with open("telegram_token", "r") as file:
@@ -34,7 +34,10 @@ def admin(message):
 def github():
     data = request.json
     admin("GitHub webHook")
-    admin(analize(data))
+    new_data = analize(data)
+    if new_data[0] != "nobody" or new_data[0] != "dude":
+        admin(new_data[0])
+        create_comment_git(*new_data)
     return "200 OK"
 
 
