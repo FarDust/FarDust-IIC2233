@@ -19,16 +19,14 @@ URL_GOO = "https://www.googleapis.com/customsearch/v1"
 def analize(response: dict):
     if "action" in response and response["action"] == 'opened' or True:
         print(response['issue'].keys())
-        if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?",response["issue"]["body"]):
-            sender_q = re.search("(Traceback).+\n.+\n.+\n.+", response['issue']["body"]).group()
+        if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?", response["issue"]["body"]):
+            sender_q = re.search("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"]).group()
+            sender_q = sender_q.split("/n")[3].strip()
             if sender_q != "":
-                print(sender_q)
-                sender_q = "chile"
-                google_response = requests.get(URL_GOO,params={"q":sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
+                google_response = requests.get(URL_GOO, params={"q": sender_q, "key": GOO_TOKEN, "cx": GOO_CX})
                 print(google_response.json())
-                return "200 OK"
+                return sender_q
             else:
                 return "dude"
         else:
             return "nobody"
-
