@@ -65,6 +65,10 @@ def create_comment(number, message, chat):
     requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
 
+def send(message, chat):
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
+
+
 def message_format(message, req):
     formated = req.json()
     formated.update({"message": message})

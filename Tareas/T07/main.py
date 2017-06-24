@@ -5,7 +5,7 @@ import re
 from flask import request
 
 from gitbot import analize
-from telegram import get_issue, close_issue, label_issue, create_comment
+from telegram import get_issue, close_issue, label_issue, create_comment, send
 
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
@@ -60,4 +60,8 @@ def telegram():
             elif re.match("\/post #[0-9]+ \*[\w \n]+", text):
                 text = text.split(" ")
                 create_comment(text[1][1:], " ".join(text[2:])[1:], chat_data)
+            elif re.match("\/start", text):
+                template = "Hola soy Void un bot creado para controlar el repositorio DrMavrakis4ever.\n" \
+                           "Los comandos disponibles te los mostrara telegram al escribir /."
+                send(template, chat_data)
     return "200 OK"

@@ -48,9 +48,10 @@ def analize(response: dict):
         if response["issue"]["comments"] < 3:
             posted.remove(response["issue"]["number"])
             label_issue(response["issue"]["number"], "Googleable")
-            return "labeled",0
+            return "labeled", 0
     else:
-        return "problems?",0
+        return "problems?", 0
+
 
 def create_comment_git(message, number):
     requests.post(url=URL_GIT.format(number) + "/comments", params={"access_token": G_TOKEN},
