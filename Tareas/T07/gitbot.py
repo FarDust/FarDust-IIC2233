@@ -35,6 +35,7 @@ def analize(response: dict):
                 return "dude", 0
         else:
             return "nobody", 0
+    return "problems?", 0
 
 
 def create_comment_git(message,number):
