@@ -1,5 +1,5 @@
 import re
-
+import flask
 import requests
 
 with open("github_token", "r") as file:
@@ -15,6 +15,8 @@ URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
 URL_GIT = "https://api.github.com/repos/FarDust/DrMavrakis4ever/issues/{}"
 URL_GOO = "https://www.googleapis.com/customsearch/v1"
 
+posted = set()
+
 
 def analize(response: dict):
     if "action" in response and response["action"] == 'opened':
@@ -28,19 +30,34 @@ def analize(response: dict):
                                                                     "key": GOO_TOKEN,
                                                                     "cx": GOO_CX,
                                                                     "num": 1}).json()
-                    if len(google_response["items"]) > 0:
+                    if len(google_response["items"]) > 0 and number not in posted:
+                        template = "Tal vez puede certe de ayusda:\n{}\n:smile:".format(
+                            google_response["items"][0]["link"])
+                        posted.add(number)
+                        create_comment_git(template, number)
                         return google_response["items"][0]["link"], number
                     else:
                         return "No lo se solucionar", number
                 else:
                     return "dude", 0
             else:
-                return "mmmmm... usually work"
+                return "mmmmm... usually work", 0
         else:
             return "nobody", 0
-    return "problems?", 0
+    elif "action" in response and response["action"] == "closed" and response["issue"]["number"] in posted:
+        if response["issue"]["comments"] < 3:
+            posted.pop(response["issue"]["number"])
+            label_issue(response["issue"]["number"], "Googleable")
 
 
-def create_comment_git(message,number):
+def create_comment_git(message, number):
     requests.post(url=URL_GIT.format(number) + "/comments", params={"access_token": G_TOKEN},
                   json={"body": message})
+
+
+def label_issue(number, label):
+    labels = requests.get(url=URL_GIT.format(number), params={"access_token": G_TOKEN})
+    labels = labels.json()['labels']
+    labels.append(label)
+    req = requests.patch(url=URL_GIT.format(number), params={"access_token": G_TOKEN},
+                         data=flask.json.dumps({'labels': labels}))
