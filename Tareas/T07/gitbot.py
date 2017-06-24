@@ -46,7 +46,7 @@ def analize(response: dict):
             return "nobody", 0
     elif "action" in response and response["action"] == "closed" and response["issue"]["number"] in posted:
         if response["issue"]["comments"] < 3:
-            posted.pop(response["issue"]["number"])
+            posted.remove(response["issue"]["number"])
             label_issue(response["issue"]["number"], "Googleable")
             return "labeled",0
     else:
