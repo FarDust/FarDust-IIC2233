@@ -34,9 +34,7 @@ def admin(message):
 def github():
     data = request.json
     admin("GitHub webHook")
-    new_data = analize(data)
-    if new_data and new_data[0] != "nobody" or new_data[0] != "dude":
-        admin(new_data[0])
+    analize(data)
     return "200 OK"
 
 

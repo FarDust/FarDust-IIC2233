@@ -31,7 +31,7 @@ def analize(response: dict):
                                                                     "cx": GOO_CX,
                                                                     "num": 1}).json()
                     if len(google_response["items"]) > 0 and number not in posted:
-                        template = "Tal vez puede certe de ayusda:\n{}\n:smile:".format(
+                        template = "Tal vez puede serte de ayuda:\n{}\n:smile:".format(
                             google_response["items"][0]["link"])
                         posted.add(number)
                         create_comment_git(template, number)
