@@ -17,7 +17,7 @@ URL_GOO = "https://www.googleapis.com/customsearch/v1"
 
 
 def analize(response: dict):
-    if "action" in response and response["action"] == 'opened':
+    if "action" in response and response["action"] == 'created':
         if "body" in response['issue'] and re.match("[\S\s]*?`[\S\s]*?`[\S\s]*?", response["issue"]["body"]):
             sender_q = re.search("(Traceback)[^\n]+\n[^\n]+\n[^\n]+\n[^\n]+", response['issue']["body"])
             if sender_q:
