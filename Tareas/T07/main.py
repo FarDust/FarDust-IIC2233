@@ -79,4 +79,13 @@ def telegram():
                 template = "Hola soy Void un bot creado para controlar el repositorio DrMavrakis4ever.\n" \
                            "Los comandos disponibles te los mostrara telegram al escribir /."
                 send(template, chat_data)
+            elif text == "/unregister":
+                if data["message"]["from"]["id"] in ids:
+                    ids.remove(data["message"]["from"]["id"])
+                    with open("registry.txt", "r") as file:
+                        new = file.readlines()
+                        new.remove(str(data["message"]["from"]["id"] + "\n"))
+                    with open("registry.txt", "w") as file:
+                        file.writelines(new)
+
     return "200 OK"
