@@ -5,7 +5,7 @@ import re
 from flask import request
 
 from gitbot import analize
-from telegram import get_issue, close_issue, label_issue, create_comment, send
+from telegram import get_issue, close_issue, label_issue, create_comment, send, message_format
 
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
@@ -17,6 +17,14 @@ requests.get(URL_TEL_BOT + "/setWebhook", params={"url": "https://drmavrakis4eve
                                                   "allowed_updates": ["message"]})
 
 app = flask.Flask(__name__)
+
+ids = list()
+
+try:
+    with open("registry.txt", "r") as data:
+        ids = [int(i.strip()) for i in data.readlines()]
+except FileNotFoundError:
+    ids = [413925182]
 
 
 @app.route("/")
@@ -34,6 +42,9 @@ def admin(message):
 def github():
     data = request.json
     admin("GitHub webHook")
+    if "action" in data and data["action"] == 'opened':
+        for i in ids:
+            send(message_format("Nueva issue abierta", data), {"id": i})
     analize(data)
     return "200 OK"
 
@@ -42,6 +53,10 @@ def github():
 def telegram():
     data = request.json
     if 'message' in data and 'entities' in data['message']:
+        if data["message"]["from"]["id"] in data["message"]["from"]["id"]:
+            with open("registry.txt", "a") as file:
+                file.write("{}\n".format(data["message"]["from"]["id"]))
+                ids.append(data["message"]["from"]["id"])
         from_data = data['message']['from']
         chat_data = data['message']['chat']
         text = data['message']['text']
