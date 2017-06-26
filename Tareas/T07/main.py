@@ -75,8 +75,9 @@ def telegram():
             elif re.match("\/post #[0-9]+ \*[\w \n]+", text):
                 text = text.split(" ")
                 create_comment(text[1][1:], " ".join(text[2:])[1:], chat_data)
-            elif re.match("\/start", text):
-                template = "Hola soy Void un bot creado para controlar el repositorio DrMavrakis4ever.\n" \
+            elif text == "/start":
+                template = "Hola soy Void un bot creado para controlarlos a todos.\n" \
+                           " El repositorio DrMavrakis4ever es mi mision.\n" \
                            "Los comandos disponibles te los mostrara telegram al escribir /."
                 send(template, chat_data)
     return "200 OK"
