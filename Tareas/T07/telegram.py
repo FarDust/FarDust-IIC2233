@@ -68,8 +68,12 @@ def create_comment(number, message, chat):
 def send(message, chat):
     requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": chat['id'], "text": message})
 
-def message_format(message, req):
-    formated = req.json()
+
+def message_format(message, req, json=True):
+    if json:
+        formated = req.json()
+    else:
+        formated = req
     formated.update({"message": message})
     formated.update({"user": formated["user"]["login"]})
     template = "[{user}]\n[#{number} - {title}]\n{message}\n[Link: {html_url}]".format(**formated)

@@ -44,7 +44,7 @@ def github():
     admin("GitHub webHook")
     if "action" in data and data["action"] == 'opened':
         for i in ids:
-            send(message_format("Nueva issue abierta", data), {"id": i})
+            send(message_format("Nueva issue abierta", data,json=False), {"id": i})
     analize(data)
     return "200 OK"
 
