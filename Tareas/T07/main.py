@@ -53,7 +53,7 @@ def github():
 def telegram():
     data = request.json
     if 'message' in data and 'entities' in data['message']:
-        if data["message"]["from"]["id"] in data["message"]["from"]["id"]:
+        if data["message"]["from"]["id"] not in ids:
             with open("registry.txt", "a") as file:
                 file.write("{}\n".format(data["message"]["from"]["id"]))
                 ids.append(data["message"]["from"]["id"])
