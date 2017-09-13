@@ -222,6 +222,7 @@ class Server:
             try:
                 mensaje = json.loads(client_socket.recv(2048).decode('utf-8'))
                 # with self.locks[client_socket]:
+                print(mensaje)
                 if not ("option" in mensaje.keys() and (
                                 mensaje['option'] == "points" or mensaje['option'] == 'rooms')):
                     print('Datos recibidos en el server: {}'.format(mensaje))

@@ -12,8 +12,14 @@ with open("telegram_token", "r") as file:
 
 URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
 
-requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": "new_deploy"}).json()
-requests.get(URL_TEL_BOT + "/setWebhook", params={"url": "https://drmavrakis4ever.herokuapp.com/telegram",
+#admin chat id
+admin_id = 413925182 
+
+#Deploy URL
+deploy = "https://drmavrakis4ever.herokuapp.com/telegram"
+
+requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": admin_id, "text": "new_deploy"}).json()
+requests.get(URL_TEL_BOT + "/setWebhook", params={"url": deploy,
                                                   "allowed_updates": ["message"]})
 
 app = flask.Flask(__name__)
@@ -24,7 +30,7 @@ try:
     with open("registry.txt", "r") as data:
         ids = [int(i.strip()) for i in data.readlines()]
 except FileNotFoundError:
-    ids = [413925182]
+    ids = [admin_id]
 
 
 @app.route("/")
@@ -34,7 +40,7 @@ def index():
 
 @app.route("/admin/<message>")
 def admin(message):
-    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": 413925182, "text": message})
+    requests.get(URL_TEL_BOT + "/sendMessage", params={"chat_id": admin_id, "text": message})
     return "200 OK"
 
 

@@ -5,8 +5,13 @@ with open("github_token", "r") as file:
     G_TOKEN = file.read().strip()
 with open("telegram_token", "r") as file:
     T_TOKEN = file.read().strip()
+
+#User
+git_user = "FarDust"
+git_repo = "DrMavrakis4ever"
+	
 URL_TEL_BOT = "https://api.telegram.org/bot{token}".format(**{"token": T_TOKEN})
-URL_GIT = "https://api.github.com/repos/FarDust/DrMavrakis4ever/issues/{}"
+URL_GIT = "https://api.github.com/repos/{user}/{repo}/issues/{}".format(**{"user": git_user,"repo": git_repo})
 
 
 def get_issue(number, chat):

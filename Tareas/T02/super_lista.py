@@ -253,3 +253,4 @@ if __name__ == "__main__":
     print(l)
     l.sort_cola()
     print(l)
+    print(5 in l)

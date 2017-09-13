@@ -1,4 +1,11 @@
-
+# --------------------------
+# Repository Specific
+# --------------------------
+github_token
+google_cx
+google_token
+telegram_token
+commands.txt
 *.bat
 *.sh
 *.json
